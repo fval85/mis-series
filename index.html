@@ -9,9 +9,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <script>
 /* Aplica el tema antes de dibujar para que no parpadee */
-(function(){var t="sistema",L=false;try{var d=JSON.parse(localStorage.getItem("misseries.v1")||"{}");t=(d.settings&&d.settings.theme)||"sistema";L=!!(d.settings&&d.settings.lock&&d.settings.lock.on)}catch(e){}
+(function(){var t="sistema",L=false,c=null;try{var d=JSON.parse(localStorage.getItem("misseries.v1")||"{}");t=(d.settings&&d.settings.theme)||"sistema";L=!!(d.settings&&d.settings.lock&&d.settings.lock.on);c=JSON.parse(localStorage.getItem("misseries.themevars")||"null")}catch(e){}
 var dark=t==="oscuro"||(t==="sistema"&&!(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches));
-document.documentElement.dataset.theme=dark?"dark":"light";if(!dark){var m=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');if(m)m.content="default";}if(L)document.documentElement.classList.add("locked");})();
+document.documentElement.dataset.theme=dark?"dark":"light";
+if(c&&c[dark?"D":"L"]){var v=c[dark?"D":"L"];for(var k in v)document.documentElement.style.setProperty("--"+k,v[k]);var tc=document.querySelector('meta[name="theme-color"]');if(tc)tc.content=v.bg;}if(!dark){var m=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');if(m)m.content="default";}if(L)document.documentElement.classList.add("locked");})();
 </script>
 <meta name="apple-mobile-web-app-title" content="Mis Series">
 <link rel="manifest" href="manifest.webmanifest">
@@ -19,7 +20,8 @@ document.documentElement.dataset.theme=dark?"dark":"light";if(!dark){var m=docum
 <link rel="icon" href="icon-192.png">
 <title>Mis Series</title>
 <style>
-:root{--r:#e5484d;--ok:#3ecf8e;--warn:#f5b84a;--st:env(safe-area-inset-top);--sb:env(safe-area-inset-bottom);--sl:env(safe-area-inset-left);--sr:env(safe-area-inset-right)}
+/* Los colores del tema los pone applyTheme() en <html style>. Valores base = tema Cine oscuro */
+:root{--r:#e5484d;--acc:#e5484d;--on:#fff;--danger:#e5484d;--rc:16px;--rb:14px;--rp:10px;--ok:#3ecf8e;--warn:#f5b84a;--st:env(safe-area-inset-top);--sb:env(safe-area-inset-bottom);--sl:env(safe-area-inset-left);--sr:env(safe-area-inset-right)}
 html[data-theme=dark]{--bg:#0f0f12;--card:#18181c;--card2:#1f1f24;--line:#26262c;--tx:#f2f2f2;--tx2:#d0d0d6;--mut:#9a9aa3;--chip:#bbb;--off:#3a3a42;--track:#2a2a30;--segon:#2c2c33;--nav:rgba(15,15,18,.96);--toast:#2c2c33;--ph:#222;color-scheme:dark}
 html[data-theme=light]{--bg:#f4f4f7;--card:#ffffff;--card2:#e9e9ee;--line:#e2e2e8;--tx:#16161a;--tx2:#3d3d45;--mut:#6d6d78;--chip:#4a4a55;--off:#cfcfd6;--track:#e2e2e8;--segon:#ffffff;--nav:rgba(255,255,255,.96);--toast:#2c2c33;--ph:#ddd;color-scheme:light}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -40,52 +42,52 @@ h1{font-size:clamp(22px,7vw,28px);font-weight:800;letter-spacing:-.3px}
 .chips{display:flex;gap:8px;overflow-x:auto;margin:0 -16px 14px;padding:0 16px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex-shrink:0;font-size:13px;font-weight:600;padding:8px 13px;border-radius:20px;background:var(--card2);color:var(--chip);white-space:nowrap}
-.chip.on{background:var(--r);color:#fff}
+.chip.on{background:var(--acc);color:var(--on)}
 .chip small{opacity:.7;font-weight:500;margin-left:3px}
 .stats{display:flex;gap:10px;margin-bottom:14px}
-.stats div{flex:1;min-width:0;background:var(--card);border-radius:12px;padding:10px 12px}
+.stats div{flex:1;min-width:0;background:var(--card);border-radius:var(--rb);padding:10px 12px}
 .stats b{display:block;font-size:clamp(17px,5.2vw,21px)}.stats span{font-size:11px;color:var(--mut)}
 .tools{display:flex;gap:8px;margin-bottom:14px}
-.inp{width:100%;background:var(--card2);border:1.5px solid transparent;border-radius:12px;padding:11px 14px;outline:none}
-.inp:focus{border-color:var(--r)}
+.inp{width:100%;background:var(--card2);border:1.5px solid transparent;border-radius:var(--rb);padding:11px 14px;outline:none}
+.inp:focus{border-color:var(--acc)}
 select.inp{width:auto;max-width:100%;appearance:none;-webkit-appearance:none;padding-right:30px;background-image:linear-gradient(45deg,transparent 50%,var(--mut) 50%),linear-gradient(135deg,var(--mut) 50%,transparent 50%);background-position:calc(100% - 15px) 52%,calc(100% - 10px) 52%;background-size:5px 5px;background-repeat:no-repeat;font-size:14px}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px clamp(8px,3vw,12px)}
 @media (min-width:600px){body{max-width:860px}.grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}}
 .tile{text-align:left;min-width:0}
-.poster{position:relative;width:100%;aspect-ratio:2/3;border-radius:10px;overflow:hidden;background:var(--ph)}
+.poster{position:relative;width:100%;aspect-ratio:2/3;border-radius:var(--rp);overflow:hidden;background:var(--ph)}
 .poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .ph{position:absolute;inset:0}
 .ph:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.05) 0 2px,transparent 2px 9px)}
 .ph span{position:absolute;left:8px;right:8px;bottom:9px;font-weight:800;font-size:clamp(10px,3vw,12px);line-height:1.1;text-transform:uppercase;text-shadow:0 2px 6px rgba(0,0,0,.6);z-index:1;overflow-wrap:anywhere;color:#fff}
 .badge{position:absolute;top:6px;right:6px;font-size:10px;font-weight:700;background:rgba(0,0,0,.65);color:#fff;padding:3px 6px;border-radius:6px}
 .bar{height:3px;background:var(--track);border-radius:3px;margin-top:6px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--r)}
+.bar i{display:block;height:100%;background:var(--acc)}
 .tl{font-size:12px;font-weight:600;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ts{font-size:11px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .empty{text-align:center;color:var(--mut);padding:50px 20px;line-height:1.5}
 .empty b{display:block;color:var(--tx);font-size:18px;margin-bottom:6px}
-.btn{display:block;width:100%;background:var(--r);color:#fff;text-align:center;font-weight:700;padding:14px;border-radius:14px;font-size:15px}
+.btn{display:block;width:100%;background:var(--acc);color:var(--on);text-align:center;font-weight:700;padding:14px;border-radius:var(--rb);font-size:15px}
 .btn:disabled{opacity:.45}
-.btn2{display:block;width:100%;background:var(--card2);text-align:center;font-weight:600;padding:13px;border-radius:14px}
+.btn2{display:block;width:100%;background:var(--card2);text-align:center;font-weight:600;padding:13px;border-radius:var(--rb)}
 .btn.sm,.btn2.sm{display:inline-block;width:auto;padding:9px 14px;font-size:13px;border-radius:11px}
-.fab{position:fixed;right:max(calc(18px + var(--sr)),calc(50vw - 262px));bottom:calc(88px + var(--sb));width:58px;height:58px;border-radius:50%;background:var(--r);color:#fff;font-size:32px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(229,72,77,.45);z-index:20}
+.fab{position:fixed;right:max(calc(18px + var(--sr)),calc(50vw - 262px));bottom:calc(88px + var(--sb));width:58px;height:58px;border-radius:calc(var(--rb) + 6px);background:var(--acc);color:var(--on);font-size:32px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(0,0,0,.28);z-index:20}
 @media (min-width:600px){.fab{right:max(calc(18px + var(--sr)),calc(50vw - 412px))}}
 nav{position:fixed;bottom:0;left:0;right:0;max-width:inherit;margin:0 auto;background:var(--nav);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px var(--sr) calc(8px + var(--sb)) var(--sl);z-index:30}
 nav button{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;color:var(--mut);flex:1;max-width:90px}
-nav button.on{color:var(--r)}
+nav button.on{color:var(--acc)}
 nav svg{width:23px;height:23px}
-.banner{background:var(--card);border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:13px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.banner{background:var(--card);border-radius:var(--rc);padding:12px 14px;margin-bottom:14px;font-size:13px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 .banner>div{min-width:0}
 .banner>div:first-child{flex:1 1 170px}
 .hero .ph span{display:none}
 .banner .bar{flex:1;margin:6px 0 0;height:4px}
-.card{background:var(--card);border-radius:16px;padding:14px;margin-bottom:12px}
+.card{background:var(--card);border-radius:var(--rc);padding:14px;margin-bottom:12px}
 .lbl{font-size:11px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
 .res{display:flex;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);width:100%;text-align:left}
 .res .poster{width:46px;flex-shrink:0;border-radius:7px}
 .res .ph span{font-size:6px;left:4px;bottom:4px}
 .muted{color:var(--mut)}
-.seg{display:flex;background:var(--bg);border-radius:12px;padding:4px;gap:2px}
+.seg{display:flex;background:var(--bg);border-radius:var(--rb);padding:4px;gap:2px}
 .card .seg{background:var(--card2)}
 .seg button{flex:1;min-width:0;font-size:clamp(11px,3.3vw,13px);font-weight:600;padding:9px 2px;border-radius:9px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .seg button.on{background:var(--segon);color:var(--tx);box-shadow:0 1px 3px rgba(0,0,0,.12)}
@@ -103,36 +105,62 @@ nav svg{width:23px;height:23px}
 .stars button{font-size:28px;color:var(--off);line-height:1;padding:2px}
 .stars button.on{color:#f5c518}
 textarea.inp{min-height:80px;resize:vertical;line-height:1.45}
-.pill{display:inline-block;font-size:11px;font-weight:700;padding:4px 9px;border-radius:20px;background:rgba(229,72,77,.15);color:var(--r)}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:4px 9px;border-radius:20px;background:var(--card2);color:var(--acc)}
 .step{display:flex;gap:12px;margin-bottom:11px;font-size:14px;line-height:1.45;color:var(--tx2)}
-.step b{width:24px;height:24px;flex-shrink:0;border-radius:50%;background:var(--r);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center}
+.step b{width:24px;height:24px;flex-shrink:0;border-radius:50%;background:var(--acc);color:var(--on);font-size:12px;display:flex;align-items:center;justify-content:center}
 .step div b{background:none;color:var(--tx);width:auto;height:auto;display:inline;font-size:inherit}
 .drop{display:block;border:2px dashed var(--off);border-radius:16px;padding:22px 14px;text-align:center;margin:8px 0 14px;font-size:14px;cursor:pointer}
-.drop b{color:var(--r)}
+.drop b{color:var(--acc)}
 .it{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer}
 .ck{width:22px;height:22px;border-radius:6px;border:2px solid var(--off);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent}
-.it.on .ck{background:var(--r);border-color:var(--r);color:#fff}
+.it.on .ck{background:var(--acc);border-color:var(--acc);color:var(--on)}
 .it .t{font-size:14px;font-weight:600}.it .m{font-size:12px;color:var(--mut)}
 .sticky{position:sticky;bottom:calc(76px + var(--sb));padding:12px 0 4px;background:linear-gradient(transparent,var(--bg) 30%)}
 details summary{list-style:none;cursor:pointer;padding:12px 0;font-weight:600;display:flex;justify-content:space-between}
 details summary::-webkit-details-marker{display:none}
 .row{display:flex;justify-content:space-between;align-items:center;gap:10px}
-a{color:var(--r)}
+a{color:var(--acc)}
 .sw{width:46px;height:28px;border-radius:20px;background:var(--off);position:relative;flex-shrink:0;transition:background .2s}
 .sw:after{content:"";position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
-.sw.on{background:var(--r)}.sw.on:after{left:21px}
+.sw.on{background:var(--acc)}.sw.on:after{left:21px}
 .setrow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line);width:100%;text-align:left}
 .setrow:first-of-type{border-top:0}
 .setrow small{display:block;color:var(--mut);font-size:12px;margin-top:2px;font-weight:400}
 #modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:60;display:none;align-items:flex-end;justify-content:center}
 #modal.on{display:flex}
-#modal .box{background:var(--card);width:100%;max-width:560px;border-radius:22px 22px 0 0;padding:22px calc(18px + var(--sr)) calc(18px + var(--sb)) calc(18px + var(--sl));max-height:92vh;overflow-y:auto}
+#modal .box{background:var(--card);width:100%;max-width:560px;border-radius:calc(var(--rc) + 6px) calc(var(--rc) + 6px) 0 0;padding:22px calc(18px + var(--sr)) calc(18px + var(--sb)) calc(18px + var(--sl));max-height:92vh;overflow-y:auto}
 #modal h3{font-size:19px;margin-bottom:8px}
 #modal p{color:var(--tx2);line-height:1.5;margin-bottom:18px;font-size:14px}
 #toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(96px + var(--sb));background:var(--toast);color:#fff;padding:11px 16px;border-radius:12px;font-size:13px;z-index:120;opacity:0;transition:opacity .25s;pointer-events:none;max-width:90%;text-align:center}
 #toast.on{opacity:1}
-.spin{width:18px;height:18px;border:2.5px solid var(--off);border-top-color:var(--r);border-radius:50%;animation:sp .8s linear infinite;flex-shrink:0}
+.spin{width:18px;height:18px;border:2.5px solid var(--off);border-top-color:var(--acc);border-radius:50%;animation:sp .8s linear infinite;flex-shrink:0}
 @keyframes sp{to{transform:rotate(360deg)}}
+/* plataformas */
+.pb{position:absolute;top:6px;left:6px;z-index:2;color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:5px;letter-spacing:.2px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.pgrid button{border:1.5px solid var(--line);border-radius:var(--rb);padding:10px 4px;font-size:12px;font-weight:700;position:relative;color:var(--tx2)}
+.pgrid button.on{border-color:var(--acc);background:var(--card2);color:var(--tx)}
+.sugt{position:absolute;top:-8px;right:-4px;background:var(--ok);color:#0b0b0d;font-size:8.5px;padding:1px 5px;border-radius:6px;font-weight:800}
+.src{display:flex;gap:12px;align-items:center;background:var(--card);border-radius:var(--rc);padding:12px;margin-bottom:9px;width:100%;text-align:left}
+.logo{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#fff;flex-shrink:0}
+.tagp{font-size:9.5px;font-weight:800;padding:3px 7px;border-radius:6px;margin-left:6px;vertical-align:middle;color:#0b0b0d}
+.addb{width:34px;height:34px;border-radius:50%;border:2px solid var(--off);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.addb.ok{background:var(--acc);border-color:var(--acc);color:var(--on)}
+.hb{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-size:13px}
+.hb span{width:86px;flex-shrink:0}.hb .b{flex:1;height:10px;background:var(--card2);border-radius:6px;overflow:hidden}.hb .b i{display:block;height:100%;border-radius:6px}
+/* temas */
+.swg{display:grid;grid-template-columns:repeat(4,1fr);row-gap:14px}
+.swb{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--mut)}
+.swb i{width:46px;height:46px;border-radius:50%;display:block;border:1px solid rgba(128,128,128,.25)}
+.swb.on{color:var(--tx)}.swb.on i{box-shadow:0 0 0 3px var(--card),0 0 0 5px var(--acc)}
+/* deslizar para actualizar */
+#ptr{position:fixed;left:50%;top:calc(6px + var(--st));transform:translate(-50%,-70px);width:40px;height:40px;border-radius:50%;background:var(--card);box-shadow:0 4px 14px rgba(0,0,0,.25);z-index:35;display:flex;align-items:center;justify-content:center;transition:transform .2s;pointer-events:none}
+#ptr svg{width:20px;height:20px;color:var(--acc);transition:transform .1s}
+#ptr.go svg{animation:sp .8s linear infinite}
+#upd{position:fixed;left:12px;right:12px;bottom:calc(84px + var(--sb));max-width:536px;margin:0 auto;background:var(--acc);color:var(--on);border-radius:var(--rc);padding:12px 14px;display:none;align-items:center;gap:10px;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.3);font-size:14px;font-weight:600}
+#upd.on{display:flex}
+#upd button{background:rgba(255,255,255,.25);color:inherit;font-weight:700;padding:8px 12px;border-radius:10px;font-size:13px}
 /* bloqueo */
 #lock{position:fixed;inset:0;z-index:100;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;padding:calc(20px + var(--st)) 24px calc(20px + var(--sb))}
 #lock.on{display:flex}
@@ -157,6 +185,7 @@ html.locked body>*:not(#lock):not(#toast):not(#modal){visibility:hidden}
   <div class="h"><h1>Mis series</h1><button class="iconbtn" id="btnFind" aria-label="Buscar en mi lista"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button></div>
   <div id="findWrap" style="display:none;margin-bottom:12px"><input class="inp" id="find" placeholder="Buscar en mi lista…" autocomplete="off"></div>
   <div class="chips" id="chips"></div>
+  <div class="chips" id="pchips"></div>
   <div class="stats" id="stats"></div>
   <div id="enrichBanner"></div>
   <div class="tools"><select class="inp" id="sort">
@@ -170,7 +199,8 @@ html.locked body>*:not(#lock):not(#toast):not(#modal){visibility:hidden}
 <!-- AGREGAR -->
 <section class="view" id="v-buscar">
   <div class="h"><h1 id="addTitle">Agregar serie</h1></div>
-  <input class="inp" id="q" placeholder="Escribe el nombre de la serie…" autocomplete="off" style="margin-bottom:14px">
+  <input class="inp" id="q" placeholder="Escribe el nombre de la serie…" autocomplete="off" style="margin-bottom:10px">
+  <button class="btn2" id="goVarias" style="margin-bottom:14px">⚡ Agregar varias a la vez</button>
   <div id="results"></div>
 </section>
 
@@ -183,7 +213,24 @@ html.locked body>*:not(#lock):not(#toast):not(#modal){visibility:hidden}
     <div class="step"><b>3</b><div>Sube aquí el archivo <b>NetflixViewingHistory.csv</b>.</div></div>
     <label class="drop"><input type="file" id="csv" accept=".csv,text/csv" hidden>📄 <b>Elegir archivo CSV</b><br><span class="muted" style="font-size:12px">Si ya importaste antes, se actualiza sin perder tus notas ni calificaciones</span></label>
   </div>
+  <div id="impOther">
+    <div class="lbl" style="margin-top:18px">Otras plataformas</div>
+    <button class="src" data-g="prime"><div class="logo" style="background:#00a8e1">PV</div><div style="flex:1"><b>Prime Video</b><span class="tagp" style="background:var(--warn)">SOLICITUD</span><div class="muted" style="font-size:12px;margin-top:2px">Pide tus datos a Amazon o agrégalas rápido.</div></div></button>
+    <button class="src" data-g="disney"><div class="logo" style="background:#1f4fd8">D+</div><div style="flex:1"><b>Disney+</b><span class="tagp" style="background:var(--warn)">SOLICITUD</span><div class="muted" style="font-size:12px;margin-top:2px">No tiene botón de descarga. Agrégalas rápido.</div></div></button>
+    <button class="src" data-g="max"><div class="logo" style="background:#6a2bd9">MAX</div><div style="flex:1"><b>Max</b><span class="tagp" style="background:var(--warn)">SOLICITUD</span><div class="muted" style="font-size:12px;margin-top:2px">Formulario de acceso a tus datos.</div></div></button>
+    <button class="src" data-g="varias" style="border:1.5px dashed var(--off);background:none"><div class="logo" style="background:var(--card2);color:var(--tx)">⚡</div><div style="flex:1"><b>Agregar varias rápido</b><div class="muted" style="font-size:12px;margin-top:2px">Elige la app, busca y marca las que ya viste.</div></div></button>
+  </div>
   <div id="impReview"></div>
+</section>
+
+<!-- AGREGAR VARIAS -->
+<section class="view" id="v-varias">
+  <div class="h"><h1>Agregar varias</h1><button class="btn sm" id="vDone">Listo</button></div>
+  <div class="card"><div class="lbl">Plataforma para todas</div><div class="chips" id="vPlat" style="margin:0 -14px 12px;padding:0 14px"></div>
+    <div class="lbl">Marcarlas como</div><div class="seg" id="vSt"></div></div>
+  <input class="inp" id="vq" placeholder="Busca una serie…" autocomplete="off" style="margin-bottom:12px">
+  <div class="lbl" id="vLbl"></div>
+  <div id="vRes"></div>
 </section>
 
 <!-- PERFIL -->
@@ -204,18 +251,22 @@ html.locked body>*:not(#lock):not(#toast):not(#modal){visibility:hidden}
 <div id="modal"><div class="box" id="mbox"></div></div>
 <div id="toast"></div>
 <div id="lock"></div>
+<div id="ptr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v5h-5"/></svg></div>
+<div id="upd"><span style="flex:1">✨ Hay una versión nueva de la app</span><button id="updBtn">Actualizar</button></div>
 
 <script>
 "use strict";
 /* ================= Datos ================= */
 const KEY = "misseries.v1";
-const ST = { items: [], settings: { tmdb: "", theme: "sistema", lastBackup: "", backupSnooze: "", lock: {} } };
+const ST = { items: [], settings: { tmdb: "", theme: "sistema", palette: "menta", custom: "#7c9cd6", shape: "redonda", lastBackup: "", backupSnooze: "", seenVersion: "", lock: {} } };
+const APP_VERSION = "1.2";
 const STATUS = { viendo: "Viendo", terminada: "Terminada", pausa: "En pausa", pendiente: "Pendiente" };
-let filter = "todas", sortBy = "reciente", findQ = "";
+let filter = "todas", platFilter = "todas", sortBy = "reciente", findQ = "";
 
 function load() {
   try { const d = JSON.parse(localStorage.getItem(KEY) || "null"); if (d) { ST.items = d.items || []; Object.assign(ST.settings, d.settings || {}); } } catch (e) { console.warn(e); }
   ST.settings.lock = Object.assign({ on: false, pin: "", salt: "", bio: false, cred: "", after: 1 }, ST.settings.lock || {});
+  ST.items.forEach(it => { if (it.platform === undefined) it.platform = it.source === "netflix" ? "netflix" : ""; });
 }
 let saveT;
 function save(now) {
@@ -414,12 +465,40 @@ async function exportBackup() {
   } catch (e) { if (e.name !== "AbortError") toast("No se pudo crear el respaldo"); }
 }
 
+/* ================= Plataformas ================= */
+const PLAT = {
+  netflix: { n: "Netflix", s: "N", c: "#e50914", tm: 8 }, disney: { n: "Disney+", s: "D+", c: "#1f4fd8", tm: 337 },
+  prime: { n: "Prime Video", s: "PV", c: "#00a8e1", tm: 119 }, max: { n: "Max", s: "MAX", c: "#6a2bd9", tm: 1899 },
+  apple: { n: "Apple TV+", s: "TV+", c: "#555555", tm: 350 }, paramount: { n: "Paramount+", s: "P+", c: "#0064ff", tm: 531 },
+  otra: { n: "Otra", s: "•", c: "#8a8a94" }
+};
+const platBadge = k => PLAT[k] ? `<span class="pb" style="background:${PLAT[k].c}">${PLAT[k].s}</span>` : "";
+function provToPlat(name) {
+  const n = String(name || "").toLowerCase();
+  if (n.includes("netflix")) return "netflix"; if (n.includes("disney")) return "disney";
+  if (n.includes("amazon") || n.includes("prime video")) return "prime"; if (n === "max" || n.includes("hbo") || n.startsWith("max ")) return "max";
+  if (n.includes("apple tv")) return "apple"; if (n.includes("paramount")) return "paramount"; return "";
+}
+/* ¿En qué app está disponible en Costa Rica? (datos de TMDB / JustWatch) */
+async function suggestPlat(a) {
+  if (!hasTmdb() || a.src !== "tmdb") return "";
+  try {
+    const d = await tmdb(`/${a.kind === "pelicula" ? "movie" : "tv"}/${a.id}/watch/providers`);
+    const r = (d.results || {}).CR || (d.results || {}).US; if (!r) return "";
+    for (const p of [...(r.flatrate || []), ...(r.ads || []), ...(r.free || [])]) { const k = provToPlat(p.provider_name); if (k) return k; }
+  } catch (e) {}
+  return "";
+}
+function platPicker(sel, sug) {
+  return `<div class="pgrid">${Object.entries(PLAT).map(([k, p]) => `<button data-p="${k}" class="${sel === k ? "on" : ""}">${p.n}${sug === k ? `<span class="sugt">SUGERIDA</span>` : ""}</button>`).join("")}</div>`;
+}
+
 /* ================= Navegación ================= */
 let cur = "lista";
 function go(v, push = true) {
   cur = v;
   document.querySelectorAll(".view").forEach(s => s.classList.toggle("on", s.id === "v-" + v));
-  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.go === v));
+  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.go === (v === "varias" ? "buscar" : v)));
   $("#fab").style.display = v === "lista" ? "flex" : "none";
   if (v === "lista") renderList();
   if (v === "perfil") renderPerfil();
@@ -431,7 +510,7 @@ document.querySelectorAll("nav button").forEach(b => b.onclick = () => { reassig
 $("#fab").onclick = () => { reassign = null; $("#q").value = ""; $("#results").innerHTML = ""; go("buscar"); };
 /* Botón «atrás» del teléfono: cierra ventanas, luego la serie, luego vuelve a Mi lista.
    En Mi lista pide tocar atrás dos veces para salir. */
-const VIEWS = ["lista", "buscar", "importar", "perfil"];
+const VIEWS = ["lista", "buscar", "importar", "perfil", "varias"];
 window.addEventListener("popstate", () => {
   if (modalClose) closeModal();
   const h = location.hash.slice(1);
@@ -467,6 +546,13 @@ function renderList() {
   if (c.revisar) chips.push(["revisar", "⚠ Por revisar"]);
   $("#chips").innerHTML = chips.map(([k, l]) => `<button class="chip ${filter === k ? "on" : ""}" data-f="${k}">${l}<small>${c[k] || 0}</small></button>`).join("");
   document.querySelectorAll("#chips .chip").forEach(b => b.onclick = () => { filter = b.dataset.f; renderList(); });
+  const pc = {}; ST.items.forEach(x => { if (x.platform) pc[x.platform] = (pc[x.platform] || 0) + 1; });
+  const pk = Object.keys(PLAT).filter(k => pc[k]);
+  if (platFilter !== "todas" && !pc[platFilter]) platFilter = "todas";
+  $("#pchips").style.display = pk.length >= 2 ? "" : "none";
+  $("#pchips").innerHTML = `<button class="chip ${platFilter === "todas" ? "on" : ""}" data-p="todas">Todas las apps</button>` +
+    pk.map(k => `<button class="chip ${platFilter === k ? "on" : ""}" data-p="${k}"><i class="dot" style="background:${PLAT[k].c}"></i>${PLAT[k].n}<small>${pc[k]}</small></button>`).join("");
+  document.querySelectorAll("#pchips .chip").forEach(b => b.onclick = () => { platFilter = b.dataset.p; renderList(); });
   const series = ST.items.filter(x => x.kind !== "pelicula");
   const eps = series.reduce((s, x) => s + (x.epSeen || 0), 0);
   $("#stats").innerHTML = `<div><b>${c.todas}</b><span>series</span></div><div><b>${eps.toLocaleString("es")}</b><span>episodios</span></div><div><b>${c.terminada || 0}</b><span>terminadas</span></div>`;
@@ -480,6 +566,7 @@ function visibleItems() {
     if (filter === "revisar") return it.match === "review" || it.match === "none";
     return it.status === filter;
   });
+  if (platFilter !== "todas") l = l.filter(it => it.platform === platFilter);
   if (findQ) { const q = norm(findQ); l = ST.items.filter(it => norm(it.name).includes(q) || norm(dispName(it)).includes(q)); }
   const s = {
     reciente: (a, b) => (b.lastSeen || b.added || "").localeCompare(a.lastSeen || a.added || ""),
@@ -496,7 +583,7 @@ function renderGrid() {
     const tot = it.api && it.api.totalEp; const p = it.kind === "pelicula" ? 100 : tot ? Math.min(100, Math.round(it.epSeen / tot * 100)) : (it.status === "terminada" ? 100 : 0);
     const sub = it.kind === "pelicula" ? "Película" : STATUS[it.status] + (it.epSeen ? ` · ${it.epSeen} ep` : "");
     const flag = (it.match === "review" || it.match === "none") ? `<span class="badge" style="color:var(--warn)">⚠</span>` : it.rating ? `<span class="badge">★ ${it.rating}</span>` : "";
-    return `<button class="tile" data-id="${it.id}"><div class="poster">${posterHTML(it)}${flag}</div><div class="bar"><i style="width:${p}%"></i></div><div class="tl">${esc(dispName(it))}</div><div class="ts">${sub}</div></button>`;
+    return `<button class="tile" data-id="${it.id}"><div class="poster">${platBadge(it.platform)}${posterHTML(it)}${flag}</div><div class="bar"><i style="width:${p}%"></i></div><div class="tl">${esc(dispName(it))}</div><div class="ts">${sub}</div></button>`;
   }).join("");
   document.querySelectorAll("#grid .tile").forEach(b => b.onclick = () => openDetail(b.dataset.id));
   $("#listEmpty").innerHTML = l.length ? "" : ST.items.length
@@ -528,7 +615,7 @@ function openDetail(id, push = true) {
       <div class="meta">${esc(meta) || "&nbsp;"}</div>
       ${warn}
       <div class="row" style="margin-bottom:14px"><div class="stars" id="dStars">${[1, 2, 3, 4, 5].map(n => `<button data-n="${n}" class="${(it.rating || 0) >= n ? "on" : ""}">★</button>`).join("")}</div>
-      ${it.source === "netflix" ? `<span class="pill">Netflix</span>` : ""}</div>
+      <button class="pill" id="dPlat" style="${PLAT[it.platform] ? `background:${PLAT[it.platform].c};color:#fff` : ""}">${PLAT[it.platform] ? PLAT[it.platform].n : "¿Dónde la viste?"} ▾</button></div>
       ${it.kind === "pelicula" ? "" : `<div class="seg" id="dSeg" style="margin-bottom:14px">${Object.entries(STATUS).map(([k, l]) => `<button data-s="${k}" class="${it.status === k ? "on" : ""}">${l}</button>`).join("")}</div>`}
       <p class="syn" style="margin-bottom:14px">${a.overview ? esc(a.overview) : `<span class="muted">Todavía no hay sinopsis.</span>`}</p>
       ${prog}
@@ -538,7 +625,7 @@ function openDetail(id, push = true) {
         ${it.source === "netflix" ? `En Netflix aparece como «${esc(it.name)}»` : `Agregada el ${fdate((it.added || "").slice(0, 10))}`}
       </div>
       <button class="btn2" id="dRe">Cambiar foto / sinopsis (otra coincidencia)</button>
-      <button class="btn2" id="dDel" style="margin-top:8px;color:var(--r)">Eliminar de mi lista</button>
+      <button class="btn2" id="dDel" style="margin-top:8px;color:var(--danger)">Eliminar de mi lista</button>
     </div>`;
   $("#detail").classList.add("on"); $("#detail").scrollTop = 0; document.body.style.overflow = "hidden";
   if (push) history.pushState(null, "", "#serie-" + id);
@@ -546,6 +633,13 @@ function openDetail(id, push = true) {
   $("#dStars").onclick = e => { const n = +e.target.dataset.n; if (!n) return; it.rating = it.rating === n ? 0 : n; save(); openDetail(id, false); };
   const seg = $("#dSeg"); if (seg) seg.onclick = e => { const s = e.target.dataset.s; if (!s) return; it.status = s; it.statusAuto = false; save(); openDetail(id, false); };
   $("#dNotes").oninput = e => { it.notes = e.target.value; save(); };
+  $("#dPlat").onclick = async () => {
+    let sel = it.platform; const sug = await suggestPlat(it.api || {});
+    $("#mbox").innerHTML = `<h3>¿Dónde la viste?</h3><p style="margin-bottom:12px">${sug ? `Según TMDB está disponible en <b>${PLAT[sug].n}</b>.` : "Elige la app donde la viste."}</p><div id="mPl">${platPicker(sel, sug)}</div><button class="btn" id="mok" style="margin-top:16px">Guardar</button><button class="btn2" id="mno" style="margin-top:8px">Cancelar</button>`;
+    $("#modal").classList.add("on"); modalClose = () => { $("#modal").classList.remove("on"); modalClose = null; };
+    $("#mPl").onclick = e => { const b = e.target.closest("[data-p]"); if (!b) return; sel = b.dataset.p; $("#mPl").querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.p === sel)); };
+    $("#mno").onclick = () => modalClose(); $("#mok").onclick = () => { it.platform = sel; save(true); modalClose(); openDetail(id, false); };
+  };
   document.querySelectorAll("[data-ep]").forEach(b => b.onclick = () => { it.epSeen = Math.max(0, (it.epSeen || 0) + +b.dataset.ep); save(); openDetail(id, false); });
   const re = () => { reassign = id; $("#addTitle").textContent = "Elegir coincidencia"; $("#q").value = it.name; closeDetail(false); go("buscar"); doSearch(); };
   $("#dRe").onclick = re; if ($("#dRe2")) $("#dRe2").onclick = re;
@@ -590,7 +684,7 @@ async function pick(c) {
     toast("Actualizada"); go("lista"); openDetail(id); return;
   }
   const exist = ST.items.find(x => x.api && x.api.src === a.src && x.api.id === a.id);
-  let st = "viendo";
+  let st = "viendo", plat = "", touched = false;
   box.innerHTML = `<div class="card" style="padding:0;overflow:hidden">
       <div class="hero" style="height:170px">${a.backdrop ? `<img src="${esc(a.backdrop)}" alt="">` : ph(a.title)}</div>
       <div style="padding:4px 16px 16px;margin-top:-30px;position:relative">
@@ -598,16 +692,22 @@ async function pick(c) {
         <div class="meta">${esc([a.year, (a.genres || []).slice(0, 2).join(" · "), a.seasons ? a.seasons + " temporadas" : ""].filter(Boolean).join(" · "))}</div>
         <p class="syn">${a.overview ? esc(a.overview) : `<span class="muted">Sin sinopsis.</span>`}</p>
         ${exist ? `<button class="btn" id="open" style="margin-top:14px">Ya está en tu lista · Abrir</button>` : `
-        <div class="seg" id="pSeg" style="margin:14px 0">${["viendo", "terminada", "pendiente"].map(k => `<button data-s="${k}" class="${k === st ? "on" : ""}">${STATUS[k]}</button>`).join("")}</div>
+        <div class="lbl" style="margin-top:16px">¿Dónde la viste?</div><div id="pPl">${platPicker(plat, "")}</div>
+        <div class="muted" id="pSug" style="font-size:11.5px;margin-top:6px"></div>
+        <div class="lbl" style="margin-top:14px">¿Cómo vas?</div>
+        <div class="seg" id="pSeg" style="margin-bottom:14px">${["viendo", "terminada", "pendiente"].map(k => `<button data-s="${k}" class="${k === st ? "on" : ""}">${STATUS[k]}</button>`).join("")}</div>
         <button class="btn" id="add">Guardar en mi lista</button>`}
       </div></div><button class="btn2" id="backRes">← Ver otros resultados</button>`;
   $("#backRes").onclick = doSearch;
   if (exist) { $("#open").onclick = () => openDetail(exist.id); return; }
   $("#pSeg").onclick = e => { if (!e.target.dataset.s) return; st = e.target.dataset.s; $("#pSeg").querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.s === st)); };
-  $("#add").onclick = () => saveNew(a, st);
+  const setP = k => { plat = k; $("#pPl").querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.p === k)); };
+  $("#pPl").onclick = e => { const b = e.target.closest("[data-p]"); if (!b) return; touched = true; setP(b.dataset.p); };
+  suggestPlat(a).then(k => { if (!k || !$("#pPl")) return; $("#pPl").innerHTML = platPicker(plat || k, k); if (!touched) plat = k; $("#pSug").textContent = `Sugerida porque está disponible en ${PLAT[k].n} en Costa Rica`; });
+  $("#add").onclick = () => saveNew(a, st, false, plat);
 }
-function saveNew(a, st, manual) {
-  const it = { id: uid(), name: a.title, kind: a.kind || "serie", status: st, statusAuto: false, rating: 0, notes: "", epSeen: 0, seasonsSeen: [], source: "manual", added: new Date().toISOString(), match: manual ? "none" : "ok" };
+function saveNew(a, st, manual, plat) {
+  const it = { id: uid(), name: a.title, kind: a.kind || "serie", status: st, statusAuto: false, rating: 0, notes: "", epSeen: 0, seasonsSeen: [], source: "manual", platform: plat || "", added: new Date().toISOString(), match: manual ? "none" : "ok" };
   if (!manual) applyApi(it, a, "ok"); else it.match = "none";
   ST.items.push(it); save(true); toast("Guardada en tu lista");
   $("#q").value = ""; $("#results").innerHTML = ""; go("lista"); openDetail(it.id);
@@ -671,7 +771,7 @@ function renderReview() {
       <div style="flex:1;min-width:0"><div class="t">${esc(o.name)}${known.has(norm(o.name)) ? ` <span class="pill" style="font-size:10px">ya en tu lista</span>` : ""}</div>
       <div class="m">${k === "s:" ? `${o.eps} episodio${o.eps > 1 ? "s" : ""} · ` : ""}último ${fdate(o.last)}</div></div></div>`;
   const n = IMP.sel.size;
-  $("#impIntro").style.display = "none";
+  $("#impIntro").style.display = "none"; $("#impOther").style.display = "none";
   $("#impReview").innerHTML = `
     <div class="card" style="font-size:14px;line-height:1.55">✅ Archivo leído: <b>${IMP.total.toLocaleString("es")}</b> registros.<br>
       Encontramos <b>${IMP.series.length}</b> series y <b>${IMP.movies.length}</b> películas u otros títulos.
@@ -694,7 +794,7 @@ function renderReview() {
   $("#cancelImp").onclick = resetImport;
   $("#doImp").onclick = doImport;
 }
-function resetImport() { IMP = null; $("#impReview").innerHTML = ""; $("#impIntro").style.display = ""; }
+function resetImport() { IMP = null; $("#impReview").innerHTML = ""; $("#impIntro").style.display = ""; $("#impOther").style.display = ""; }
 function doImport() {
   let added = 0, updated = 0;
   const idx = new Map(ST.items.map(x => [norm(x.name), x]));
@@ -705,9 +805,9 @@ function doImport() {
       ex.firstSeen = !ex.firstSeen || o.first < ex.firstSeen ? o.first : ex.firstSeen;
       if (!ex.lastSeen || o.last >= ex.lastSeen) { ex.lastSeen = o.last; ex.lastEp = o.lastEp; }
       ex.seasonsSeen = [...new Set([...(ex.seasonsSeen || []), ...o.seasons])];
-      ex.source = "netflix"; autoStatus(ex); updated++;
+      ex.source = "netflix"; if (!ex.platform) ex.platform = "netflix"; autoStatus(ex); updated++;
     } else {
-      const it = { id: uid(), name: o.name, kind, status: "pendiente", statusAuto: true, rating: 0, notes: "", epSeen: kind === "serie" ? o.eps : 0,
+      const it = { id: uid(), name: o.name, kind, platform: "netflix", status: "pendiente", statusAuto: true, rating: 0, notes: "", epSeen: kind === "serie" ? o.eps : 0,
         seasonsSeen: o.seasons, firstSeen: o.first, lastSeen: o.last, lastEp: o.lastEp, source: "netflix", added: new Date().toISOString(), match: "pending" };
       autoStatus(it); ST.items.push(it); idx.set(norm(o.name), it); added++;
     }
@@ -719,15 +819,91 @@ function doImport() {
   go("lista"); enrichAll();
 }
 
+/* ================= Agregar varias ================= */
+const VV = { plat: "disney", st: "terminada", added: new Map(), t: null };
+function openVarias(plat) {
+  if (plat) VV.plat = plat; VV.added = new Map(); $("#vq").value = "";
+  go("varias"); renderVarias(); loadVarias();
+}
+function renderVarias() {
+  $("#vPlat").innerHTML = Object.entries(PLAT).filter(([k]) => k !== "otra").map(([k, p]) => `<button class="chip ${VV.plat === k ? "on" : ""}" data-p="${k}"><i class="dot" style="background:${p.c}"></i>${p.n}</button>`).join("");
+  $("#vSt").innerHTML = ["terminada", "viendo", "pendiente"].map(k => `<button data-s="${k}" class="${VV.st === k ? "on" : ""}">${STATUS[k]}</button>`).join("");
+  $("#vDone").textContent = VV.added.size ? `Listo (${VV.added.size})` : "Listo";
+}
+$("#vPlat").onclick = e => { const b = e.target.closest("[data-p]"); if (!b) return; VV.plat = b.dataset.p; renderVarias(); if (!$("#vq").value.trim()) loadVarias(); };
+$("#vSt").onclick = e => { const s = e.target.dataset.s; if (!s) return; VV.st = s; renderVarias(); };
+$("#vq").oninput = () => { clearTimeout(VV.t); VV.t = setTimeout(loadVarias, 450); };
+$("#vDone").onclick = () => { const n = VV.added.size; go("lista"); if (n) toast(`${n} series agregadas`); };
+$("#goVarias").onclick = () => openVarias();
+let vRes = [];
+async function loadVarias() {
+  const q = $("#vq").value.trim(), box = $("#vRes");
+  box.innerHTML = `<div class="row" style="justify-content:flex-start;gap:10px"><div class="spin"></div><span class="muted">Buscando…</span></div>`;
+  try {
+    if (q.length >= 2) { $("#vLbl").textContent = "Resultados"; vRes = await searchShows(q, "serie"); }
+    else if (hasTmdb() && PLAT[VV.plat].tm) {
+      $("#vLbl").textContent = `Populares en ${PLAT[VV.plat].n}`;
+      const d = await tmdb("/discover/tv", { with_watch_providers: PLAT[VV.plat].tm, watch_region: "CR", sort_by: "popularity.desc", language: "es-MX" });
+      vRes = (d.results || []).slice(0, 20).map(r => ({ src: "tmdb", id: r.id, kind: "serie", title: r.name, orig: r.original_name, year: (r.first_air_date || "").slice(0, 4), overview: r.overview,
+        poster: r.poster_path ? TMDB_IMG + "w342" + r.poster_path : "", backdrop: r.backdrop_path ? TMDB_IMG + "w780" + r.backdrop_path : "" }));
+    } else { $("#vLbl").textContent = ""; box.innerHTML = `<div class="empty" style="padding:24px">Escribe el nombre de cada serie que viste y toca <b>+</b>.</div>`; return; }
+    drawVarias();
+  } catch (e) { box.innerHTML = `<div class="empty" style="padding:24px"><b>No se pudo buscar</b>Revisa tu conexión.</div>`; }
+}
+function drawVarias() {
+  const box = $("#vRes");
+  if (!vRes.length) { box.innerHTML = `<div class="empty" style="padding:24px">No encontramos resultados.</div>`; return; }
+  box.innerHTML = vRes.map((c, i) => {
+    const key = c.src + ":" + c.id; const mine = VV.added.has(key); const had = !mine && ST.items.some(x => x.api && x.api.src === c.src && x.api.id === c.id);
+    return `<div class="res"><div class="poster">${c.poster ? `<img src="${esc(c.poster)}" alt="">` : ph(c.title)}</div>
+      <div style="flex:1;min-width:0"><div style="font-weight:700">${esc(c.title)}</div><div class="muted" style="font-size:12px">${esc(c.year || "")}${had ? " · ya está en tu lista" : ""}</div></div>
+      <button class="addb ${mine || had ? "ok" : ""}" data-i="${i}" ${had ? "disabled" : ""}>${mine || had ? "✓" : "+"}</button></div>`;
+  }).join("");
+  box.querySelectorAll(".addb").forEach(b => b.onclick = () => toggleVarias(vRes[+b.dataset.i]));
+}
+function toggleVarias(c) {
+  const key = c.src + ":" + c.id;
+  if (VV.added.has(key)) { const id = VV.added.get(key); ST.items = ST.items.filter(x => x.id !== id); VV.added.delete(key); }
+  else {
+    const it = { id: uid(), name: c.title, kind: "serie", status: VV.st, statusAuto: false, rating: 0, notes: "", epSeen: 0, seasonsSeen: [], source: "manual", platform: VV.plat, added: new Date().toISOString(), match: "ok" };
+    applyApi(it, c, "ok"); ST.items.push(it); VV.added.set(key, it.id);
+    details(c).then(a => { const x = byId(it.id); if (x) { applyApi(x, a, "ok"); x.status = VV.st; save(); } }).catch(() => {});
+  }
+  save(); renderVarias(); drawVarias();
+}
+/* guías para otras plataformas */
+const GUIDE = {
+  prime: ["Prime Video", "Prime Video no tiene un botón para descargar el historial. Puedes verlo en el navegador en <b>primevideo.com/settings/watch-history</b>, o pedir una copia de tus datos a Amazon desde tu cuenta (Privacidad → Solicitar tus datos); Amazon te manda un enlace por correo cuando está listo.<br><br>Lo más rápido es <b>Agregar varias</b> con Prime Video."],
+  disney: ["Disney+", "Disney+ no permite descargar el historial. Se puede pedir una copia de tus datos en el Centro de Privacidad de Disney (busca «Disney Privacy Rights Center»), pero tarda y no siempre trae el historial completo.<br><br>Lo más rápido es <b>Agregar varias</b> con Disney+."],
+  max: ["Max", "Max permite pedir tus datos con el formulario de «Solicitud de derechos individuales» que está en la sección de Privacidad de su página de ayuda. Tarda unos días.<br><br>Lo más rápido es <b>Agregar varias</b> con Max."]
+};
+document.querySelectorAll("#impOther .src").forEach(b => b.onclick = async () => {
+  const g = b.dataset.g;
+  if (g === "varias") { openVarias(); return; }
+  if (await dialog(GUIDE[g][0], GUIDE[g][1], `Agregar varias con ${GUIDE[g][0]}`)) openVarias(g);
+});
+
 /* ================= Perfil ================= */
+function platStatsHTML() {
+  const pc = {}; ST.items.forEach(x => { const k = x.platform || "otra"; pc[k] = (pc[k] || 0) + 1; });
+  const ks = Object.keys(PLAT).filter(k => pc[k]); if (!ks.length) return "";
+  const mx = Math.max(...ks.map(k => pc[k]));
+  return `<div class="card"><div class="lbl">Por plataforma</div>${ks.map(k => `<div class="hb"><span>${PLAT[k].n}</span><div class="b"><i style="width:${Math.max(3, pc[k] / mx * 100)}%;background:${PLAT[k].c}"></i></div><b>${pc[k]}</b></div>`).join("")}</div>`;
+}
 function renderPerfil() {
   const c = counts(); const pend = pendingItems().length;
   const rated = ST.items.filter(x => x.rating).length;
   $("#perfil").innerHTML = `
     <div class="stats"><div><b>${c.todas}</b><span>series</span></div><div><b>${c.terminada || 0}</b><span>terminadas</span></div><div><b>${rated}</b><span>calificadas</span></div></div>
-    <div class="card"><div class="lbl">Apariencia</div>
+    <div class="card"><div class="lbl">Color del tema</div>
+      <div class="swg" id="palG">${Object.entries(PAL).map(([k, p]) => `<button class="swb ${ST.settings.palette === k ? "on" : ""}" data-k="${k}"><i style="background:linear-gradient(135deg,${p.L[2]} 50%,${k === "cine" ? "#0f0f12" : p.L[3]} 50%)${k === "cine" ? ";background:linear-gradient(135deg,#0f0f12 50%,#e5484d 50%)" : ""}"></i>${p.n}</button>`).join("")}
+        <label class="swb ${ST.settings.palette === "custom" ? "on" : ""}" style="cursor:pointer"><i style="background:${ST.settings.palette === "custom" ? ST.settings.custom : "conic-gradient(#f9a8c9,#c8b6ff,#a8e6cf,#ffd3a5,#a8d8ff,#f9a8c9)"};display:flex;align-items:center;justify-content:center;font-size:18px;font-style:normal">🎨</i>Mi color<input type="color" id="custC" value="${ST.settings.custom || "#7c9cd6"}" style="position:absolute;opacity:0;width:1px;height:1px"></label></div>
+      <div class="lbl" style="margin-top:16px">Modo</div>
       <div class="seg" id="themeSeg">${[["claro", "☀️ Claro"], ["oscuro", "🌙 Oscuro"], ["sistema", "📱 Sistema"]].map(([k, l]) => `<button data-t="${k}" class="${(ST.settings.theme || "sistema") === k ? "on" : ""}">${l}</button>`).join("")}</div>
-      <p class="muted" style="font-size:12px;margin-top:8px">«Sistema» sigue el modo claro u oscuro de tu teléfono.</p></div>
+      <div class="lbl" style="margin-top:16px">Forma de las esquinas</div>
+      <div class="seg" id="shapeSeg">${[["recta", "▢ Recta"], ["redonda", "▢ Redonda"], ["burbuja", "◯ Burbuja"]].map(([k, l]) => `<button data-sh="${k}" class="${(ST.settings.shape || "redonda") === k ? "on" : ""}">${l}</button>`).join("")}</div>
+      <p class="muted" style="font-size:12px;margin-top:8px">«Sistema» sigue el modo claro u oscuro de tu teléfono. Los cambios se ven al instante.</p></div>
+    ${platStatsHTML()}
     <div class="card" id="secCard"><div class="lbl">Seguridad</div><div id="secBody"></div></div>
     <div class="card"><div class="lbl">Sinopsis en español (TMDB)</div>
       <p class="muted" style="font-size:13px;line-height:1.5;margin-bottom:10px">Con una clave gratuita de The Movie Database la app trae sinopsis y fotos en español. Sin ella usa TVmaze, con sinopsis en inglés.</p>
@@ -750,8 +926,8 @@ function renderPerfil() {
       <button class="btn2" id="exp">Descargar respaldo</button>
       <label class="btn2" style="margin-top:8px;cursor:pointer">Restaurar respaldo<input type="file" id="imp" accept=".json,application/json" hidden></label>
     </div>
-    <button class="btn2" id="wipe" style="color:var(--r)">Borrar todo</button>
-    <p class="muted" style="font-size:11px;text-align:center;margin-top:16px;line-height:1.5">Mis Series v1.1 · Datos e imágenes de TMDB y TVmaze.<br>Esta app no está afiliada a Netflix.</p>`;
+    <button class="btn2" id="wipe" style="color:var(--danger)">Borrar todo</button>
+    <p class="muted" style="font-size:11px;text-align:center;margin-top:16px;line-height:1.5">Mis Series v${APP_VERSION} · Datos e imágenes de TMDB y TVmaze.<br>Esta app no está afiliada a Netflix.</p>`;
   $("#saveKey").onclick = async () => {
     ST.settings.tmdb = $("#tmdbKey").value.trim(); save(true);
     if (!ST.settings.tmdb) { toast("Clave borrada: se usará TVmaze"); return; }
@@ -761,6 +937,10 @@ function renderPerfil() {
   if ($("#upgradeEs")) $("#upgradeEs").onclick = () => { let n = 0; ST.items.forEach(x => { if (x.api && x.api.src === "tvmaze") { x.match = "pending"; n++; } }); save(true); toast(n ? `${n} series se buscarán en TMDB` : "No hay sinopsis de TVmaze"); go("lista"); enrichAll(); };
   $("#exp").onclick = exportBackup;
   $("#themeSeg").onclick = e => { const t = e.target.dataset.t; if (!t) return; ST.settings.theme = t; save(true); applyTheme(); renderPerfil(); };
+  $("#shapeSeg").onclick = e => { const t = e.target.dataset.sh; if (!t) return; ST.settings.shape = t; save(true); applyTheme(); renderPerfil(); };
+  $("#palG").onclick = e => { const b = e.target.closest("button[data-k]"); if (!b) return; ST.settings.palette = b.dataset.k; save(true); applyTheme(); renderPerfil(); };
+  $("#custC").oninput = e => { ST.settings.custom = e.target.value; ST.settings.palette = "custom"; applyTheme(); };
+  $("#custC").onchange = e => { ST.settings.custom = e.target.value; ST.settings.palette = "custom"; save(true); applyTheme(); renderPerfil(); };
   bindSecurity();
   $("#imp").onchange = async e => {
     const f = e.target.files[0]; if (!f) return;
@@ -775,12 +955,44 @@ function renderPerfil() {
 }
 
 /* ================= Tema ================= */
+const PAL = {
+  cine:     { n: "Cine",         L: ["#f4f4f7", "#ffffff", "#e9e9ee", "#e5484d", "#16161a", "#6d6d78"], D: ["#0f0f12", "#18181c", "#1f1f24", "#e5484d", "#f2f2f2", "#9a9aa3"] },
+  rosa:     { n: "Rosa algodón", L: ["#fdf1f4", "#ffffff", "#f9dbe5", "#d9688f", "#3a2530", "#97798a"], D: ["#1f171b", "#2a1f24", "#3a2a31", "#f2a7bf", "#f6eef1", "#b09aa3"] },
+  lavanda:  { n: "Lavanda",      L: ["#f4f1fb", "#ffffff", "#e4ddf7", "#8a75cf", "#2c2640", "#837b9c"], D: ["#18161f", "#221f2c", "#302b40", "#b9a9f0", "#f1eef8", "#a39cb5"] },
+  menta:    { n: "Menta",        L: ["#eef8f3", "#ffffff", "#d2efe2", "#3a9a75", "#1f3a30", "#6b9083"], D: ["#141c19", "#1b2622", "#24352e", "#8fdcbc", "#ecf6f1", "#94ada3"] },
+  durazno:  { n: "Durazno",      L: ["#fdf4ee", "#ffffff", "#fbe1d0", "#d9774a", "#40281b", "#9e8170"], D: ["#1e1814", "#29201b", "#3a2c24", "#f7b892", "#f7efe9", "#b3a194"] },
+  cielo:    { n: "Cielo",        L: ["#eef5fc", "#ffffff", "#d6e7f8", "#4a8cca", "#1e3045", "#758da6"], D: ["#141a21", "#1b232d", "#25313f", "#9cc6ee", "#edf3f9", "#98a8b8"] },
+  vainilla: { n: "Vainilla",     L: ["#fcf9ec", "#ffffff", "#f4ebc6", "#a88424", "#3a3220", "#958a66"], D: ["#1c1a13", "#26231a", "#353022", "#e8cf7e", "#f6f2e4", "#ada58c"] }
+};
+const SHAPES = { recta: [6, 6, 4], redonda: [16, 14, 10], burbuja: [24, 22, 16] };
+const h2r = h => { h = h.replace("#", ""); if (h.length === 3) h = h.replace(/./g, "$&$&"); return [0, 2, 4].map(i => parseInt(h.substr(i, 2), 16)); };
+const r2h = a => "#" + a.map(x => Math.round(Math.max(0, Math.min(255, x))).toString(16).padStart(2, "0")).join("");
+const mix = (a, b, t) => r2h(h2r(a).map((x, i) => x + (h2r(b)[i] - x) * t));
+const lum = h => { const [r, g, b] = h2r(h).map(v => { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); }); return .2126 * r + .7152 * g + .0722 * b; };
+function hsl(h, s, l) { s /= 100; l /= 100; const k = n => (n + h / 30) % 12, a = s * Math.min(l, 1 - l); return r2h([0, 8, 4].map(n => 255 * (l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)))))); }
+function hueOf(hex) { const [r, g, b] = h2r(hex).map(v => v / 255); const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn; if (!d) return 0; let h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; return (h * 60 + 360) % 360; }
+function palette(key) {
+  if (key === "custom") { const c = ST.settings.custom || "#7c9cd6", h = hueOf(c);
+    return { L: [hsl(h, 45, 96), "#ffffff", hsl(h, 50, 89), c, hsl(h, 30, 18), hsl(h, 12, 48)], D: [hsl(h, 15, 10), hsl(h, 15, 14), hsl(h, 15, 20), mix(c, "#ffffff", .45), hsl(h, 20, 94), hsl(h, 10, 64)] }; }
+  return PAL[key] || PAL.menta;
+}
+function themeVars(arr, dark) {
+  const [bg, card, card2, acc, tx, mut] = arr;
+  return { bg, card, card2, acc, tx, mut, on: lum(acc) > .35 ? "#17151c" : "#ffffff",
+    tx2: mix(tx, bg, .18), chip: mix(tx, bg, .2), line: dark ? mix(card, tx, .08) : card2, off: mix(card2, tx, dark ? .18 : .16),
+    track: card2, segon: dark ? mix(card2, tx, .14) : card, nav: card + "f5", ph: card2 };
+}
 const mqLight = window.matchMedia ? matchMedia("(prefers-color-scheme: light)") : null;
 function applyTheme() {
   const t = ST.settings.theme || "sistema";
   const dark = t === "oscuro" || (t === "sistema" && !(mqLight && mqLight.matches));
+  const p = palette(ST.settings.palette); const V = { L: themeVars(p.L, false), D: themeVars(p.D, true) };
+  const sh = SHAPES[ST.settings.shape] || SHAPES.redonda; [V.L, V.D].forEach(v => { v.rc = sh[0] + "px"; v.rb = sh[1] + "px"; v.rp = sh[2] + "px"; });
+  const v = V[dark ? "D" : "L"]; const st = document.documentElement.style;
+  for (const k in v) st.setProperty("--" + k, v[k]);
   document.documentElement.dataset.theme = dark ? "dark" : "light";
-  $('meta[name="theme-color"]').content = dark ? "#0f0f12" : "#f4f4f7";
+  $('meta[name="theme-color"]').content = v.bg;
+  try { localStorage.setItem("misseries.themevars", JSON.stringify(V)); } catch (e) {}
 }
 if (mqLight) (mqLight.addEventListener ? mqLight.addEventListener("change", applyTheme) : mqLight.addListener(applyTheme));
 
@@ -918,7 +1130,57 @@ if (h0.startsWith("serie-")) openDetail(h0.slice(6), false);
 document.addEventListener("gesturestart", e => e.preventDefault());
 showLock();
 if (pendingItems().length && navigator.onLine) setTimeout(enrichAll, 1500);
-if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js").catch(() => {});
+/* ================= Actualizaciones ================= */
+let swReg = null, reloading = false, lastCheck = 0;
+function showUpd() { $("#upd").classList.add("on"); }
+$("#updBtn").onclick = () => {
+  $("#upd").classList.remove("on");
+  if (swReg && swReg.waiting) swReg.waiting.postMessage("skip"); else location.reload();
+};
+function checkUpdate() { lastCheck = Date.now(); return swReg ? swReg.update().catch(() => {}) : Promise.resolve(); }
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  navigator.serviceWorker.register("sw.js").then(r => {
+    swReg = r;
+    if (r.waiting && navigator.serviceWorker.controller) showUpd();
+    r.addEventListener("updatefound", () => { const w = r.installing; if (w) w.addEventListener("statechange", () => { if (w.state === "installed" && navigator.serviceWorker.controller) showUpd(); }); });
+  }).catch(() => {});
+  navigator.serviceWorker.addEventListener("controllerchange", () => { if (reloading) return; reloading = true; location.reload(); });
+}
+document.addEventListener("visibilitychange", () => { if (!document.hidden && Date.now() - lastCheck > 30 * 60000) checkUpdate(); });
+/* Novedades después de actualizar */
+const NOVEDADES = ["🎨 6 temas pastel, «Mi color» y forma de las esquinas (Perfil → Apariencia)",
+  "📺 Disney+, Prime Video, Max y más: etiqueta de color en cada póster y filtro por app",
+  "⚡ Agregar varias series a la vez, con las populares de cada plataforma",
+  "🔄 Desliza hacia abajo en Mi lista para actualizar, y aviso cuando hay versión nueva"];
+function showNews() {
+  const prev = ST.settings.seenVersion; ST.settings.seenVersion = APP_VERSION; save(true);
+  if (!prev && !ST.items.length) return;               // primera vez que se abre: no molestar
+  if (prev === APP_VERSION) return;
+  $("#mbox").innerHTML = `<h3>✨ Novedades de la versión ${APP_VERSION}</h3><ul style="margin:6px 0 18px 18px;line-height:1.6;color:var(--tx2);font-size:14px">${NOVEDADES.map(n => `<li>${n}</li>`).join("")}</ul><button class="btn" id="mok">¡Genial!</button>`;
+  $("#modal").classList.add("on"); modalClose = () => { $("#modal").classList.remove("on"); modalClose = null; }; $("#mok").onclick = () => modalClose();
+}
+/* Deslizar hacia abajo para actualizar */
+(function () {
+  let y0 = null, dy = 0, busyR = false; const P = $("#ptr"), svg = P.querySelector("svg");
+  const can = () => !locked && !busyR && !$("#detail").classList.contains("on") && !$("#modal").classList.contains("on") && window.scrollY <= 0 && ["lista", "perfil"].includes(cur);
+  window.addEventListener("touchstart", e => { y0 = can() && e.touches.length === 1 ? e.touches[0].clientY : null; dy = 0; }, { passive: true });
+  window.addEventListener("touchmove", e => {
+    if (y0 === null) return; dy = Math.min(110, Math.max(0, (e.touches[0].clientY - y0) * .5));
+    if (window.scrollY > 0) { y0 = null; dy = 0; }
+    P.style.transition = "none"; P.style.transform = `translate(-50%,${dy - 60}px)`; svg.style.transform = `rotate(${dy * 3}deg)`;
+  }, { passive: true });
+  window.addEventListener("touchend", async () => {
+    if (y0 === null) return; y0 = null; P.style.transition = "";
+    if (dy < 65) { P.style.transform = ""; return; }
+    busyR = true; P.style.transform = "translate(-50%,20px)"; P.classList.add("go");
+    await Promise.all([checkUpdate(), sleep(700)]);
+    if (cur === "lista") renderList(); else renderPerfil();
+    if (pendingItems().length && navigator.onLine) enrichAll();
+    P.classList.remove("go"); P.style.transform = ""; busyR = false;
+    if (swReg && swReg.waiting) showUpd(); else toast("Todo al día ✓");
+  });
+})();
+showNews();
 </script>
 </body>
 </html>
