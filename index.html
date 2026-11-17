@@ -2,50 +2,63 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0f0f12">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<script>
+/* Aplica el tema antes de dibujar para que no parpadee */
+(function(){var t="sistema",L=false;try{var d=JSON.parse(localStorage.getItem("misseries.v1")||"{}");t=(d.settings&&d.settings.theme)||"sistema";L=!!(d.settings&&d.settings.lock&&d.settings.lock.on)}catch(e){}
+var dark=t==="oscuro"||(t==="sistema"&&!(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches));
+document.documentElement.dataset.theme=dark?"dark":"light";if(!dark){var m=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');if(m)m.content="default";}if(L)document.documentElement.classList.add("locked");})();
+</script>
 <meta name="apple-mobile-web-app-title" content="Mis Series">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" href="icon-192.png">
 <title>Mis Series</title>
 <style>
-:root{--bg:#0f0f12;--card:#18181c;--card2:#1f1f24;--line:#26262c;--tx:#f2f2f2;--mut:#9a9aa3;--r:#e5484d;--ok:#3ecf8e;--warn:#f5b84a;
---st:env(safe-area-inset-top);--sb:env(safe-area-inset-bottom)}
+:root{--r:#e5484d;--ok:#3ecf8e;--warn:#f5b84a;--st:env(safe-area-inset-top);--sb:env(safe-area-inset-bottom);--sl:env(safe-area-inset-left);--sr:env(safe-area-inset-right)}
+html[data-theme=dark]{--bg:#0f0f12;--card:#18181c;--card2:#1f1f24;--line:#26262c;--tx:#f2f2f2;--tx2:#d0d0d6;--mut:#9a9aa3;--chip:#bbb;--off:#3a3a42;--track:#2a2a30;--segon:#2c2c33;--nav:rgba(15,15,18,.96);--toast:#2c2c33;--ph:#222;color-scheme:dark}
+html[data-theme=light]{--bg:#f4f4f7;--card:#ffffff;--card2:#e9e9ee;--line:#e2e2e8;--tx:#16161a;--tx2:#3d3d45;--mut:#6d6d78;--chip:#4a4a55;--off:#cfcfd6;--track:#e2e2e8;--segon:#ffffff;--nav:rgba(255,255,255,.96);--toast:#2c2c33;--ph:#ddd;color-scheme:light}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;touch-action:pan-x pan-y;overscroll-behavior:none}
 html,body{background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",Roboto,sans-serif;font-size:15px}
-body{max-width:520px;margin:0 auto;min-height:100vh;padding-bottom:calc(80px + var(--sb))}
+body{max-width:560px;margin:0 auto;min-height:100vh;min-height:100dvh;padding-bottom:calc(80px + var(--sb));-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;transition:background .2s}
+input,textarea,.syn,.selectable{-webkit-user-select:text;user-select:text}
+img{-webkit-user-drag:none;-webkit-touch-callout:none}
 button,input,textarea,select{font:inherit;color:inherit}
-button{background:none;border:0;cursor:pointer}
-.view{display:none;padding:calc(14px + var(--st)) 18px 20px}
+input,textarea,select{font-size:16px}
+button{background:none;border:0;cursor:pointer;touch-action:manipulation}
+.view{display:none;padding:calc(14px + var(--st)) calc(16px + var(--sr)) 20px calc(16px + var(--sl))}
 .view.on{display:block}
-h1{font-size:27px;font-weight:800;letter-spacing:-.3px}
+h1{font-size:clamp(22px,7vw,28px);font-weight:800;letter-spacing:-.3px}
 .h{display:flex;justify-content:space-between;align-items:center;margin:6px 0 14px;gap:10px}
-.iconbtn{width:38px;height:38px;border-radius:50%;background:var(--card2);display:flex;align-items:center;justify-content:center}
+.iconbtn{width:38px;height:38px;border-radius:50%;background:var(--card2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .iconbtn svg{width:19px;height:19px}
-.chips{display:flex;gap:8px;overflow-x:auto;margin:0 -18px 14px;padding:0 18px;scrollbar-width:none}
+.chips{display:flex;gap:8px;overflow-x:auto;margin:0 -16px 14px;padding:0 16px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
-.chip{flex-shrink:0;font-size:13px;font-weight:600;padding:8px 13px;border-radius:20px;background:var(--card2);color:#bbb;white-space:nowrap}
+.chip{flex-shrink:0;font-size:13px;font-weight:600;padding:8px 13px;border-radius:20px;background:var(--card2);color:var(--chip);white-space:nowrap}
 .chip.on{background:var(--r);color:#fff}
 .chip small{opacity:.7;font-weight:500;margin-left:3px}
 .stats{display:flex;gap:10px;margin-bottom:14px}
-.stats div{flex:1;background:var(--card);border-radius:12px;padding:10px 12px}
-.stats b{display:block;font-size:20px}.stats span{font-size:11px;color:var(--mut)}
+.stats div{flex:1;min-width:0;background:var(--card);border-radius:12px;padding:10px 12px}
+.stats b{display:block;font-size:clamp(17px,5.2vw,21px)}.stats span{font-size:11px;color:var(--mut)}
 .tools{display:flex;gap:8px;margin-bottom:14px}
 .inp{width:100%;background:var(--card2);border:1.5px solid transparent;border-radius:12px;padding:11px 14px;outline:none}
 .inp:focus{border-color:var(--r)}
-select.inp{width:auto;appearance:none;padding-right:28px;background-image:linear-gradient(45deg,transparent 50%,#888 50%),linear-gradient(135deg,#888 50%,transparent 50%);background-position:calc(100% - 15px) 52%,calc(100% - 10px) 52%;background-size:5px 5px;background-repeat:no-repeat}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 12px}
+select.inp{width:auto;max-width:100%;appearance:none;-webkit-appearance:none;padding-right:30px;background-image:linear-gradient(45deg,transparent 50%,var(--mut) 50%),linear-gradient(135deg,var(--mut) 50%,transparent 50%);background-position:calc(100% - 15px) 52%,calc(100% - 10px) 52%;background-size:5px 5px;background-repeat:no-repeat;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px clamp(8px,3vw,12px)}
+@media (min-width:600px){body{max-width:860px}.grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}}
 .tile{text-align:left;min-width:0}
-.poster{position:relative;width:100%;aspect-ratio:2/3;border-radius:10px;overflow:hidden;background:#222}
+.poster{position:relative;width:100%;aspect-ratio:2/3;border-radius:10px;overflow:hidden;background:var(--ph)}
 .poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .ph{position:absolute;inset:0}
 .ph:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.05) 0 2px,transparent 2px 9px)}
-.ph span{position:absolute;left:8px;right:8px;bottom:9px;font-weight:800;font-size:12px;line-height:1.1;text-transform:uppercase;text-shadow:0 2px 6px rgba(0,0,0,.6);z-index:1;overflow-wrap:anywhere}
-.badge{position:absolute;top:6px;right:6px;font-size:10px;font-weight:700;background:rgba(0,0,0,.65);padding:3px 6px;border-radius:6px}
-.bar{height:3px;background:#2a2a30;border-radius:3px;margin-top:6px;overflow:hidden}
+.ph span{position:absolute;left:8px;right:8px;bottom:9px;font-weight:800;font-size:clamp(10px,3vw,12px);line-height:1.1;text-transform:uppercase;text-shadow:0 2px 6px rgba(0,0,0,.6);z-index:1;overflow-wrap:anywhere;color:#fff}
+.badge{position:absolute;top:6px;right:6px;font-size:10px;font-weight:700;background:rgba(0,0,0,.65);color:#fff;padding:3px 6px;border-radius:6px}
+.bar{height:3px;background:var(--track);border-radius:3px;margin-top:6px;overflow:hidden}
 .bar i{display:block;height:100%;background:var(--r)}
 .tl{font-size:12px;font-weight:600;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ts{font-size:11px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -55,12 +68,16 @@ select.inp{width:auto;appearance:none;padding-right:28px;background-image:linear
 .btn:disabled{opacity:.45}
 .btn2{display:block;width:100%;background:var(--card2);text-align:center;font-weight:600;padding:13px;border-radius:14px}
 .btn.sm,.btn2.sm{display:inline-block;width:auto;padding:9px 14px;font-size:13px;border-radius:11px}
-.fab{position:fixed;right:max(20px,calc(50vw - 240px));bottom:calc(88px + var(--sb));width:58px;height:58px;border-radius:50%;background:var(--r);color:#fff;font-size:32px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(229,72,77,.45);z-index:20}
-nav{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:0 auto;background:rgba(15,15,18,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 0 calc(8px + var(--sb));z-index:30}
-nav button{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;color:#777;width:72px}
+.fab{position:fixed;right:max(calc(18px + var(--sr)),calc(50vw - 262px));bottom:calc(88px + var(--sb));width:58px;height:58px;border-radius:50%;background:var(--r);color:#fff;font-size:32px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(229,72,77,.45);z-index:20}
+@media (min-width:600px){.fab{right:max(calc(18px + var(--sr)),calc(50vw - 412px))}}
+nav{position:fixed;bottom:0;left:0;right:0;max-width:inherit;margin:0 auto;background:var(--nav);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px var(--sr) calc(8px + var(--sb)) var(--sl);z-index:30}
+nav button{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;color:var(--mut);flex:1;max-width:90px}
 nav button.on{color:var(--r)}
 nav svg{width:23px;height:23px}
-.banner{background:var(--card);border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:13px;display:flex;gap:12px;align-items:center}
+.banner{background:var(--card);border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:13px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.banner>div{min-width:0}
+.banner>div:first-child{flex:1 1 170px}
+.hero .ph span{display:none}
 .banner .bar{flex:1;margin:6px 0 0;height:4px}
 .card{background:var(--card);border-radius:16px;padding:14px;margin-bottom:12px}
 .lbl{font-size:11px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
@@ -69,49 +86,68 @@ nav svg{width:23px;height:23px}
 .res .ph span{font-size:6px;left:4px;bottom:4px}
 .muted{color:var(--mut)}
 .seg{display:flex;background:var(--bg);border-radius:12px;padding:4px;gap:2px}
-.seg button{flex:1;font-size:12px;font-weight:600;padding:9px 2px;border-radius:9px;color:#aaa}
-.seg button.on{background:#2c2c33;color:#fff}
-.syn{font-size:14px;line-height:1.55;color:#d0d0d6}
-/* detalle */
-#detail{position:fixed;inset:0;max-width:520px;margin:0 auto;background:var(--bg);z-index:40;overflow-y:auto;display:none;padding-bottom:calc(30px + var(--sb))}
+.card .seg{background:var(--card2)}
+.seg button{flex:1;min-width:0;font-size:clamp(11px,3.3vw,13px);font-weight:600;padding:9px 2px;border-radius:9px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.seg button.on{background:var(--segon);color:var(--tx);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.syn{font-size:14px;line-height:1.55;color:var(--tx2)}
+#detail{position:fixed;inset:0;max-width:inherit;margin:0 auto;background:var(--bg);z-index:40;overflow-y:auto;overscroll-behavior:contain;display:none;padding-bottom:calc(30px + var(--sb))}
 #detail.on{display:block}
-.hero{position:relative;height:250px;overflow:hidden}
+.hero{position:relative;height:clamp(200px,32vh,320px);overflow:hidden;background:#111}
 .hero img,.hero .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(15,15,18,.2),transparent 30%,var(--bg) 96%)}
-.back{position:absolute;top:calc(12px + var(--st));left:14px;z-index:2;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center}
-.dbody{padding:0 18px;margin-top:-70px;position:relative;z-index:1}
-.dbody h2{font-size:28px;font-weight:800;line-height:1.1}
-.meta{font-size:12.5px;color:#aaa;margin:6px 0 12px}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.25),transparent 30%,var(--bg) 97%)}
+.back{position:absolute;top:calc(12px + var(--st));left:calc(14px + var(--sl));z-index:2;width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center}
+.dbody{padding:0 calc(16px + var(--sr)) 0 calc(16px + var(--sl));margin-top:-70px;position:relative;z-index:1}
+.dbody h2{font-size:clamp(23px,7.5vw,30px);font-weight:800;line-height:1.1}
+.meta{font-size:12.5px;color:var(--mut);margin:6px 0 12px}
 .stars{display:flex;gap:4px}
-.stars button{font-size:26px;color:#3a3a42;line-height:1}
+.stars button{font-size:28px;color:var(--off);line-height:1;padding:2px}
 .stars button.on{color:#f5c518}
 textarea.inp{min-height:80px;resize:vertical;line-height:1.45}
-.pill{display:inline-block;font-size:11px;font-weight:700;padding:4px 9px;border-radius:20px;background:rgba(229,72,77,.18);color:var(--r)}
-.pill.warn{background:rgba(245,184,74,.15);color:var(--warn)}
-/* importar */
-.step{display:flex;gap:12px;margin-bottom:11px;font-size:14px;line-height:1.45;color:#ccc}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:4px 9px;border-radius:20px;background:rgba(229,72,77,.15);color:var(--r)}
+.step{display:flex;gap:12px;margin-bottom:11px;font-size:14px;line-height:1.45;color:var(--tx2)}
 .step b{width:24px;height:24px;flex-shrink:0;border-radius:50%;background:var(--r);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center}
-.drop{display:block;border:2px dashed #3a3a42;border-radius:16px;padding:22px 14px;text-align:center;margin:8px 0 14px;font-size:14px;cursor:pointer}
+.step div b{background:none;color:var(--tx);width:auto;height:auto;display:inline;font-size:inherit}
+.drop{display:block;border:2px dashed var(--off);border-radius:16px;padding:22px 14px;text-align:center;margin:8px 0 14px;font-size:14px;cursor:pointer}
 .drop b{color:var(--r)}
 .it{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer}
-.ck{width:22px;height:22px;border-radius:6px;border:2px solid #555;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff}
-.it.on .ck{background:var(--r);border-color:var(--r)}
+.ck{width:22px;height:22px;border-radius:6px;border:2px solid var(--off);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent}
+.it.on .ck{background:var(--r);border-color:var(--r);color:#fff}
 .it .t{font-size:14px;font-weight:600}.it .m{font-size:12px;color:var(--mut)}
 .sticky{position:sticky;bottom:calc(76px + var(--sb));padding:12px 0 4px;background:linear-gradient(transparent,var(--bg) 30%)}
 details summary{list-style:none;cursor:pointer;padding:12px 0;font-weight:600;display:flex;justify-content:space-between}
 details summary::-webkit-details-marker{display:none}
 .row{display:flex;justify-content:space-between;align-items:center;gap:10px}
 a{color:var(--r)}
-/* modal & toast */
-#modal{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60;display:none;align-items:flex-end;justify-content:center}
+.sw{width:46px;height:28px;border-radius:20px;background:var(--off);position:relative;flex-shrink:0;transition:background .2s}
+.sw:after{content:"";position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.sw.on{background:var(--r)}.sw.on:after{left:21px}
+.setrow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line);width:100%;text-align:left}
+.setrow:first-of-type{border-top:0}
+.setrow small{display:block;color:var(--mut);font-size:12px;margin-top:2px;font-weight:400}
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:60;display:none;align-items:flex-end;justify-content:center}
 #modal.on{display:flex}
-#modal .box{background:var(--card);width:100%;max-width:520px;border-radius:22px 22px 0 0;padding:22px 18px calc(18px + var(--sb))}
+#modal .box{background:var(--card);width:100%;max-width:560px;border-radius:22px 22px 0 0;padding:22px calc(18px + var(--sr)) calc(18px + var(--sb)) calc(18px + var(--sl));max-height:92vh;overflow-y:auto}
 #modal h3{font-size:19px;margin-bottom:8px}
-#modal p{color:#ccc;line-height:1.5;margin-bottom:18px;font-size:14px}
-#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(96px + var(--sb));background:#2c2c33;padding:11px 16px;border-radius:12px;font-size:13px;z-index:70;opacity:0;transition:opacity .25s;pointer-events:none;max-width:90%;text-align:center}
+#modal p{color:var(--tx2);line-height:1.5;margin-bottom:18px;font-size:14px}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(96px + var(--sb));background:var(--toast);color:#fff;padding:11px 16px;border-radius:12px;font-size:13px;z-index:120;opacity:0;transition:opacity .25s;pointer-events:none;max-width:90%;text-align:center}
 #toast.on{opacity:1}
-.spin{width:18px;height:18px;border:2.5px solid #444;border-top-color:var(--r);border-radius:50%;animation:sp 0.8s linear infinite;flex-shrink:0}
+.spin{width:18px;height:18px;border:2.5px solid var(--off);border-top-color:var(--r);border-radius:50%;animation:sp .8s linear infinite;flex-shrink:0}
 @keyframes sp{to{transform:rotate(360deg)}}
+/* bloqueo */
+#lock{position:fixed;inset:0;z-index:100;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;padding:calc(20px + var(--st)) 24px calc(20px + var(--sb))}
+#lock.on{display:flex}
+html.locked body>*:not(#lock):not(#toast):not(#modal){visibility:hidden}
+.setrow:disabled{opacity:.5}
+.lockicon{width:76px;height:76px;border-radius:20px;margin-bottom:14px}
+.dots{display:flex;gap:14px;margin:18px 0 8px;height:16px}
+.dots i{width:14px;height:14px;border-radius:50%;border:2px solid var(--mut)}
+.dots i.f{background:var(--tx);border-color:var(--tx)}
+.dots.shake{animation:sh .4s}
+@keyframes sh{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.pad{display:grid;grid-template-columns:repeat(3,min(76px,22vw));gap:clamp(10px,3.5vh,16px) clamp(14px,6vw,24px);margin-top:clamp(10px,3vh,22px)}
+.pad button{height:min(76px,22vw,10vh);aspect-ratio:1;border-radius:50%;background:var(--card2);font-size:26px;font-weight:500;justify-self:center}
+.pad button.x{background:none;font-size:15px;color:var(--mut)}
+.bio{display:flex;align-items:center;gap:8px;margin-top:14px;padding:12px 18px;border-radius:14px;background:var(--card2);font-weight:600}
 </style>
 </head>
 <body>
@@ -167,17 +203,19 @@ a{color:var(--r)}
 <button class="fab" id="fab" aria-label="Agregar serie">+</button>
 <div id="modal"><div class="box" id="mbox"></div></div>
 <div id="toast"></div>
+<div id="lock"></div>
 
 <script>
 "use strict";
 /* ================= Datos ================= */
 const KEY = "misseries.v1";
-const ST = { items: [], settings: { tmdb: "" } };
+const ST = { items: [], settings: { tmdb: "", theme: "sistema", lastBackup: "", backupSnooze: "", lock: {} } };
 const STATUS = { viendo: "Viendo", terminada: "Terminada", pausa: "En pausa", pendiente: "Pendiente" };
 let filter = "todas", sortBy = "reciente", findQ = "";
 
 function load() {
   try { const d = JSON.parse(localStorage.getItem(KEY) || "null"); if (d) { ST.items = d.items || []; Object.assign(ST.settings, d.settings || {}); } } catch (e) { console.warn(e); }
+  ST.settings.lock = Object.assign({ on: false, pin: "", salt: "", bio: false, cred: "", after: 1 }, ST.settings.lock || {});
 }
 let saveT;
 function save(now) {
@@ -204,11 +242,14 @@ function posterHTML(it, big) {
 const dispName = it => (it.api && it.api.title) || it.name;
 
 function toast(m) { const t = $("#toast"); t.textContent = m; t.classList.add("on"); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove("on"), 2600); }
+let modalClose = null;
+function closeModal() { if (modalClose) modalClose(false); }
 function dialog(title, text, okTxt, danger) {
   return new Promise(res => {
     $("#mbox").innerHTML = `<h3>${esc(title)}</h3><p>${text}</p><button class="btn" id="mok" style="${danger ? "" : ""}">${esc(okTxt)}</button><button class="btn2" id="mno" style="margin-top:8px">Cancelar</button>`;
     $("#modal").classList.add("on");
-    const close = v => { $("#modal").classList.remove("on"); res(v); };
+    const close = v => { $("#modal").classList.remove("on"); modalClose = null; res(v); };
+    modalClose = close;
     $("#mok").onclick = () => close(true); $("#mno").onclick = () => close(false);
     $("#modal").onclick = e => { if (e.target.id === "modal") close(false); };
   });
@@ -347,7 +388,30 @@ function renderBanner() {
   } else if (rev && filter !== "revisar") {
     b.innerHTML = `<div class="banner"><div style="flex:1">⚠ <b>${rev}</b> series necesitan que confirmes la coincidencia.</div><button class="btn2 sm" id="goR">Revisar</button></div>`;
     $("#goR").onclick = () => { filter = "revisar"; renderList(); };
+  } else if (needBackup()) {
+    b.innerHTML = `<div class="banner"><div style="flex:1">💾 ${ST.settings.lastBackup ? "Hace más de un mes que no haces un respaldo." : "Todavía no has hecho un respaldo de tu lista."}</div><button class="btn sm" id="goB">Respaldar</button><button class="btn2 sm" id="snB">Luego</button></div>`;
+    $("#goB").onclick = exportBackup;
+    $("#snB").onclick = () => { ST.settings.backupSnooze = new Date().toISOString(); save(); renderBanner(); };
   } else b.innerHTML = "";
+}
+function needBackup() {
+  if (ST.items.length < 5) return false;
+  const since = d => d ? (Date.now() - new Date(d)) / 864e5 : 9999;
+  return since(ST.settings.lastBackup) > 30 && since(ST.settings.backupSnooze) > 7;
+}
+async function exportBackup() {
+  const name = `mis-series-respaldo-${new Date().toISOString().slice(0, 10)}.json`;
+  const json = JSON.stringify({ app: "misseries", v: 1, fecha: new Date().toISOString(), tmdb: ST.settings.tmdb, items: ST.items }, null, 1);
+  const file = new File([json], name, { type: "application/json" });
+  const mobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+  try {
+    if (mobile && navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ files: [file], title: "Respaldo de Mis Series" });
+    } else {
+      const a = document.createElement("a"); a.href = URL.createObjectURL(file); a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    }
+    ST.settings.lastBackup = new Date().toISOString(); save(true); toast("Respaldo listo: guárdalo en un lugar seguro"); renderBanner();
+  } catch (e) { if (e.name !== "AbortError") toast("No se pudo crear el respaldo"); }
 }
 
 /* ================= Navegación ================= */
@@ -365,11 +429,25 @@ function go(v, push = true) {
 }
 document.querySelectorAll("nav button").forEach(b => b.onclick = () => { reassign = null; closeDetail(false); go(b.dataset.go); });
 $("#fab").onclick = () => { reassign = null; $("#q").value = ""; $("#results").innerHTML = ""; go("buscar"); };
+/* Botón «atrás» del teléfono: cierra ventanas, luego la serie, luego vuelve a Mi lista.
+   En Mi lista pide tocar atrás dos veces para salir. */
+const VIEWS = ["lista", "buscar", "importar", "perfil"];
 window.addEventListener("popstate", () => {
+  if (modalClose) closeModal();
   const h = location.hash.slice(1);
-  if (h.startsWith("serie-")) openDetail(h.slice(6), false);
-  else { closeDetail(false); go(["lista", "buscar", "importar", "perfil"].includes(h) ? h : "lista", false); }
+  if (h.startsWith("serie-")) { openDetail(h.slice(6), false); return; }
+  const wasDetail = $("#detail").classList.contains("on");
+  closeDetail(false);
+  if (h === "inicio") {
+    if (wasDetail || cur !== "lista") { go("lista", false); }
+    else toast("Toca atrás otra vez para salir");
+    window.scrollTo(0, 0); return;
+  }
+  go(VIEWS.includes(h) ? h : "lista", false);
 });
+/* Con cada toque se repone el paso de «guarda», así nunca se sale de golpe */
+function guard() { if (location.hash === "#inicio" || !location.hash) history.pushState(null, "", "#" + (cur || "lista")); }
+document.addEventListener("click", guard, true);
 
 /* ================= Mi lista ================= */
 function counts() {
@@ -383,6 +461,7 @@ function counts() {
 }
 function renderList() {
   const c = counts();
+  if ((filter === "revisar" && !c.revisar) || (filter === "pelicula" && !c.pelicula)) filter = "todas";
   const chips = [["todas", "Todas"], ["viendo", "Viendo"], ["terminada", "Terminadas"], ["pausa", "En pausa"], ["pendiente", "Pendientes"]];
   if (c.pelicula) chips.push(["pelicula", "Películas"]);
   if (c.revisar) chips.push(["revisar", "⚠ Por revisar"]);
@@ -463,7 +542,7 @@ function openDetail(id, push = true) {
     </div>`;
   $("#detail").classList.add("on"); $("#detail").scrollTop = 0; document.body.style.overflow = "hidden";
   if (push) history.pushState(null, "", "#serie-" + id);
-  $("#dBack").onclick = () => history.length > 1 ? history.back() : closeDetail();
+  $("#dBack").onclick = () => location.hash.startsWith("#serie-") ? history.back() : closeDetail();
   $("#dStars").onclick = e => { const n = +e.target.dataset.n; if (!n) return; it.rating = it.rating === n ? 0 : n; save(); openDetail(id, false); };
   const seg = $("#dSeg"); if (seg) seg.onclick = e => { const s = e.target.dataset.s; if (!s) return; it.status = s; it.statusAuto = false; save(); openDetail(id, false); };
   $("#dNotes").oninput = e => { it.notes = e.target.value; save(); };
@@ -646,6 +725,10 @@ function renderPerfil() {
   const rated = ST.items.filter(x => x.rating).length;
   $("#perfil").innerHTML = `
     <div class="stats"><div><b>${c.todas}</b><span>series</span></div><div><b>${c.terminada || 0}</b><span>terminadas</span></div><div><b>${rated}</b><span>calificadas</span></div></div>
+    <div class="card"><div class="lbl">Apariencia</div>
+      <div class="seg" id="themeSeg">${[["claro", "☀️ Claro"], ["oscuro", "🌙 Oscuro"], ["sistema", "📱 Sistema"]].map(([k, l]) => `<button data-t="${k}" class="${(ST.settings.theme || "sistema") === k ? "on" : ""}">${l}</button>`).join("")}</div>
+      <p class="muted" style="font-size:12px;margin-top:8px">«Sistema» sigue el modo claro u oscuro de tu teléfono.</p></div>
+    <div class="card" id="secCard"><div class="lbl">Seguridad</div><div id="secBody"></div></div>
     <div class="card"><div class="lbl">Sinopsis en español (TMDB)</div>
       <p class="muted" style="font-size:13px;line-height:1.5;margin-bottom:10px">Con una clave gratuita de The Movie Database la app trae sinopsis y fotos en español. Sin ella usa TVmaze, con sinopsis en inglés.</p>
       <input class="inp" id="tmdbKey" placeholder="Pega aquí tu clave (API Key)" value="${esc(ST.settings.tmdb)}" autocomplete="off" autocapitalize="off" spellcheck="false">
@@ -662,12 +745,13 @@ function renderPerfil() {
       ${hasTmdb() ? `<button class="btn2" id="upgradeEs" style="margin-top:8px">Pasar sinopsis en inglés a español (TMDB)</button>` : ""}
     </div>
     <div class="card"><div class="lbl">Respaldo</div>
-      <p class="muted" style="font-size:13px;line-height:1.5;margin-bottom:10px">Tu lista se guarda en este teléfono. Descarga un respaldo de vez en cuando para no perderla si cambias de celular o borras los datos del navegador.</p>
+      <p class="muted" style="font-size:13px;line-height:1.5;margin-bottom:10px">Tu lista se guarda en este teléfono. Descarga un respaldo de vez en cuando para no perderla si cambias de celular o borras los datos del navegador. El respaldo incluye tu lista y la clave de TMDB, pero no el PIN.</p>
+      ${ST.settings.lastBackup ? `<p class="muted" style="font-size:12px;margin-bottom:8px">Último respaldo: ${fdate(ST.settings.lastBackup.slice(0, 10))}</p>` : ""}
       <button class="btn2" id="exp">Descargar respaldo</button>
       <label class="btn2" style="margin-top:8px;cursor:pointer">Restaurar respaldo<input type="file" id="imp" accept=".json,application/json" hidden></label>
     </div>
     <button class="btn2" id="wipe" style="color:var(--r)">Borrar todo</button>
-    <p class="muted" style="font-size:11px;text-align:center;margin-top:16px;line-height:1.5">Mis Series v1.0 · Datos e imágenes de TMDB y TVmaze.<br>Esta app no está afiliada a Netflix.</p>`;
+    <p class="muted" style="font-size:11px;text-align:center;margin-top:16px;line-height:1.5">Mis Series v1.1 · Datos e imágenes de TMDB y TVmaze.<br>Esta app no está afiliada a Netflix.</p>`;
   $("#saveKey").onclick = async () => {
     ST.settings.tmdb = $("#tmdbKey").value.trim(); save(true);
     if (!ST.settings.tmdb) { toast("Clave borrada: se usará TVmaze"); return; }
@@ -675,26 +759,164 @@ function renderPerfil() {
   };
   $("#reEnrich").onclick = () => { ST.items.forEach(x => { if (x.match === "none" || (!x.api && x.source === "netflix")) x.match = "pending"; }); save(true); go("lista"); enrichAll(); };
   if ($("#upgradeEs")) $("#upgradeEs").onclick = () => { let n = 0; ST.items.forEach(x => { if (x.api && x.api.src === "tvmaze") { x.match = "pending"; n++; } }); save(true); toast(n ? `${n} series se buscarán en TMDB` : "No hay sinopsis de TVmaze"); go("lista"); enrichAll(); };
-  $("#exp").onclick = () => {
-    const blob = new Blob([JSON.stringify({ app: "misseries", v: 1, fecha: new Date().toISOString(), items: ST.items }, null, 1)], { type: "application/json" });
-    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `mis-series-respaldo-${new Date().toISOString().slice(0, 10)}.json`; document.body.appendChild(a); a.click(); a.remove();
-  };
+  $("#exp").onclick = exportBackup;
+  $("#themeSeg").onclick = e => { const t = e.target.dataset.t; if (!t) return; ST.settings.theme = t; save(true); applyTheme(); renderPerfil(); };
+  bindSecurity();
   $("#imp").onchange = async e => {
     const f = e.target.files[0]; if (!f) return;
     try { const d = JSON.parse(await f.text()); if (!Array.isArray(d.items)) throw 0;
-      if (await dialog("¿Restaurar respaldo?", `Se reemplazará tu lista actual por las <b>${d.items.length}</b> series del respaldo.`, "Restaurar")) { ST.items = d.items; save(true); toast("Respaldo restaurado"); go("lista"); }
+      if (await dialog("¿Restaurar respaldo?", `Se reemplazará tu lista actual por las <b>${d.items.length}</b> series del respaldo.`, "Restaurar")) {
+        ST.items = d.items; if (d.tmdb && !ST.settings.tmdb) ST.settings.tmdb = d.tmdb;
+        ST.settings.lastBackup = new Date().toISOString(); save(true); toast("Respaldo restaurado"); go("lista"); }
     } catch (err) { toast("Ese archivo no es un respaldo válido"); }
     e.target.value = "";
   };
   $("#wipe").onclick = async () => { if (await dialog("¿Borrar todo?", "Se eliminarán todas tus series, notas y calificaciones de este teléfono. Esto no se puede deshacer.", "Borrar todo")) { enrichStop = true; ST.items = []; save(true); toast("Lista borrada"); go("lista"); } };
 }
 
+/* ================= Tema ================= */
+const mqLight = window.matchMedia ? matchMedia("(prefers-color-scheme: light)") : null;
+function applyTheme() {
+  const t = ST.settings.theme || "sistema";
+  const dark = t === "oscuro" || (t === "sistema" && !(mqLight && mqLight.matches));
+  document.documentElement.dataset.theme = dark ? "dark" : "light";
+  $('meta[name="theme-color"]').content = dark ? "#0f0f12" : "#f4f4f7";
+}
+if (mqLight) (mqLight.addEventListener ? mqLight.addEventListener("change", applyTheme) : mqLight.addListener(applyTheme));
+
+/* ================= Bloqueo con PIN y huella ================= */
+const LK = () => ST.settings.lock;
+let locked = false, hiddenAt = 0, busy = false, fails = 0, waitUntil = 0;
+async function sha(t) { const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join(""); }
+const b64 = buf => btoa(String.fromCharCode(...new Uint8Array(buf)));
+const unb64 = t => Uint8Array.from(atob(t), c => c.charCodeAt(0));
+async function bioAvailable() { try { return !!(window.PublicKeyCredential && await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()); } catch (e) { return false; } }
+async function bioRegister() {
+  busy = true;
+  try {
+    const c = await navigator.credentials.create({ publicKey: {
+      challenge: crypto.getRandomValues(new Uint8Array(32)), rp: { name: "Mis Series" },
+      user: { id: crypto.getRandomValues(new Uint8Array(16)), name: "Mis Series", displayName: "Mis Series" },
+      pubKeyCredParams: [{ type: "public-key", alg: -7 }, { type: "public-key", alg: -257 }],
+      authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required", residentKey: "discouraged" },
+      timeout: 60000, attestation: "none" } });
+    return b64(c.rawId);
+  } finally { setTimeout(() => busy = false, 800); }
+}
+async function bioCheck() {
+  busy = true;
+  try {
+    await navigator.credentials.get({ publicKey: { challenge: crypto.getRandomValues(new Uint8Array(32)),
+      allowCredentials: [{ type: "public-key", id: unb64(LK().cred), transports: ["internal"] }], userVerification: "required", timeout: 60000 } });
+    return true;
+  } finally { setTimeout(() => busy = false, 800); }
+}
+/* teclado numérico reutilizable */
+function pinPad(el, title, sub, onDone, extra = "") {
+  let v = "";
+  el.innerHTML = `<div style="text-align:center"><div style="font-size:19px;font-weight:700">${title}</div>
+    <div class="muted" style="font-size:13px;margin-top:4px" id="pSub">${sub}</div></div>
+    <div class="dots" id="pDots">${"<i></i>".repeat(4)}</div>
+    <div class="pad">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => `<button data-k="${n}">${n}</button>`).join("")}<span></span><button data-k="0">0</button><button class="x" data-k="del">Borrar</button></div>${extra}`;
+  const dots = () => el.querySelectorAll("#pDots i").forEach((d, i) => d.classList.toggle("f", i < v.length));
+  el.querySelector(".pad").onclick = e => {
+    const k = e.target.dataset.k; if (!k) return;
+    if (k === "del") v = v.slice(0, -1); else if (v.length < 4) v += k;
+    dots(); if (v.length === 4) { const x = v; setTimeout(() => { v = ""; dots(); onDone(x); }, 120); }
+  };
+  return { shake(msg) { const d = el.querySelector("#pDots"); d.classList.remove("shake"); void d.offsetWidth; d.classList.add("shake"); if (msg) el.querySelector("#pSub").textContent = msg; }, sub(m) { el.querySelector("#pSub").textContent = m; } };
+}
+function askPin(title, sub) {
+  return new Promise(res => {
+    const box = $("#mbox"); $("#modal").classList.add("on");
+    const close = v => { $("#modal").classList.remove("on"); modalClose = null; res(v); };
+    modalClose = () => close(null);
+    pinPad(box, title, sub, p => close(p), `<button class="btn2" id="pCancel" style="margin-top:18px">Cancelar</button>`);
+    box.style.display = "flex"; box.style.flexDirection = "column"; box.style.alignItems = "center";
+    $("#pCancel").onclick = () => close(null);
+  }).finally(() => { const b = $("#mbox"); b.style.display = b.style.flexDirection = b.style.alignItems = ""; });
+}
+async function verifyPin(p) { return (await sha(LK().salt + p)) === LK().pin; }
+function showLock() {
+  if (!LK().on || !LK().pin) { document.documentElement.classList.remove("locked"); return; }
+  locked = true; document.documentElement.classList.add("locked");
+  const el = $("#lock"); el.classList.add("on");
+  const pad = pinPad(el, "Mis Series", "Ingresa tu PIN", async p => {
+    if (Date.now() < waitUntil) { pad.shake("Espera unos segundos e intenta de nuevo"); return; }
+    if (await verifyPin(p)) { fails = 0; unlock(); }
+    else { fails++; if (fails >= 5) { waitUntil = Date.now() + 30000; fails = 0; pad.shake("Demasiados intentos. Espera 30 segundos"); } else pad.shake("PIN incorrecto"); }
+  }, `${LK().bio && LK().cred ? `<button class="bio" id="bioBtn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 11v3m-4-5a4 4 0 0 1 8 0v5a4 4 0 0 1-1 2.6M8 9v5c0 2 .8 3.8 2 5M5 8a7 7 0 0 1 14 0v5M5 12v1c0 2.6 1 5 2.6 6.8"/></svg>Usar huella / Face ID</button>` : ""}
+    <button class="muted" id="forgot" style="margin-top:16px;font-size:13px">¿Olvidaste tu PIN?</button>`);
+  el.insertAdjacentHTML("afterbegin", `<img class="lockicon" src="icon-192.png" alt="">`);
+  const tryBio = async () => { try { if (await bioCheck()) unlock(); } catch (e) { pad.sub("Ingresa tu PIN"); } };
+  if ($("#bioBtn")) { $("#bioBtn").onclick = tryBio; setTimeout(tryBio, 300); }
+  $("#forgot").onclick = async () => {
+    unlockForDialog(true);
+    const ok = await dialog("¿Olvidaste tu PIN?", "Por seguridad, la única forma de entrar sin el PIN es <b>borrar los datos de la app en este teléfono</b>. Después puedes cargar tu último respaldo desde Perfil → Restaurar respaldo.", "Borrar datos y entrar");
+    unlockForDialog(false);
+    if (ok) { ST.items = []; ST.settings.lock = { on: false, pin: "", salt: "", bio: false, cred: "", after: 1 }; save(true); unlock(); go("lista"); toast("Datos borrados. Restaura tu respaldo en Perfil."); }
+  };
+}
+function unlockForDialog(on) { $("#modal").style.zIndex = on ? 110 : ""; }
+function unlock() { locked = false; document.documentElement.classList.remove("locked"); $("#lock").classList.remove("on"); $("#lock").innerHTML = ""; }
+document.addEventListener("visibilitychange", () => {
+  if (busy) return;
+  if (document.hidden) hiddenAt = Date.now();
+  else if (LK().on && !locked && hiddenAt && Date.now() - hiddenAt >= (LK().after || 0) * 60000) showLock();
+});
+/* la cámara/selector de archivos esconde la app un momento: que no bloquee por eso */
+document.addEventListener("click", e => { if (e.target.closest("label") && e.target.closest("label").querySelector("input[type=file]")) { busy = true; setTimeout(() => busy = false, 120000); } }, true);
+document.addEventListener("change", e => { if (e.target.type === "file") setTimeout(() => busy = false, 1500); }, true);
+window.addEventListener("focus", () => { if (busy) setTimeout(() => busy = false, 1500); });
+
+async function bindSecurity() {
+  const L = LK(); const bioOk = await bioAvailable();
+  $("#secBody").innerHTML = `
+    <button class="setrow" id="sLock"><div><b>Bloquear con PIN</b><small>Pide un PIN de 4 dígitos al abrir la app</small></div><span class="sw ${L.on ? "on" : ""}"></span></button>
+    ${L.on ? `
+    <button class="setrow" id="sBio" ${bioOk ? "" : "disabled"}><div><b>Huella / Face ID</b><small>${bioOk ? "Entra con tu huella o tu cara; el PIN queda de respaldo" : "Este teléfono o navegador no lo permite"}</small></div><span class="sw ${L.bio && L.cred ? "on" : ""}"></span></button>
+    <div class="setrow"><div><b>Bloquear</b><small>Cuándo pedir el PIN de nuevo</small></div>
+      <select class="inp" id="sAfter"><option value="0">Al salir de la app</option><option value="1">Después de 1 minuto</option><option value="5">Después de 5 minutos</option></select></div>
+    <button class="setrow" id="sChg"><div><b>Cambiar PIN</b></div><span class="muted">›</span></button>` : ""}`;
+  if ($("#sAfter")) { $("#sAfter").value = String(L.after ?? 1); $("#sAfter").onchange = e => { L.after = +e.target.value; save(true); }; }
+  $("#sLock").onclick = async () => {
+    if (!L.on) {
+      const p1 = await askPin("Crea tu PIN", "Elige 4 números que recuerdes"); if (!p1) return;
+      const p2 = await askPin("Confirma tu PIN", "Escríbelo otra vez"); if (!p2) return;
+      if (p1 !== p2) { toast("Los PIN no coinciden. Intenta de nuevo."); return; }
+      L.salt = b64(crypto.getRandomValues(new Uint8Array(12))); L.pin = await sha(L.salt + p1); L.on = true; L.after = 1; save(true);
+      toast("🔒 Bloqueo activado");
+      if (bioOk && await dialog("¿Usar también la huella?", "Así puedes entrar con tu huella o Face ID, y el PIN queda de respaldo.", "Sí, activar huella")) await enableBio();
+    } else {
+      const p = await askPin("Desactivar bloqueo", "Ingresa tu PIN actual"); if (!p) return;
+      if (!(await verifyPin(p))) { toast("PIN incorrecto"); return; }
+      Object.assign(L, { on: false, pin: "", salt: "", bio: false, cred: "" }); save(true); toast("Bloqueo desactivado");
+    }
+    bindSecurity();
+  };
+  const enableBio = async () => {
+    try { L.cred = await bioRegister(); L.bio = true; save(true); toast("✅ Huella activada"); }
+    catch (e) { toast(e.name === "NotAllowedError" ? "Se canceló la huella" : "No se pudo activar la huella en este teléfono"); }
+  };
+  if ($("#sBio")) $("#sBio").onclick = async () => { if (L.bio && L.cred) { L.bio = false; L.cred = ""; save(true); toast("Huella desactivada"); } else await enableBio(); bindSecurity(); };
+  if ($("#sChg")) $("#sChg").onclick = async () => {
+    const o = await askPin("Cambiar PIN", "Ingresa tu PIN actual"); if (!o) return;
+    if (!(await verifyPin(o))) { toast("PIN incorrecto"); return; }
+    const p1 = await askPin("Nuevo PIN", "Elige 4 números"); if (!p1) return;
+    const p2 = await askPin("Confirma el nuevo PIN", "Escríbelo otra vez"); if (!p2) return;
+    if (p1 !== p2) { toast("Los PIN no coinciden"); return; }
+    L.pin = await sha(L.salt + p1); save(true); toast("PIN cambiado");
+  };
+}
+
 /* ================= Inicio ================= */
-load();
+load(); applyTheme();
 const h0 = location.hash.slice(1);
-go(["lista", "buscar", "importar", "perfil"].includes(h0) ? h0 : "lista", false);
-history.replaceState(null, "", "#" + cur);
-if (h0.startsWith("serie-")) openDetail(h0.slice(6));
+history.replaceState(null, "", "#inicio");
+go(VIEWS.includes(h0) ? h0 : "lista", false);
+if (h0.startsWith("serie-")) openDetail(h0.slice(6), false);
+document.addEventListener("gesturestart", e => e.preventDefault());
+showLock();
 if (pendingItems().length && navigator.onLine) setTimeout(enrichAll, 1500);
 if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js").catch(() => {});
 </script>
