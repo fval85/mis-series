@@ -78,7 +78,10 @@ nav button.on{color:var(--acc)}
 nav svg{width:23px;height:23px}
 .banner{background:var(--card);border-radius:var(--rc);padding:12px 14px;margin-bottom:14px;font-size:13px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 .banner>div{min-width:0}
-.banner>div:first-child{flex:1 1 170px}
+.banner>div:not(.spin):first-of-type{flex:1 1 170px}
+.spin{flex:0 0 auto!important}
+.bar.live i{background-image:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);background-size:60% 100%;background-repeat:no-repeat;animation:shim 1.3s linear infinite;transition:width .4s}
+@keyframes shim{from{background-position:-60% 0}to{background-position:160% 0}}
 .hero .ph span{display:none}
 .banner .bar{flex:1;margin:6px 0 0;height:4px}
 .card{background:var(--card);border-radius:var(--rc);padding:14px;margin-bottom:12px}
@@ -259,7 +262,7 @@ html.locked body>*:not(#lock):not(#toast):not(#modal){visibility:hidden}
 /* ================= Datos ================= */
 const KEY = "misseries.v1";
 const ST = { items: [], settings: { tmdb: "", theme: "sistema", palette: "menta", custom: "#7c9cd6", shape: "redonda", lastBackup: "", backupSnooze: "", seenVersion: "", lock: {} } };
-const APP_VERSION = "1.2";
+const APP_VERSION = "1.2.1";
 const STATUS = { viendo: "Viendo", terminada: "Terminada", pausa: "En pausa", pendiente: "Pendiente" };
 let filter = "todas", platFilter = "todas", sortBy = "reciente", findQ = "";
 
@@ -431,7 +434,7 @@ function renderBanner() {
   const b = $("#enrichBanner"); const pend = pendingItems().length; const rev = ST.items.filter(x => x.match === "review" || x.match === "none").length;
   if (enriching) {
     const p = Math.round(enrichDone / Math.max(1, enrichTotal) * 100);
-    b.innerHTML = `<div class="banner"><div class="spin"></div><div style="flex:1">Buscando fotos y sinopsis… <b>${enrichDone} de ${enrichTotal}</b><div class="bar"><i style="width:${p}%"></i></div></div><button class="btn2 sm" id="stopE">Pausar</button></div>`;
+    b.innerHTML = `<div class="banner" style="flex-wrap:nowrap"><div style="flex:1;min-width:0"><div class="row" style="font-size:13px"><span>🖼️ Buscando fotos y sinopsis</span><b style="white-space:nowrap">${enrichDone} / ${enrichTotal}</b></div><div class="bar live" style="height:5px;margin-top:8px"><i style="width:${Math.max(4, p)}%"></i></div></div><button class="btn2 sm" id="stopE">Pausar</button></div>`;
     $("#stopE").onclick = () => { enrichStop = true; toast("Se pausará en un momento"); };
   } else if (pend) {
     b.innerHTML = `<div class="banner"><div style="flex:1">${pend} series esperan su foto y sinopsis.</div><button class="btn sm" id="goE">Buscar</button></div>`;
@@ -607,7 +610,7 @@ function openDetail(id, push = true) {
       <div class="row" style="margin-top:10px"><span class="muted" style="font-size:13px">Ajustar episodios</span><span><button class="btn2 sm" data-ep="-1">−</button> <button class="btn2 sm" data-ep="1">+</button></span></div></div>`;
   const warn = it.match === "review" ? `<div class="banner" style="background:rgba(245,184,74,.1)">⚠ ¿Es esta la serie correcta? <button class="btn2 sm" id="dOk" style="margin-left:auto">Sí</button><button class="btn sm" id="dRe2">Cambiar</button></div>`
     : it.match === "none" ? `<div class="banner" style="background:rgba(245,184,74,.1)">⚠ No encontramos esta serie automáticamente.<button class="btn sm" id="dRe2" style="margin-left:auto">Buscarla</button></div>`
-    : it.match === "pending" ? `<div class="banner"><div class="spin"></div>Buscando foto y sinopsis…</div>` : "";
+    : it.match === "pending" ? `<div class="banner"><div style="flex:1"><div style="font-size:13px">🖼️ Buscando foto y sinopsis…</div><div class="bar live" style="height:4px;margin-top:8px"><i style="width:40%"></i></div></div></div>` : "";
   $("#detail").innerHTML = `
     <div class="hero">${posterHTML(it, true)}<button class="back" id="dBack" aria-label="Volver"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6"><path d="m15 5-7 7 7 7"/></svg></button></div>
     <div class="dbody">
@@ -1148,10 +1151,9 @@ if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
 }
 document.addEventListener("visibilitychange", () => { if (!document.hidden && Date.now() - lastCheck > 30 * 60000) checkUpdate(); });
 /* Novedades después de actualizar */
-const NOVEDADES = ["🎨 6 temas pastel, «Mi color» y forma de las esquinas (Perfil → Apariencia)",
-  "📺 Disney+, Prime Video, Max y más: etiqueta de color en cada póster y filtro por app",
-  "⚡ Agregar varias series a la vez, con las populares de cada plataforma",
-  "🔄 Desliza hacia abajo en Mi lista para actualizar, y aviso cuando hay versión nueva"];
+const NOVEDADES = ["🖼️ Nueva barra de progreso al buscar fotos y sinopsis (adiós al círculo estirado)",
+  "🎨 Temas pastel, «Mi color» y forma de las esquinas (Perfil → Apariencia)",
+  "📺 Disney+, Prime Video, Max y más, con «Agregar varias» a la vez"];
 function showNews() {
   const prev = ST.settings.seenVersion; ST.settings.seenVersion = APP_VERSION; save(true);
   if (!prev && !ST.items.length) return;               // primera vez que se abre: no molestar
