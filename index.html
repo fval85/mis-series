@@ -212,6 +212,47 @@ html[data-theme=dark] .dcm b,html[data-theme=dark] .fxm b{color:#f5c518}
 .fxm{font-size:12.5px;color:var(--mut);line-height:1.5}
 .prov{display:flex;align-items:center;gap:10px;background:var(--card2);border-radius:var(--rb);padding:9px 11px;font-size:13px;margin:12px 0}
 .prov .logo{width:34px;height:34px;border-radius:9px;font-size:11px}
+/* pendientes con dónde verla (v1.5) */
+.pl{display:flex;gap:11px;background:var(--card);border-radius:var(--rc);padding:10px;margin-bottom:9px;width:100%;text-align:left;align-items:center}
+.pl .poster{width:54px;flex-shrink:0;border-radius:8px}
+.pl .ph span{display:none}
+.pln{font-weight:800;font-size:14.5px;line-height:1.2}
+.where{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.wh{font-size:10.5px;font-weight:800;color:#fff;padding:3px 7px;border-radius:6px;white-space:nowrap}
+.wh.no{background:var(--card2);color:var(--mut)}
+/* si te gustó esta… (v1.5) */
+.rec{display:flex;gap:10px;overflow-x:auto;margin:0 -16px 14px;padding:0 16px 2px;scrollbar-width:none;overscroll-behavior-x:contain}
+.rec::-webkit-scrollbar{display:none}
+.rc{flex:0 0 104px;min-width:0;cursor:pointer}
+.rc .ph span{font-size:9px;left:6px;right:6px;bottom:6px}
+.rplus{position:absolute;right:6px;bottom:6px;z-index:3;width:30px;height:30px;border-radius:50%;background:var(--acc);color:var(--on);font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.rplus.ok{background:var(--card2);color:var(--acc);font-size:14px}
+/* tu año en series (v1.5) */
+#story{position:fixed;inset:0;z-index:70;display:none;color:#fff;max-width:560px;margin:0 auto;cursor:pointer}
+#story.on{display:block}
+.stw{position:absolute;inset:0;display:flex;flex-direction:column;padding:calc(66px + var(--st)) calc(26px + var(--sr)) calc(44px + var(--sb)) calc(26px + var(--sl));overflow:hidden}
+.segs{position:absolute;top:calc(12px + var(--st));left:14px;right:14px;display:flex;gap:4px;z-index:2}
+.segs i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.35)}
+.segs i.f{background:#fff}
+.stx{position:absolute;top:calc(22px + var(--st));right:10px;z-index:3;width:42px;height:42px;font-size:20px;color:#fff}
+.kick{font-size:13px;font-weight:800;letter-spacing:2px;text-transform:uppercase;opacity:.8}
+.huge{font-size:clamp(64px,22vw,96px);font-weight:900;line-height:1;letter-spacing:-2px}
+.bigt{font-size:clamp(26px,8vw,34px);font-weight:800;line-height:1.15}
+.stsm{font-size:15px;opacity:.9;line-height:1.45}
+.sttap{position:absolute;bottom:calc(14px + var(--sb));left:0;right:0;text-align:center;font-size:11px;opacity:.6}
+.mbar{display:flex;align-items:flex-end;gap:5px;height:160px;margin:20px 0 6px}
+.mbar div{flex:1;border-radius:4px 4px 0 0;background:rgba(255,255,255,.35);min-height:2px}
+.mbar div.top{background:#f5c518}
+.mlab{display:flex;gap:5px;font-size:10px;opacity:.75}.mlab span{flex:1;text-align:center}
+.toprow{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.toprow .n{font-size:26px;font-weight:900;width:24px;opacity:.8;flex-shrink:0}
+.toprow .poster{width:46px;flex-shrink:0;border-radius:7px}
+.toprow .ph span{display:none}
+.toprow b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stshare{margin-top:auto;align-self:center;background:#fff;color:#141c19;font-weight:800;padding:13px 22px;border-radius:24px;font-size:15px;position:relative;z-index:3}
+.appsq{width:110px;height:110px;border-radius:26px;border:3px solid rgba(255,255,255,.85);font-size:44px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:26px 0 18px}
+.wrapban{display:flex;gap:12px;align-items:center;border-radius:var(--rc);padding:13px 14px;margin-bottom:14px;color:#fff;background:linear-gradient(135deg,#1f6b52,#3a9a75 55%,#7fcfae);width:100%;text-align:left}
+.wrapban .go{background:#fff;color:#1f6b52;font-weight:800;font-size:12.5px;padding:7px 12px;border-radius:20px;flex-shrink:0}
 /* ajustes: pie con la versión */
 .updcard{text-align:center}
 .appid{display:flex;align-items:center;gap:11px;justify-content:center;margin-bottom:12px}
@@ -249,6 +290,7 @@ html.locked body>*:not(#lock):not(#toast):not(#modal){visibility:hidden}
   <div class="chips" id="chips"></div>
   <div class="chips" id="pchips"></div>
   <div class="stats" id="stats"></div>
+  <div id="wrapBan"></div>
   <div id="enrichBanner"></div>
   <div id="seguir"></div>
   <div class="tools"><select class="inp" id="sort">
@@ -295,6 +337,8 @@ html.locked body>*:not(#lock):not(#toast):not(#modal){visibility:hidden}
     <button class="src" data-g="prime"><div class="logo" style="background:#00a8e1">PV</div><div style="flex:1"><b>Prime Video</b><span class="tagp" style="background:var(--warn)">SOLICITUD</span><div class="muted" style="font-size:12px;margin-top:2px">Pide tus datos a Amazon o agrégalas rápido.</div></div></button>
     <button class="src" data-g="disney"><div class="logo" style="background:#1f4fd8">D+</div><div style="flex:1"><b>Disney+</b><span class="tagp" style="background:var(--warn)">SOLICITUD</span><div class="muted" style="font-size:12px;margin-top:2px">No tiene botón de descarga. Agrégalas rápido.</div></div></button>
     <button class="src" data-g="max"><div class="logo" style="background:#6a2bd9">MAX</div><div style="flex:1"><b>Max</b><span class="tagp" style="background:var(--warn)">SOLICITUD</span><div class="muted" style="font-size:12px;margin-top:2px">Formulario de acceso a tus datos.</div></div></button>
+    <button class="src" data-g="csv"><div class="logo" style="background:var(--card2);color:var(--tx);font-size:11px">CSV</div><div style="flex:1"><b>Otro archivo CSV</b><div class="muted" style="font-size:12px;margin-top:2px">De Prime Video, Max u otra app. La app adivina qué columna es cada cosa.</div></div></button>
+    <input type="file" id="csv2" accept=".csv,text/csv,.txt,text/plain" hidden>
     <button class="src" data-g="varias" style="border:1.5px dashed var(--off);background:none"><div class="logo" style="background:var(--card2);color:var(--tx)">⚡</div><div style="flex:1"><b>Agregar varias rápido</b><div class="muted" style="font-size:12px;margin-top:2px">Elige la app, busca y marca las que ya viste.</div></div></button>
   </div>
   <div id="impReview"></div>
@@ -317,6 +361,7 @@ html.locked body>*:not(#lock):not(#toast):not(#modal){visibility:hidden}
 </section>
 
 <div id="detail"></div>
+<div id="story"></div>
 
 <nav>
   <button data-go="lista"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="9" rx="1.5"/><rect x="3" y="15" width="7" height="6" rx="1.5"/><rect x="14" y="15" width="7" height="6" rx="1.5"/></svg>Mi lista</button>
@@ -335,19 +380,22 @@ html.locked body>*:not(#lock):not(#toast):not(#modal){visibility:hidden}
 "use strict";
 /* ================= Datos ================= */
 const KEY = "misseries.v1";
-const ST = { items: [], settings: { tmdb: "", theme: "sistema", palette: "menta", custom: "#7c9cd6", shape: "redonda", lastBackup: "", backupSnooze: "", seenVersion: "", lastUpdCheck: "", lock: {}, disc: {} } };
-const APP_VERSION = "1.4.0";
+const ST = { items: [], settings: { tmdb: "", theme: "sistema", palette: "menta", custom: "#7c9cd6", shape: "redonda", lastBackup: "", backupSnooze: "", seenVersion: "", lastUpdCheck: "", lock: {}, disc: {}, wrapSeen: "" } };
+const APP_VERSION = "1.5.0";
 const STATUS = { viendo: "Viendo", terminada: "Terminada", pausa: "En pausa", pendiente: "Pendiente" };
 let filter = "todas", platFilter = "todas", sortBy = "reciente", findQ = "";
 let swReg = null, reloading = false, lastCheck = 0, updState = "idle";
 
 /* Migraciones: se aplican al abrir la app y al restaurar un respaldo. Nunca borran datos.
    v1.3 agrega campos opcionales por serie: nueva {s,d}, nuevaOff, prox {d,s,e} y chk (fecha de revisión).
-   v1.4 no cambia las series; solo agrega settings.disc (filtros de Descubrir). */
+   v1.4 no cambia las series; solo agrega settings.disc (filtros de Descubrir).
+   v1.5 agrega campos opcionales por serie: months {"AAAA-MM": episodios}, donde {d, p:[apps]} y api.lang. */
 function migrate(items) {
   (items || []).forEach(it => {
     if (it.platform === undefined) it.platform = it.source === "netflix" ? "netflix" : "";
     if (it.nueva && !(it.nueva.s > 0)) delete it.nueva;
+    if (it.months && (typeof it.months !== "object" || Array.isArray(it.months))) delete it.months;
+    if (it.donde && !Array.isArray(it.donde.p)) delete it.donde;
   });
   return items || [];
 }
@@ -385,6 +433,8 @@ function posterHTML(it, big) {
   return (url ? `<img loading="lazy" src="${esc(url)}" alt="" onerror="this.remove()">` : "") + (url ? "" : ph(dispName(it)));
 }
 const dispName = it => (it.api && it.api.title) || it.name;
+const HANGUL = /[\u1100-\u11ff\u3130-\u318f\uac00-\ud7af]/;
+const nf = n => (n || 0).toLocaleString("es");
 const newTag = it => it.nueva ? `<span class="newtag">★ NUEVA T${it.nueva.s}</span>` : "";
 
 function toast(m) { const t = $("#toast"); t.textContent = m; t.classList.add("on"); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove("on"), 2600); }
@@ -443,7 +493,7 @@ async function searchShows(q, kind) {
       out = out.concat((d.results || []).slice(0, 8).map(r => ({
         src: "tmdb", id: r.id, kind: k === "movie" ? "pelicula" : "serie",
         title: r.name || r.title, orig: r.original_name || r.original_title,
-        year: (r.first_air_date || r.release_date || "").slice(0, 4), overview: r.overview,
+        year: (r.first_air_date || r.release_date || "").slice(0, 4), overview: r.overview, lang: r.original_language || "",
         poster: r.poster_path ? TMDB_IMG + "w342" + r.poster_path : "", backdrop: r.backdrop_path ? TMDB_IMG + "w780" + r.backdrop_path : ""
       })));
       if (out.length && kind) break;
@@ -463,7 +513,8 @@ async function details(c) {
     const d = await tmdb(`/${t}/${c.id}`, { language: "es-MX" });
     a.genres = (d.genres || []).map(g => g.name);
     a.totalEp = d.number_of_episodes || 0; a.seasons = d.number_of_seasons || 0;
-    a.overview = d.overview || a.overview;
+    a.overview = d.overview || a.overview; a.lang = d.original_language || a.lang || "";
+    if (HANGUL.test(a.title || "")) a.title = await altTitle(t, c.id, a.title);
     if (!a.overview) { try { const e = await tmdb(`/${t}/${c.id}`, { language: "es-ES" }); a.overview = e.overview; } catch (e) {} }
     if (!a.overview) { try { const e = await tmdb(`/${t}/${c.id}`, { language: "en-US" }); a.overview = e.overview; } catch (e) {} }
     if (d.backdrop_path) a.backdrop = TMDB_IMG + "w780" + d.backdrop_path;
@@ -474,8 +525,16 @@ async function details(c) {
   }
   return a;
 }
+/* Títulos en coreano (v1.5): si TMDB no tiene el nombre en es-MX, se prueba es-ES y luego en-US */
+async function altTitle(t, id, cur) {
+  for (const lang of ["es-ES", "en-US"]) {
+    try { const e = await tmdb(`/${t}/${id}`, { language: lang }); const n = e.name || e.title; if (n && !HANGUL.test(n)) return n; } catch (e) {}
+  }
+  return cur;
+}
 function applyApi(it, a, match) {
-  it.api = { src: a.src, id: a.id, title: a.title, year: a.year, overview: a.overview || "", poster: a.poster || "", backdrop: a.backdrop || "", genres: a.genres || [], totalEp: a.totalEp || 0, seasons: a.seasons || 0 };
+  const old = it.api || {};
+  it.api = { src: a.src, id: a.id, title: a.title, year: a.year, overview: a.overview || "", poster: a.poster || "", backdrop: a.backdrop || "", genres: a.genres || [], totalEp: a.totalEp || 0, seasons: a.seasons || 0, lang: a.lang || (old.id === a.id ? old.lang : "") || "" };
   if (a.kind) it.kind = a.kind;
   it.match = match || "ok";
   autoStatus(it);
@@ -543,7 +602,10 @@ async function checkNewSeasons(force) {
   renderBanner();
   for (const it of list) {
     if (!byId(it.id)) { nsDone++; continue; }
-    try { const d = await tmdb(`/tv/${it.api.id}`, { language: "es-MX" }); if (applySeasonInfo(it, d)) found++; fails = 0; }
+    try {
+      const d = await tmdb(`/tv/${it.api.id}`, { language: "es-MX" }); if (applySeasonInfo(it, d)) found++; fails = 0;
+      if (HANGUL.test(it.api.title || "") && !it.api.tfix) { it.api.tfix = 1; it.api.title = await altTitle("tv", it.api.id, it.api.title); }
+    }
     catch (e) { if (e.auth || ++fails >= 3) break; }
     nsDone++; save();
     if (nsDone % 8 === 0) renderBanner();
@@ -555,6 +617,7 @@ async function checkNewSeasons(force) {
 function applySeasonInfo(it, d) {
   it.chk = new Date().toISOString();
   const a = it.api;
+  if (!a.lang && d.original_language) a.lang = d.original_language;
   if (d.number_of_episodes) a.totalEp = d.number_of_episodes;
   if (d.number_of_seasons) a.seasons = d.number_of_seasons;
   const nx = d.next_episode_to_air;
@@ -685,6 +748,7 @@ const VIEWS = ["lista", "descubrir", "buscar", "importar", "perfil", "varias"];
 let skipPop = false, popping = false;
 window.addEventListener("popstate", () => {
   if (skipPop) { skipPop = false; return; }
+  if (SV) { closeStory(true); return; }
   if (modalClose) { const fx = $("#mbox").classList.contains("fx"); popping = true; closeModal(); popping = false; if (fx) return; }
   const h = location.hash.slice(1);
   if (h.startsWith("serie-")) { openDetail(h.slice(6), false); return; }
@@ -736,7 +800,7 @@ function renderList() {
     pk.map(k => `<button class="chip ${platFilter === k ? "on" : ""}" data-p="${k}"><i class="dot" style="background:${PLAT[k].c}"></i>${PLAT[k].n}<small>${pc[k]}</small></button>`).join("");
   document.querySelectorAll("#pchips .chip").forEach(b => b.onclick = () => { platFilter = b.dataset.p; renderList(); });
   renderStats(c);
-  renderBanner(); renderSeguir(); renderGrid();
+  renderWrapBan(); renderBanner(); renderSeguir(); renderGrid();
 }
 function visibleItems() {
   let l = ST.items.filter(it => {
@@ -761,6 +825,8 @@ function visibleItems() {
 const pctOf = it => { const tot = it.api && it.api.totalEp; return it.kind === "pelicula" ? 100 : tot ? Math.min(100, Math.round((it.epSeen || 0) / tot * 100)) : (it.status === "terminada" ? 100 : 0); };
 const tileSub = it => it.kind === "pelicula" ? "Película" : STATUS[it.status] + (it.epSeen ? ` · ${it.epSeen} ep` : "");
 function renderGrid() {
+  if (filter === "pendiente" && !findQ) { renderPend(); return; }
+  $("#grid").style.display = ""; $(".tools").style.display = "";
   const l = visibleItems();
   $("#grid").innerHTML = l.map(it => {
     const flag = (it.match === "review" || it.match === "none") ? `<span class="badge" style="color:var(--warn)">⚠</span>` : it.rating ? `<span class="badge">★ ${it.rating}</span>` : "";
@@ -803,7 +869,12 @@ function renderSeguir() {
 /* Suma o resta episodios. Al sumar, cuenta como «vista hoy» y quita el aviso de temporada nueva. */
 function addEp(id, n, cardEl) {
   const it = byId(id); if (!it) return;
-  it.epSeen = Math.max(0, (it.epSeen || 0) + n);
+  const before = it.epSeen || 0;
+  it.epSeen = Math.max(0, before + n);
+  /* v1.5: cada episodio queda anotado en su mes, para «Tu año en series» */
+  const ym = todayISO().slice(0, 7), dn = it.epSeen - before;
+  if (dn > 0) { it.months = it.months || {}; it.months[ym] = (it.months[ym] || 0) + dn; }
+  else if (dn < 0 && it.months && it.months[ym]) { it.months[ym] = Math.max(0, it.months[ym] + dn); if (!it.months[ym]) delete it.months[ym]; }
   let full = false;
   if (n > 0) {
     it.lastSeen = todayISO(); if (!it.firstSeen) it.firstSeen = it.lastSeen;
@@ -855,10 +926,11 @@ function openDetail(id, push = true) {
       ${it.kind === "pelicula" ? "" : `<div class="seg" id="dSeg" style="margin-bottom:14px">${Object.entries(STATUS).map(([k, l]) => `<button data-s="${k}" class="${it.status === k ? "on" : ""}">${l}</button>`).join("")}</div>`}
       <p class="syn" style="margin-bottom:14px">${a.overview ? esc(a.overview) : `<span class="muted">Todavía no hay sinopsis.</span>`}</p>
       ${prog}
+      <div id="dRec"></div>
       <div class="card"><div class="lbl">Mis notas</div><textarea class="inp" id="dNotes" placeholder="¿Qué te pareció? ¿Con quién la viste?">${esc(it.notes || "")}</textarea></div>
       <div class="muted" style="font-size:12.5px;line-height:1.6;margin:4px 0 16px">
         ${it.firstSeen ? `Primera vez: ${fdate(it.firstSeen)} · Última vez: ${fdate(it.lastSeen)}<br>` : ""}
-        ${it.source === "netflix" ? `En Netflix aparece como «${esc(it.name)}»` : `Agregada el ${fdate((it.added || "").slice(0, 10))}`}
+        ${it.source === "netflix" ? `En Netflix aparece como «${esc(it.name)}»` : it.source === "csv" ? `En el archivo importado aparece como «${esc(it.name)}»` : `Agregada el ${fdate((it.added || "").slice(0, 10))}`}
       </div>
       <button class="btn2" id="dRe">Cambiar foto / sinopsis (otra coincidencia)</button>
       <button class="btn2" id="dDel" style="margin-top:8px;color:var(--danger)">Eliminar de mi lista</button>
@@ -884,6 +956,12 @@ function openDetail(id, push = true) {
   const re = () => { reassign = id; $("#addTitle").textContent = "Elegir coincidencia"; $("#q").value = it.name; closeDetail(false); go("buscar"); doSearch(); };
   $("#dRe").onclick = re; if ($("#dRe2")) $("#dRe2").onclick = re;
   if ($("#dOk")) $("#dOk").onclick = () => { it.match = "ok"; save(); openDetail(id, false); };
+  $("#dRec").onclick = e => {
+    const w = e.target.closest("[data-rw]");
+    if (w) { const r = dFind(+w.dataset.rw); if (!r) return; const m = inList(r); if (m) openDetail(m.id); else { wantIt(r.id); redrawRec(r.id); } return; }
+    const c = e.target.closest(".rc"); if (c) openFicha(+c.dataset.rid);
+  };
+  drawRecs(it);
   $("#dDel").onclick = async () => { if (await dialog("¿Eliminar?", `Se quitará <b>${esc(dispName(it))}</b> de tu lista, con sus notas y calificación.`, "Eliminar")) { ST.items = ST.items.filter(x => x.id !== id); save(true); closeDetail(); toast("Eliminada"); } };
 }
 function closeDetail(back) {
@@ -974,11 +1052,11 @@ function dParams(page) {
   return p;
 }
 const dMap = r => ({ src: "tmdb", id: r.id, kind: "serie", title: r.name || r.original_name || "", orig: r.original_name || "",
-  year: (r.first_air_date || "").slice(0, 4), overview: r.overview || "", vote: +r.vote_average || 0, votes: +r.vote_count || 0,
+  year: (r.first_air_date || "").slice(0, 4), overview: r.overview || "", vote: +r.vote_average || 0, votes: +r.vote_count || 0, lang: r.original_language || "",
   poster: r.poster_path ? TMDB_IMG + "w342" + r.poster_path : "", backdrop: r.backdrop_path ? TMDB_IMG + "w780" + r.backdrop_path : "" });
 function dFind(id) { for (const s of DV.cache.values()) { const r = s.list.find(x => x.id === id); if (r) return r; } return null; }
 const inList = r => ST.items.find(x => x.api && x.api.src === "tmdb" && x.api.id === r.id) || ST.items.find(x => x.kind !== "pelicula" && norm(x.name) === norm(r.title));
-const dPlatOf = r => { const d = dset(); return d.plat !== "todas" ? d.plat : ((DV.info.get(r.id) || {}).plat || ""); };
+const dPlatOf = r => { const d = dset(); return !r.rec && d.plat !== "todas" ? d.plat : ((DV.info.get(r.id) || {}).plat || ""); };
 const voteNum = v => v.toFixed(1).replace(".", ",");
 const voteTxt = r => r.votes ? `<span><b>★ ${voteNum(r.vote)}</b> TMDB</span>` : `<span>Sin votos aún</span>`;
 
@@ -1044,7 +1122,7 @@ async function dFill() {
       if (cur !== "descubrir" || !navigator.onLine) break;
       const s = DV.cache.get(dKey()); if (!s) break;
       const all = dset().plat === "todas";
-      const need = s.list.filter(r => !DV.info.has(r.id) && (all || !r.overview)).slice(0, 3);
+      const need = s.list.filter(r => !DV.info.has(r.id) && (all || !r.overview || HANGUL.test(r.title))).slice(0, 3);
       if (!need.length) break;
       await Promise.all(need.map(dInfo));
     }
@@ -1061,13 +1139,14 @@ async function dInfo(r) {
       inf.overview = d.overview || "";
       const pr = (((d["watch/providers"] || {}).results) || {}).CR; inf.provs = [];
       if (pr) for (const p of [...(pr.flatrate || []), ...(pr.ads || []), ...(pr.free || [])]) { const k = provToPlat(p.provider_name); if (k && !inf.provs.includes(k)) inf.provs.push(k); }
-      inf.plat = inf.provs[0] || "";
+      inf.plat = inf.provs[0] || ""; inf.lang = d.original_language || "";
+      if (HANGUL.test(r.title)) r.title = await altTitle("tv", r.id, r.title);
       if (!inf.overview && !r.overview) { try { inf.overview = (await tmdb(`/tv/${r.id}`, { language: "es-ES" })).overview || ""; } catch (e) {} }
       if (!inf.overview && !r.overview) { try { inf.overview = (await tmdb(`/tv/${r.id}`, { language: "en-US" })).overview || ""; inf.en = !!inf.overview; } catch (e) {} }
       inf.ready = true;
     } catch (e) { inf.fail = true; }
     delete inf.wait;
-    redrawCard(r.id);
+    redrawCard(r.id); redrawRec(r.id);
     return inf;
   })();
   return inf.wait;
@@ -1076,7 +1155,7 @@ function wantIt(id) {
   const r = dFind(id); if (!r) return;
   const had = inList(r); if (had) { openDetail(had.id); return; }
   const inf = DV.info.get(r.id) || {};
-  const it = { id: uid(), name: r.title, kind: "serie", status: "pendiente", statusAuto: false, rating: 0, notes: "", epSeen: 0, seasonsSeen: [], source: "manual", platform: dPlatOf(r), added: new Date().toISOString(), match: "ok" };
+  const it = { id: uid(), name: r.title, kind: r.kind || "serie", status: "pendiente", statusAuto: false, rating: 0, notes: "", epSeen: 0, seasonsSeen: [], source: "manual", platform: dPlatOf(r), added: new Date().toISOString(), match: "ok" };
   applyApi(it, { ...r, overview: r.overview || inf.overview || "", genres: inf.genres || [], totalEp: inf.eps || 0, seasons: inf.seasons || 0 }, "ok");
   ST.items.push(it); save(true);
   toast(`✓ «${r.title}» guardada en Pendientes`);
@@ -1088,7 +1167,7 @@ function fichaHTML(r) {
   const img = r.backdrop || r.poster;
   const m1 = [r.votes ? `<b>★ ${voteNum(r.vote)}</b> de 10 en TMDB` : "Sin votos aún", r.year, inf.eps ? `${inf.eps} episodios` : ""].filter(Boolean).join(" · ");
   const m2 = [(inf.genres || []).slice(0, 3).join(" · "), inf.seasons ? `${inf.seasons} temporada${inf.seasons > 1 ? "s" : ""}` : ""].filter(Boolean).join(" · ");
-  const provs = inf.provs && inf.provs.length ? inf.provs : (dset().plat !== "todas" ? [dset().plat] : []);
+  const provs = inf.provs && inf.provs.length ? inf.provs : (!r.rec && dset().plat !== "todas" ? [dset().plat] : []);
   const prov = !inf.ready && !inf.fail ? `<div class="bar live" style="height:4px;margin:14px 0"><i style="width:60%"></i></div>`
     : provs.length ? `<div class="prov"><div class="logo" style="background:${PLAT[provs[0]].c}">${PLAT[provs[0]].s}</div><div style="min-width:0"><b>Disponible en ${provs.map(k => PLAT[k].n).join(", ")}</b><div class="muted" style="font-size:11.5px;margin-top:1px">En Costa Rica, según TMDB</div></div></div>`
     : `<div class="prov"><div class="muted">No encontramos en qué app está en Costa Rica.</div></div>`;
@@ -1110,12 +1189,12 @@ function openFicha(id) {
     if (modalClose !== close) return;
     box.innerHTML = fichaHTML(r);
     $("#fxX").onclick = close;
-    if ($("#fxWant")) $("#fxWant").onclick = () => { wantIt(id); draw(); };
+    if ($("#fxWant")) $("#fxWant").onclick = () => { wantIt(id); redrawRec(id); draw(); };
     /* La ficha se cambia por la serie de Mi lista en el mismo paso del historial */
     if ($("#fxOpen")) $("#fxOpen").onclick = () => { const m = inList(r); if (!m) return; popping = true; close(); popping = false; openDetail(m.id, false); history.replaceState(null, "", "#serie-" + m.id); };
   };
   modalClose = close;
-  history.pushState(null, "", "#" + cur);
+  history.pushState(null, "", location.hash || "#" + cur);
   $("#modal").onclick = e => { if (e.target.id === "modal") close(); };
   $("#modal").classList.add("on"); draw();
   const inf = DV.info.get(r.id);
@@ -1133,14 +1212,254 @@ $("#dsRes").onclick = e => {
   else if (e.target.id === "dsKey") go("perfil");
 };
 
-/* ================= Importar CSV de Netflix ================= */
+
+/* ================= Si te gustó esta… (v1.5) =================
+   Recomendaciones de TMDB en el detalle de las series con 4 o 5 estrellas. Reutiliza la ficha y «Quiero verla» de Descubrir. */
+const REC = new Map();
+function loadRecs(it) {
+  const key = "rec:" + it.api.id;
+  if (REC.has(key)) return REC.get(key);
+  const p = tmdb(`/tv/${it.api.id}/recommendations`, { language: "es-MX" }).then(d => {
+    const list = (d.results || []).filter(r => r.id !== it.api.id).slice(0, 12).map(r => Object.assign(dMap(r), { rec: 1 }));
+    DV.cache.set(key, { list, page: 1, total: 1 }); return list;
+  }).catch(e => { REC.delete(key); throw e; });
+  REC.set(key, p); return p;
+}
+function recCard(r) {
+  const mine = inList(r), pk = (DV.info.get(r.id) || {}).plat || "";
+  return `<div class="rc" data-rid="${r.id}"><div class="poster">${r.poster ? `<img loading="lazy" src="${esc(r.poster)}" alt="" onerror="this.remove()">` : ph(r.title)}${platBadge(pk)}${r.votes ? `<span class="badge">★ ${voteNum(r.vote)}</span>` : ""}<button class="rplus ${mine ? "ok" : ""}" data-rw="${r.id}" aria-label="${mine ? "Ya está en tu lista" : "Quiero verla"}">${mine ? "✓" : "+"}</button></div><div class="tl">${esc(r.title)}</div></div>`;
+}
+function redrawRec(id) { const r = dFind(id), el = document.querySelector(`#dRec .rc[data-rid="${id}"]`); if (r && el) el.outerHTML = recCard(r); }
+async function drawRecs(it) {
+  const box = $("#dRec"); if (!box) return;
+  if (!(it.rating >= 4 && it.kind !== "pelicula" && it.api && it.api.src === "tmdb" && it.api.id && hasTmdb())) { box.innerHTML = ""; return; }
+  const cached = DV.cache.get("rec:" + it.api.id);
+  const head = `<div class="lbl">Si te gustó esta…</div>`;
+  const paint = list => { box.innerHTML = list.length ? head + `<div class="rec">${list.map(recCard).join("")}</div>` : ""; };
+  if (cached) paint(cached.list); else box.innerHTML = head + `<div class="bar live" style="height:4px;margin-bottom:14px"><i style="width:60%"></i></div>`;
+  try {
+    const list = await loadRecs(it);
+    if (!box.isConnected) return;
+    if (!cached) paint(list);
+    for (let i = 0; i < list.length; i += 3) {
+      if (!box.isConnected) return;
+      await Promise.all(list.slice(i, i + 3).filter(r => !DV.info.has(r.id)).map(dInfo));
+    }
+  } catch (e) { if (box.isConnected && !cached) box.innerHTML = ""; }
+}
+
+/* ================= Pendientes con «dónde verla» (v1.5) =================
+   Con el filtro Pendientes la lista se ve como tarjetas con las apps donde está cada serie en Costa Rica.
+   Se guarda en it.donde = {d: fecha ISO, p: [apps]} y se renueva cada 7 días. */
+let pendSort = "disp", pendRun = false;
+const dondeOf = it => it.donde && it.donde.p;
+function pendCard(it) {
+  const p = dondeOf(it), tm = it.api && it.api.src === "tmdb" && it.api.id;
+  const where = !hasTmdb() || !tm ? "" : !p ? `<span class="wh no">Buscando dónde verla…</span>`
+    : p.length ? p.map(k => `<span class="wh" style="background:${PLAT[k].c}">▶ Ver en ${PLAT[k].n}</span>`).join("") : `<span class="wh no">No está en tus apps en Costa Rica</span>`;
+  return `<button class="pl" data-id="${it.id}"><div class="poster">${platBadge(it.platform)}${posterHTML(it)}</div><div style="flex:1;min-width:0"><div class="pln">${esc(dispName(it))}</div>
+    <div class="muted" style="font-size:12px;margin-top:2px">Pendiente · agregada el ${fdate((it.added || "").slice(0, 10))}</div>${where ? `<div class="where">${where}</div>` : ""}</div></button>`;
+}
+function renderPend() {
+  const l = visibleItems().sort((a, b) => (b.added || "").localeCompare(a.added || ""));
+  if (pendSort === "disp") { const av = it => (dondeOf(it) || []).length ? 0 : 1; l.sort((a, b) => av(a) - av(b)); }
+  $(".tools").style.display = "none"; const g = $("#grid"); g.style.display = "block";
+  g.innerHTML = `<div class="dsort"><button data-ps="disp" class="${pendSort === "disp" ? "on" : ""}">Disponibles primero</button><button data-ps="add" class="${pendSort === "add" ? "on" : ""}">Agregadas</button><small>${l.length} pendiente${l.length === 1 ? "" : "s"}</small></div>`
+    + l.map(pendCard).join("") + (hasTmdb() ? "" : `<p class="muted" style="font-size:12px;text-align:center;margin-top:8px;line-height:1.5">Con la clave de TMDB verías en qué app está cada una.</p>`);
+  g.onclick = e => {
+    const s = e.target.closest("[data-ps]"); if (s) { pendSort = s.dataset.ps; renderPend(); return; }
+    const c = e.target.closest(".pl"); if (c) openDetail(c.dataset.id);
+  };
+  $("#listEmpty").innerHTML = l.length ? "" : `<div class="empty">No tienes series pendientes.<br>Busca ideas en <b>Descubrir</b>.</div>`;
+  pendFill();
+}
+async function pendFill() {
+  if (!hasTmdb() || pendRun || !navigator.onLine) return; pendRun = true;
+  try {
+    const old = Date.now() - 7 * 864e5;
+    const list = ST.items.filter(it => it.kind !== "pelicula" && it.status === "pendiente" && it.api && it.api.src === "tmdb" && it.api.id && (!it.donde || new Date(it.donde.d) < old));
+    for (let i = 0; i < list.length; i += 3) {
+      if (cur !== "lista" || filter !== "pendiente") break;
+      await Promise.all(list.slice(i, i + 3).map(async it => {
+        try {
+          const d = await tmdb(`/tv/${it.api.id}/watch/providers`); const r = (d.results || {}).CR; const p = [];
+          if (r) for (const x of [...(r.flatrate || []), ...(r.ads || []), ...(r.free || [])]) { const k = provToPlat(x.provider_name); if (k && !p.includes(k)) p.push(k); }
+          it.donde = { d: new Date().toISOString(), p };
+        } catch (e) { if (e.auth) throw e; }
+        const el = document.querySelector(`#grid .pl[data-id="${it.id}"]`); if (el) el.outerHTML = pendCard(it);
+      }));
+      save();
+    }
+  } catch (e) {} finally { pendRun = false; }
+}
+
+/* ================= Tu año en series (v1.5) =================
+   Usa it.months (episodios por mes, desde el CSV y desde cada «+1 ep»). Si una serie no tiene meses pero empezó y terminó ese año,
+   cuenta todos sus episodios. Se muestra como «historias» que se pasan tocando; la última crea una imagen 1080×1920 para compartir. */
+const wrapYear = () => { const d = new Date(); return d.getMonth() === 0 ? d.getFullYear() - 1 : d.getFullYear(); };
+const wrapSeason = () => { const m = new Date().getMonth(); return m === 11 || m === 0; };
+const MESES = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+function yearItems(Y) {
+  const y = String(Y);
+  return ST.items.filter(it => it.kind !== "pelicula" && (Object.keys(it.months || {}).some(k => k.startsWith(y) && it.months[k] > 0) ||
+    (it.lastSeen || "").startsWith(y) || (!it.lastSeen && (it.added || "").startsWith(y) && it.status === "viendo")));
+}
+function wrapData(Y) {
+  const y = String(Y), items = yearItems(Y), mon = Array(12).fill(0), monIt = Array.from({ length: 12 }, () => ({})), byPlat = {}, epsOf = {};
+  let eps = 0;
+  for (const it of items) {
+    const ms = Object.entries(it.months || {}).filter(([k, n]) => k.startsWith(y) && n > 0); let e = 0;
+    if (ms.length) for (const [k, n] of ms) { const m = +k.slice(5, 7) - 1; mon[m] += n; e += n; monIt[m][it.id] = (monIt[m][it.id] || 0) + n; }
+    else if ((it.firstSeen || "").startsWith(y)) e = it.epSeen || 0;
+    epsOf[it.id] = e; eps += e;
+  }
+  for (const it of items) { const k = PLAT[it.platform] && it.platform !== "otra" ? it.platform : ""; if (k) byPlat[k] = (byPlat[k] || 0) + (eps ? epsOf[it.id] : 1); }
+  const tot = Object.values(byPlat).reduce((a, b) => a + b, 0);
+  const plats = Object.entries(byPlat).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]).map(([k, n]) => [k, Math.round(n / tot * 100)]);
+  const mx = Math.max(...mon), best = mx > 0 ? mon.indexOf(mx) : -1;
+  let bestItem = null; if (best >= 0) { const e = Object.entries(monIt[best]).sort((a, b) => b[1] - a[1])[0]; bestItem = e && byId(e[0]); }
+  const gen = {}; items.forEach(it => ((it.api && it.api.genres) || []).forEach(g => gen[g] = (gen[g] || 0) + 1));
+  const genres = Object.entries(gen).sort((a, b) => b[1] - a[1]).slice(0, 2).map(x => x[0]);
+  const top = items.filter(it => it.rating > 0).sort((a, b) => b.rating - a.rating || (epsOf[b.id] || 0) - (epsOf[a.id] || 0)).slice(0, 5);
+  const fav = top.length ? top.slice(0, 3) : [...items].sort((a, b) => (epsOf[b.id] || 0) - (epsOf[a.id] || 0)).slice(0, 3);
+  return { Y, items, n: items.length, eps, hours: Math.round(eps * 50 / 60), fin: items.filter(it => it.status === "terminada").length,
+    mon, best, bestItem, plats, ko: items.filter(it => it.api && it.api.lang === "ko").length, genres, top, fav };
+}
+let SV = null;
+const GRAD = { portada: "linear-gradient(165deg,#0f3b2d,#1f6b52 45%,#3a9a75)", num: "linear-gradient(165deg,#0d2238,#1f4f8a 50%,#4a8cca)",
+  mes: "linear-gradient(165deg,#3a2200,#a8651a 50%,#d9a81c)", kd: "linear-gradient(165deg,#2a1640,#5b2a86 50%,#c0569b)", top: "linear-gradient(165deg,#0f3b2d,#1f6b52 45%,#3a9a75)" };
+function wrapSlides(W) { const s = ["portada", "num"]; if (W.plats.length) s.push("app"); if (W.best >= 0) s.push("mes"); if (W.ko) s.push("kd"); s.push("top"); return s; }
+function slideHTML(k, W, last) {
+  let bg = GRAD[k] || GRAD.portada, h = "";
+  const pl = (n, a, b) => n === 1 ? a : b;
+  if (k === "portada") h = `<div class="kick" style="margin-top:40px">Mis Series</div><div class="bigt" style="font-size:clamp(38px,12vw,50px);margin-top:10px">Tu ${W.Y}<br>en series</div><div class="stsm" style="margin-top:16px">Un año de maratones, lágrimas y «un capítulo más». 🍿</div>`;
+  if (k === "num") h = `<div class="kick" style="margin-top:20px">Este año viste</div><div class="huge" style="margin-top:14px">${nf(W.n)}</div><div class="bigt">${pl(W.n, "serie", "series")}</div>`
+    + (W.eps ? `<div class="huge" style="margin-top:26px;font-size:clamp(50px,17vw,72px)">${nf(W.eps)}</div><div class="bigt">${pl(W.eps, "episodio", "episodios")}</div>` : "")
+    + `<div class="stsm" style="margin-top:20px">${W.eps ? `Unas <b>${nf(W.hours)} horas</b>${W.hours >= 48 ? `: casi ${Math.round(W.hours / 24)} días seguidos` : ""}. ` : ""}${W.fin} ${pl(W.fin, "serie terminada", "series terminadas")}.</div>`;
+  if (k === "app") {
+    const P = PLAT[W.plats[0][0]]; bg = `linear-gradient(165deg,${mix(P.c, "#000000", .75)},${mix(P.c, "#000000", .35)} 50%,${P.c})`;
+    h = `<div class="kick" style="margin-top:20px">Tu app favorita</div><div class="appsq" style="background:${P.c}">${P.s}</div><div class="bigt" style="font-size:clamp(32px,11vw,42px)">${P.n}</div><div class="stsm" style="margin-top:6px">${W.plats[0][1]} % de ${W.eps ? "tus episodios" : "tus series"}</div>
+      <div style="margin-top:22px;font-size:13px">${W.plats.slice(0, 4).map(([q, p]) => `<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="width:90px">${PLAT[q].n}</span><span style="flex:1;height:8px;background:rgba(255,255,255,.25);border-radius:5px;overflow:hidden"><i style="display:block;height:100%;width:${p}%;background:#fff"></i></span><b style="width:40px;text-align:right">${p}%</b></div>`).join("")}</div>`;
+  }
+  if (k === "mes") { const mx = Math.max(...W.mon);
+    h = `<div class="kick" style="margin-top:20px">Tu mes más maratonero</div><div class="bigt" style="font-size:clamp(36px,12vw,46px);margin-top:12px">${MESES[W.best]}</div><div class="stsm">${nf(W.mon[W.best])} ${pl(W.mon[W.best], "episodio", "episodios")}${W.bestItem ? ` · tu serie del mes: <b>${esc(dispName(W.bestItem))}</b>` : ""}</div>
+      <div class="mbar">${W.mon.map((v, i) => `<div class="${i === W.best ? "top" : ""}" style="height:${v / mx * 100}%"></div>`).join("")}</div><div class="mlab">${"EFMAMJJASOND".split("").map(m => `<span>${m}</span>`).join("")}</div>`; }
+  if (k === "kd") h = `<div class="kick" style="margin-top:20px">Tu corazón es coreano</div><div class="huge" style="margin-top:20px">${W.ko}</div><div class="bigt">${pl(W.ko, "K-drama", "K-dramas")} 🇰🇷</div>
+    <div class="stsm" style="margin-top:14px">${W.ko * 2 >= W.n ? "Más de la mitad de todo lo que viste." : `De ${W.n} series del año.`}${W.genres.length ? ` ${esc(W.genres.join(" y "))} ${W.genres.length > 1 ? "fueron tus géneros" : "fue tu género"} del año.` : ""}</div>`;
+  if (k === "top") h = `<div class="kick" style="margin-top:10px;margin-bottom:16px">Tus mejor calificadas</div>` + (W.top.length ? W.top.map((it, i) => `<div class="toprow"><span class="n">${i + 1}</span><div class="poster">${posterHTML(it)}</div><div style="min-width:0"><b>${esc(dispName(it))}</b><div style="color:#f5c518;font-size:13px">${"★".repeat(it.rating)}</div><div style="font-size:11.5px;opacity:.75">${esc([(it.api || {}).year, PLAT[it.platform] && it.platform !== "otra" ? PLAT[it.platform].n : ""].filter(Boolean).join(" · "))}</div></div></div>`).join("")
+    : `<div class="stsm">Todavía no calificaste series de ${W.Y}. Dales estrellas en su ficha y aparecerán aquí.</div>`);
+  return `<div class="stw" style="background:${bg}">${h}${last ? `<button class="stshare" id="stShare">📤 Compartir mi resumen</button>` : `<div class="sttap">Toca a la derecha para seguir ›</div>`}</div>`;
+}
+function drawStory() {
+  const { W, i, slides } = SV;
+  $("#story").innerHTML = `<div class="segs">${slides.map((_, j) => `<i class="${j <= i ? "f" : ""}"></i>`).join("")}</div><button class="stx" id="stX" aria-label="Cerrar">✕</button>${slideHTML(slides[i], W, i === slides.length - 1)}`;
+}
+function closeStory(fromPop) {
+  if (!SV) return; SV = null; $("#story").classList.remove("on"); $("#story").innerHTML = "";
+  if (!$("#detail").classList.contains("on")) document.body.style.overflow = "";
+  if (!fromPop) { skipPop = true; history.back(); }
+}
+$("#story").onclick = e => {
+  if (!SV) return;
+  if (e.target.closest("#stX")) { closeStory(); return; }
+  if (e.target.closest("#stShare")) { shareWrap(SV.W); return; }
+  const r = $("#story").getBoundingClientRect();
+  if (e.clientX - r.left < r.width / 3) { if (SV.i > 0) SV.i--; else return; }
+  else if (SV.i < SV.slides.length - 1) SV.i++; else return;
+  drawStory();
+};
+async function openWrap() {
+  const Y = wrapYear(); let items = yearItems(Y);
+  if (!items.length) { toast(`Todavía no hay series de ${Y} en tu lista`); return; }
+  /* Para contar K-dramas hace falta el idioma original de cada serie: se pide a TMDB una sola vez */
+  const need = items.filter(it => it.api && it.api.src === "tmdb" && it.api.id && !it.api.lang && it.kind !== "pelicula");
+  if (need.length && hasTmdb() && navigator.onLine) {
+    let done = 0; const box = $("#mbox"); box.className = "box";
+    const paint = () => { box.innerHTML = `<h3>🎬 Preparando tu resumen…</h3><div class="row" style="font-size:13px;color:var(--mut);margin-top:6px"><span>Revisando tus series</span><b>${done} / ${need.length}</b></div><div class="bar live" style="height:5px;margin-top:8px"><i style="width:${Math.max(4, done / need.length * 100)}%"></i></div>`; };
+    paint(); $("#modal").classList.add("on"); modalClose = () => {};
+    for (let i = 0; i < need.length; i += 4) {
+      await Promise.all(need.slice(i, i + 4).map(async it => { try { const d = await tmdb(`/tv/${it.api.id}`, { language: "es-MX" }); it.api.lang = d.original_language || "?"; if (!(it.api.genres || []).length) it.api.genres = (d.genres || []).map(g => g.name); } catch (e) {} done++; }));
+      paint();
+    }
+    save(true); $("#modal").classList.remove("on"); modalClose = null;
+  }
+  const W = wrapData(Y);
+  ST.settings.wrapSeen = Y; save(true); renderWrapBan();
+  SV = { W, i: 0, slides: wrapSlides(W) };
+  $("#story").classList.add("on"); document.body.style.overflow = "hidden";
+  history.pushState(null, "", location.hash || "#" + cur); drawStory();
+}
+function renderWrapBan() {
+  const b = $("#wrapBan"); const Y = wrapYear();
+  if (!wrapSeason() || String(ST.settings.wrapSeen) === String(Y) || yearItems(Y).length < 3) { b.innerHTML = ""; return; }
+  b.innerHTML = `<button class="wrapban" id="wrapGo1"><div style="font-size:28px">🎬</div><div style="flex:1;min-width:0"><b style="font-size:15px">Tu ${Y} en series ya está listo</b><div style="font-size:12px;opacity:.9">Tus números, tu app favorita y tu top 5</div></div><span class="go">Ver</span></button>`;
+  $("#wrapGo1").onclick = openWrap;
+}
+/* Imagen para compartir (1080×1920). Si las fotos no se pueden dibujar, se usan colores. */
+const loadImg = url => new Promise(res => { const i = new Image(); i.crossOrigin = "anonymous"; const t = setTimeout(() => res(null), 6000); i.onload = () => { clearTimeout(t); res(i); }; i.onerror = () => { clearTimeout(t); res(null); }; i.src = url + (url.includes("?") ? "&" : "?") + "cors=1"; });
+async function wrapImage(W, withImgs) {
+  const c = document.createElement("canvas"); c.width = 1080; c.height = 1920; const x = c.getContext("2d");
+  const g = x.createLinearGradient(0, 0, 700, 1920); g.addColorStop(0, "#0f3b2d"); g.addColorStop(.5, "#1f6b52"); g.addColorStop(1, "#3a9a75");
+  x.fillStyle = g; x.fillRect(0, 0, 1080, 1920);
+  const F = "system-ui,-apple-system,'Segoe UI',Roboto,sans-serif";
+  const t = (s, px, w, X, Y, a, al) => { x.font = `${w} ${px}px ${F}`; x.globalAlpha = a || 1; x.textAlign = al || "left"; x.fillStyle = "#fff"; x.fillText(s, X, Y); x.globalAlpha = 1; return x.measureText(s).width; };
+  const fit = (s, px, w, max) => { x.font = `${w} ${px}px ${F}`; while (x.measureText(s).width > max && s.length > 3) s = s.slice(0, -2).trimEnd() + "…"; return s; };
+  t("MIS SERIES", 36, 800, 90, 200, .8);
+  t(`Mi ${W.Y}`, 128, 900, 90, 350); t("en series", 128, 900, 90, 490);
+  const w1 = t(nf(W.n), 150, 900, 90, 720); t(W.n === 1 ? "serie" : "series", 44, 600, 92, 785, .85);
+  if (W.eps) { const X = 90 + Math.max(w1, 160) + 80; t(nf(W.eps), 150, 900, X, 720); t("episodios", 44, 600, X + 2, 785, .85); }
+  const lines = [];
+  if (W.plats.length) lines.push(`❤️  App favorita: ${PLAT[W.plats[0][0]].n} (${W.plats[0][1]} %)`);
+  if (W.best >= 0) lines.push(`🔥  Mes más maratonero: ${MESES[W.best]}`);
+  if (W.ko) lines.push(`🇰🇷  ${W.ko} ${W.ko === 1 ? "K-drama" : "K-dramas"}`);
+  lines.push(`✅  ${W.fin} ${W.fin === 1 ? "serie terminada" : "series terminadas"}`);
+  lines.forEach((l, i) => t(fit(l, 46, 600, 900), 46, 600, 90, 900 + i * 72));
+  const yP = 900 + lines.length * 72 + 70;
+  if (W.fav.length) {
+    t(W.top.length ? "MIS FAVORITAS" : "LAS QUE MÁS VI", 34, 800, 90, yP, .8);
+    const pw = 280, phh = 420, gap = 45, y0 = yP + 40;
+    for (let i = 0; i < W.fav.length; i++) {
+      const it = W.fav[i], X = 90 + i * (pw + gap), url = it.api && it.api.poster;
+      x.save(); x.beginPath(); x.roundRect ? x.roundRect(X, y0, pw, phh, 24) : x.rect(X, y0, pw, phh); x.clip();
+      const im = withImgs && url ? await loadImg(url) : null;
+      if (im) x.drawImage(im, X, y0, pw, phh);
+      else { const h = hue(dispName(it)), gg = x.createLinearGradient(X, y0, X + pw, y0 + phh); gg.addColorStop(0, `hsl(${h} 55% 40%)`); gg.addColorStop(1, `hsl(${(h + 30) % 360} 45% 12%)`); x.fillStyle = gg; x.fillRect(X, y0, pw, phh);
+        x.font = `800 30px ${F}`; x.fillStyle = "#fff"; x.textAlign = "left"; const words = dispName(it).toUpperCase().split(" "); let line = "", ly = y0 + phh - 30; const out = [];
+        for (const wd of words) { if (x.measureText(line + wd).width > pw - 40 && line) { out.push(line.trim()); line = ""; } line += wd + " "; } out.push(line.trim());
+        out.slice(-4).reverse().forEach((l, j) => x.fillText(l, X + 20, ly - j * 36)); }
+      x.restore();
+    }
+  }
+  t("Hecho con Mis Series", 30, 600, 540, 1850, .6, "center");
+  return new Promise((res, rej) => { try { c.toBlob(b => b ? res(b) : rej(new Error("blob")), "image/png"); } catch (e) { rej(e); } });
+}
+async function shareWrap(W) {
+  const btn = $("#stShare"); if (!btn || btn.disabled) return;
+  btn.disabled = true; btn.textContent = "Preparando la imagen…";
+  try {
+    let blob; try { blob = await wrapImage(W, true); } catch (e) { blob = await wrapImage(W, false); }
+    const file = new File([blob], `mi-${W.Y}-en-series.png`, { type: "image/png" });
+    const mobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+    busy = true;
+    if (mobile && navigator.canShare && navigator.canShare({ files: [file] })) await navigator.share({ files: [file], title: `Mi ${W.Y} en series` });
+    else { const a = document.createElement("a"); a.href = URL.createObjectURL(file); a.download = file.name; document.body.appendChild(a); a.click(); a.remove(); toast("Imagen guardada en Descargas"); }
+  } catch (e) { if (e.name !== "AbortError") toast("No se pudo crear la imagen"); }
+  setTimeout(() => busy = false, 1500);
+  if (btn.isConnected) { btn.disabled = false; btn.textContent = "📤 Compartir mi resumen"; }
+}
+
+/* ================= Importar CSV de Netflix (y desde la v1.5, de otras apps) ================= */
 function parseCSV(text) {
   const rows = []; let row = [], f = "", q = false;
-  text = text.replace(/^﻿/, "");
+  text = text.replace(/^\uFEFF/, "");
+  /* separador: coma (Netflix), punto y coma o tabulador (otros archivos) */
+  const first = text.slice(0, text.search(/\r?\n/) >>> 0 || 500).replace(/"[^"]*"/g, "");
+  const cnt = ch => first.split(ch).length - 1;
+  const SEP = cnt(";") > cnt(",") && cnt(";") >= cnt("\t") ? ";" : cnt("\t") > cnt(",") ? "\t" : ",";
   for (let i = 0; i < text.length; i++) {
     const c = text[i];
     if (q) { if (c === '"') { if (text[i + 1] === '"') { f += '"'; i++; } else q = false; } else f += c; }
-    else if (c === '"') q = true; else if (c === ",") { row.push(f); f = ""; }
+    else if (c === '"') q = true; else if (c === SEP) { row.push(f); f = ""; }
     else if (c === "\n" || c === "\r") { if (c === "\r" && text[i + 1] === "\n") i++; row.push(f); rows.push(row); row = []; f = ""; }
     else f += c;
   }
@@ -1148,35 +1467,107 @@ function parseCSV(text) {
   return rows.filter(r => r.length >= 2 && r.join("").trim());
 }
 const MARK = /^(Temporada|Miniserie|Serie limitada|Parte|Libro|Volumen|Vol\.|Capítulo|Colección|Episodio|Season|Limited Series|Part|Volume|Book|Chapter|Collection|Episode|Temporada \d+)\b/i;
+const pad2 = n => String(n).padStart(2, "0");
+/* Fechas en casi cualquier formato: 2026-08-14, 14/08/2026, 8/14/26, 14.08.2026, «Aug 14, 2026»… */
+function toISOany(s, dmy) {
+  s = String(s || "").trim(); if (!s) return "";
+  let m = s.match(/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/);
+  if (m) return +m[2] <= 12 && +m[3] <= 31 ? `${m[1]}-${pad2(m[2])}-${pad2(m[3])}` : "";
+  m = s.match(/^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{2,4})\b/);
+  if (m) { let a = +m[1], b = +m[2], y = +m[3]; if (y < 100) y += 2000; let d, mo;
+    if (a > 12) { d = a; mo = b; } else if (b > 12) { mo = a; d = b; } else if (dmy) { d = a; mo = b; } else { mo = a; d = b; }
+    return mo >= 1 && mo <= 12 && d >= 1 && d <= 31 ? `${y}-${pad2(mo)}-${pad2(d)}` : ""; }
+  if (/[a-z]/i.test(s)) { const t = Date.parse(s); if (!isNaN(t)) return isoLocal(new Date(t)); }
+  return "";
+}
+/* «Serie: Temporada 1: Episodio 3» → «Serie» */
+function seriesKey(t) {
+  const parts = String(t || "").trim().split(": ");
+  if (!parts[0].trim()) return { key: "", idx: -1, parts };
+  const idx = parts.findIndex((p, i) => i > 0 && MARK.test(p));
+  return { key: (idx > 0 ? parts.slice(0, idx) : [parts[0]]).join(": ").trim(), idx, parts };
+}
 function analyze(text) {
   const rows = parseCSV(text); const head = rows[0].map(h => h.toLowerCase());
   const ti = Math.max(0, head.findIndex(h => h.includes("title") || h.includes("título") || h.includes("titulo")));
-  const di = head.findIndex(h => h.includes("date") || h.includes("fecha")); const data = rows.slice(1);
-  let dmy = false;
-  for (const r of data) { const p = (r[di] || "").split(/[\/.-]/); if (+p[0] > 12) { dmy = true; break; } if (+p[1] > 12) break; }
-  const toISO = s => { const p = String(s).split(/[\/.-]/).map(Number); if (p.length < 3) return ""; let [m, d, y] = dmy ? [p[1], p[0], p[2]] : p; if (y < 100) y += 2000; return `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`; };
+  const di = head.findIndex(h => h.includes("date") || h.includes("fecha"));
+  return analyzeRows(rows.slice(1), ti, di, false);
+}
+function analyzeRows(data, ti, di, dmyDef) {
+  let dmy = dmyDef;
+  if (di >= 0) for (const r of data) { const v = String(r[di] || ""); if (/^\d{4}/.test(v)) continue; const p = v.split(/[\/.-]/); if (+p[0] > 12) { dmy = true; break; } if (+p[1] > 12) { dmy = false; break; } }
   const g = new Map(); let untitled = 0;
   for (const r of data) {
-    const t = (r[ti] || "").trim(); const date = toISO(r[di]);
-    const parts = t.split(": ");
-    if (!parts[0].trim()) { untitled++; continue; }
-    const idx = parts.findIndex((p, i) => i > 0 && MARK.test(p));
-    const key = (idx > 0 ? parts.slice(0, idx) : [parts[0]]).join(": ").trim();
-    if (!g.has(key)) g.set(key, { name: key, titles: new Set(), marked: false, seasons: new Set(), first: date, last: date, lastEp: "" });
+    const t = (r[ti] || "").trim(); const date = di >= 0 ? toISOany(r[di], dmy) : "";
+    const { key, idx, parts } = seriesKey(t);
+    if (!key) { untitled++; continue; }
+    if (!g.has(key)) g.set(key, { name: key, titles: new Set(), tdate: new Map(), marked: false, seasons: new Set(), first: date, last: date, lastEp: "" });
     const x = g.get(key);
-    x.titles.add(t); if (idx > 0) { x.marked = true; x.seasons.add(parts[idx]); }
+    x.titles.add(t); if (date && !(x.tdate.get(t) >= date)) x.tdate.set(t, date);
+    if (idx > 0) { x.marked = true; x.seasons.add(parts[idx]); }
+    if (date && !x.first) { x.first = date; x.last = date; }
     if (date && date < x.first) x.first = date;
     if (date && date >= x.last) { if (date > x.last || !x.lastEp) x.lastEp = parts.slice(1).join(": "); x.last = date; }
   }
   const series = [], movies = [];
   for (const x of g.values()) {
-    const o = { name: x.name, eps: x.titles.size, first: x.first, last: x.last, lastEp: x.lastEp,
+    const months = {}; for (const d of x.tdate.values()) { const k = d.slice(0, 7); months[k] = (months[k] || 0) + 1; }
+    const o = { name: x.name, eps: x.titles.size, first: x.first, last: x.last, lastEp: x.lastEp, months,
       seasons: [...x.seasons].sort((a, b) => a.localeCompare(b, "es", { numeric: true })) };
     (x.marked || x.titles.size >= 2 ? series : movies).push(o);
   }
   series.sort((a, b) => b.last.localeCompare(a.last)); movies.sort((a, b) => b.last.localeCompare(a.last));
-  return { total: data.length, series, movies, untitled };
+  return { total: data.length, series, movies, untitled, dmy };
 }
+/* Importador genérico (v1.5): adivina qué columna es el nombre y cuál la fecha */
+let GEN = null;
+function guessCols(rows) {
+  const head = rows[0].map(h => norm(h)), data = rows.slice(1, 80), nc = Math.max(...rows.slice(0, 20).map(r => r.length));
+  const frac = (i, f) => data.length ? data.filter(r => f(String(r[i] || "").trim())).length / data.length : 0;
+  let di = head.findIndex(h => /\b(date|fecha|time|watched|visto|vista|dia|day|timestamp)\b/.test(h));
+  if (di < 0 || frac(di, v => !!toISOany(v, true)) < .5) { di = -1; let b = .6; for (let i = 0; i < nc; i++) { const f = frac(i, v => !!toISOany(v, true)); if (f > b) { b = f; di = i; } } }
+  let ti = head.findIndex((h, i) => i !== di && /\b(title|titulo|nombre|name|serie|series|show|programa|program|contenido|content)\b/.test(h));
+  if (ti < 0) { let b = -1; for (let i = 0; i < nc; i++) { if (i === di) continue; const vals = data.map(r => String(r[i] || "").trim()).filter(Boolean);
+    const txt = vals.filter(v => /[a-záéíóúñ]/i.test(v) && !toISOany(v, true)).length / Math.max(1, data.length);
+    const len = vals.reduce((a, v) => a + Math.min(v.length, 60), 0) / Math.max(1, vals.length); const sc = txt * len; if (sc > b) { b = sc; ti = i; } } }
+  return { ti: Math.max(0, ti), di };
+}
+function guessPlat(name) {
+  const n = norm(name);
+  return /prime|amazon/.test(n) ? "prime" : /\bmax\b|hbo/.test(n) ? "max" : /disney/.test(n) ? "disney" : /netflix/.test(n) ? "netflix" : /apple/.test(n) ? "apple" : /paramount/.test(n) ? "paramount" : "otra";
+}
+function renderMap() {
+  const G = GEN, head = G.rows[0], data = G.rows.slice(1);
+  const A = analyzeRows(data, G.ti, G.di, true);
+  const opts = (sel, none) => (none ? `<option value="-1" ${sel < 0 ? "selected" : ""}>Sin fecha</option>` : "") + head.map((h, i) => `<option value="${i}" ${i === sel ? "selected" : ""}>${esc((h || "").trim() || "Columna " + (i + 1))}</option>`).join("");
+  const prev = data.filter(r => (r[G.ti] || "").trim()).slice(0, 5).map(r => { const d = G.di >= 0 ? toISOany(r[G.di], A.dmy) : "";
+    return `<tr><td style="padding:7px 4px;border-bottom:1px solid var(--line);font-weight:700">${esc(seriesKey(r[G.ti]).key)}</td><td style="padding:7px 4px;border-bottom:1px solid var(--line);white-space:nowrap;color:var(--mut)">${d ? fdate(d) : "—"}</td></tr>`; }).join("");
+  $("#impIntro").style.display = "none"; $("#impOther").style.display = "none";
+  $("#impReview").innerHTML = `<div class="muted" style="font-size:13px;margin:-6px 0 12px">${esc(G.name)} · ${nf(data.length)} filas</div>
+    <div class="card">
+      <div class="setrow"><div><b>Nombre de la serie</b></div><select class="inp" id="gT">${opts(G.ti)}</select></div>
+      <div class="setrow"><div><b>Fecha</b></div><select class="inp" id="gD">${opts(G.di, 1)}</select></div>
+      <div class="setrow"><div><b>¿De qué app es?</b></div><select class="inp" id="gP">${Object.entries(PLAT).map(([k, p]) => `<option value="${k}" ${k === G.plat ? "selected" : ""}>${p.n}</option>`).join("")}</select></div>
+    </div>
+    <div class="banner" style="background:rgba(58,154,117,.14);color:var(--acc);font-weight:700;padding:9px 12px">✓ Lo detectamos solo. Cámbialo si no es correcto.</div>
+    <div class="lbl">Así se va a leer</div>
+    <div class="card" style="padding:6px 12px"><table style="width:100%;font-size:13px;border-collapse:collapse"><tr><th style="text-align:left;font-size:11px;color:var(--mut);padding:4px">Serie</th><th style="text-align:left;font-size:11px;color:var(--mut);padding:4px">Fecha</th></tr>${prev}</table></div>
+    <p class="muted" style="font-size:12px;margin:-2px 0 14px;line-height:1.5">Los episodios de una misma serie se juntan solos (por ejemplo «Serie: Temporada 1: Episodio 3»).</p>
+    <button class="btn" id="gGo" ${A.series.length + A.movies.length ? "" : "disabled"}>Revisar ${A.series.length} serie${A.series.length === 1 ? "" : "s"}${A.movies.length ? ` y ${A.movies.length} título${A.movies.length === 1 ? "" : "s"} más` : ""} ›</button>
+    <button class="btn2" id="gCancel" style="margin-top:8px">Cancelar</button>`;
+  $("#gT").onchange = e => { G.ti = +e.target.value; renderMap(); };
+  $("#gD").onchange = e => { G.di = +e.target.value; renderMap(); };
+  $("#gP").onchange = e => { G.plat = e.target.value; };
+  $("#gCancel").onclick = () => { GEN = null; resetImport(); };
+  $("#gGo").onclick = () => { IMP = A; IMP.plat = G.plat; IMP.sel = new Set(A.series.map(s => "s:" + s.name)); GEN = null; renderReview(); };
+}
+$("#csv2").onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+  let rows = null; try { rows = parseCSV(await f.text()); } catch (err) {}
+  if (!rows || rows.length < 2 || rows[0].length < 1) { toast("No se pudo leer el archivo"); return; }
+  GEN = Object.assign({ name: f.name, rows, plat: guessPlat(f.name) }, guessCols(rows));
+  renderMap(); window.scrollTo(0, 0);
+};
 let IMP = null;
 $("#csv").onchange = async e => {
   const f = e.target.files[0]; if (!f) return;
@@ -1215,8 +1606,9 @@ function renderReview() {
   $("#doImp").onclick = doImport;
 }
 function resetImport() { IMP = null; $("#impReview").innerHTML = ""; $("#impIntro").style.display = ""; $("#impOther").style.display = ""; }
+const mergeMonths = (a, b) => { const o = Object.assign({}, a || {}); for (const k in b || {}) o[k] = Math.max(o[k] || 0, b[k]); return o; };
 function doImport() {
-  let added = 0, updated = 0;
+  let added = 0, updated = 0; const plat = IMP.plat || "netflix", src = plat === "netflix" ? "netflix" : "csv";
   const idx = new Map(ST.items.map(x => [norm(x.name), x]));
   const take = (o, kind) => {
     const ex = idx.get(norm(o.name));
@@ -1225,10 +1617,11 @@ function doImport() {
       ex.firstSeen = !ex.firstSeen || o.first < ex.firstSeen ? o.first : ex.firstSeen;
       if (!ex.lastSeen || o.last >= ex.lastSeen) { ex.lastSeen = o.last; ex.lastEp = o.lastEp; }
       ex.seasonsSeen = [...new Set([...(ex.seasonsSeen || []), ...o.seasons])];
-      ex.source = "netflix"; if (!ex.platform) ex.platform = "netflix"; autoStatus(ex); delete ex.chk; updated++;
+      ex.months = mergeMonths(ex.months, o.months);
+      if (src === "netflix" || ex.source !== "netflix") ex.source = src; if (!ex.platform) ex.platform = plat; autoStatus(ex); delete ex.chk; updated++;
     } else {
-      const it = { id: uid(), name: o.name, kind, platform: "netflix", status: "pendiente", statusAuto: true, rating: 0, notes: "", epSeen: kind === "serie" ? o.eps : 0,
-        seasonsSeen: o.seasons, firstSeen: o.first, lastSeen: o.last, lastEp: o.lastEp, source: "netflix", added: new Date().toISOString(), match: "pending" };
+      const it = { id: uid(), name: o.name, kind, platform: plat, status: "pendiente", statusAuto: true, rating: 0, notes: "", epSeen: kind === "serie" ? o.eps : 0,
+        seasonsSeen: o.seasons, firstSeen: o.first, lastSeen: o.last, lastEp: o.lastEp, source: src, added: new Date().toISOString(), match: "pending", months: o.months || {} };
       autoStatus(it); ST.items.push(it); idx.set(norm(o.name), it); added++;
     }
   };
@@ -1300,6 +1693,7 @@ const GUIDE = {
 document.querySelectorAll("#impOther .src").forEach(b => b.onclick = async () => {
   const g = b.dataset.g;
   if (g === "varias") { openVarias(); return; }
+  if (g === "csv") { busy = true; setTimeout(() => busy = false, 120000); $("#csv2").click(); return; }
   if (await dialog(GUIDE[g][0], GUIDE[g][1], `Agregar varias con ${GUIDE[g][0]}`)) openVarias(g);
 });
 
@@ -1316,6 +1710,7 @@ function renderPerfil() {
   if (updState !== "busy") updState = swReg && swReg.waiting ? "new" : (updState === "new" ? "idle" : updState);
   $("#perfil").innerHTML = `
     <div class="stats"><div><b>${c.todas}</b><span>series</span></div><div><b>${c.terminada || 0}</b><span>terminadas</span></div><div><b>${rated}</b><span>calificadas</span></div></div>
+    <button class="wrapban" id="wrapGo2"><div style="font-size:28px">🎬</div><div style="flex:1;min-width:0"><b style="font-size:15px">Tu ${wrapYear()} en series</b><div style="font-size:12px;opacity:.9">Tu resumen del año para ver y compartir</div></div><span class="go">Ver</span></button>
     <div class="card"><div class="lbl">Color del tema</div>
       <div class="swg" id="palG">${Object.entries(PAL).map(([k, p]) => `<button class="swb ${ST.settings.palette === k ? "on" : ""}" data-k="${k}"><i style="background:linear-gradient(135deg,${p.L[2]} 50%,${k === "cine" ? "#0f0f12" : p.L[3]} 50%)${k === "cine" ? ";background:linear-gradient(135deg,#0f0f12 50%,#e5484d 50%)" : ""}"></i>${p.n}</button>`).join("")}
         <label class="swb ${ST.settings.palette === "custom" ? "on" : ""}" style="cursor:pointer"><i style="background:${ST.settings.palette === "custom" ? ST.settings.custom : "conic-gradient(#f9a8c9,#c8b6ff,#a8e6cf,#ffd3a5,#a8d8ff,#f9a8c9)"};display:flex;align-items:center;justify-content:center;font-size:18px;font-style:normal">🎨</i>Mi color<input type="color" id="custC" value="${ST.settings.custom || "#7c9cd6"}" style="position:absolute;opacity:0;width:1px;height:1px"></label></div>
@@ -1352,6 +1747,7 @@ function renderPerfil() {
     <div class="card updcard" id="updCard" style="margin-top:12px">${updInner()}</div>
     <p class="muted" style="font-size:11px;text-align:center;margin-top:10px;line-height:1.5">Datos e imágenes de TMDB y TVmaze.<br>Esta app no está afiliada a Netflix.</p>`;
   bindUpd();
+  $("#wrapGo2").onclick = openWrap;
   $("#saveKey").onclick = async () => {
     ST.settings.tmdb = $("#tmdbKey").value.trim(); save(true); DV.cache.clear(); DV.info.clear(); DV.err = "";
     if (!ST.settings.tmdb) { toast("Clave borrada: se usará TVmaze"); return; }
@@ -1628,9 +2024,10 @@ if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
 }
 document.addEventListener("visibilitychange", () => { if (!document.hidden && Date.now() - lastCheck > 30 * 60000) checkUpdate(); });
 /* Novedades después de actualizar */
-const NOVEDADES = ["🧭 Nueva pestaña «Descubrir»: K-dramas y estrenos de tus apps, con valoración y sinopsis",
-  "＋ «Quiero verla» guarda la serie en Pendientes con un solo toque",
-  "📥 «Importar» ahora está dentro de Agregar: la barra de abajo tiene 4 botones"];
+const NOVEDADES = ["🎬 «Tu año en series»: tu resumen para ver y compartir (en Ajustes; en diciembre aparece en Mi lista)",
+  "▶ En Pendientes ves en qué app está cada serie",
+  "💡 «Si te gustó esta…»: recomendaciones en tus series de 4 y 5 estrellas",
+  "📄 Importa el CSV de otras apps, y los títulos en coreano ahora salen en español o inglés"];
 function showNews() {
   const prev = ST.settings.seenVersion; ST.settings.seenVersion = APP_VERSION; save(true);
   if (!prev && !ST.items.length) return;               // primera vez que se abre: no molestar
