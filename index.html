@@ -44,6 +44,8 @@ h1{font-size:clamp(22px,7vw,28px);font-weight:800;letter-spacing:-.3px}
 .chip{flex-shrink:0;font-size:13px;font-weight:600;padding:8px 13px;border-radius:20px;background:var(--card2);color:var(--chip);white-space:nowrap}
 .chip.on{background:var(--acc);color:var(--on)}
 .chip small{opacity:.7;font-weight:500;margin-left:3px}
+.chip.new{background:rgba(245,197,24,.22);color:var(--tx)}
+.chip.new.on{background:#f5c518;color:#2a2200}
 .stats{display:flex;gap:10px;margin-bottom:14px}
 .stats div{flex:1;min-width:0;background:var(--card);border-radius:var(--rb);padding:10px 12px}
 .stats b{display:block;font-size:clamp(17px,5.2vw,21px)}.stats span{font-size:11px;color:var(--mut)}
@@ -86,6 +88,8 @@ nav svg{width:23px;height:23px}
 .banner .bar{flex:1;margin:6px 0 0;height:4px}
 .card{background:var(--card);border-radius:var(--rc);padding:14px;margin-bottom:12px}
 .lbl{font-size:11px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.lbl.sec{display:flex;justify-content:space-between;align-items:center}
+.lbl.sec button{color:var(--acc);font-size:12.5px;font-weight:700;text-transform:none;letter-spacing:0;padding:2px 0 2px 10px}
 .res{display:flex;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);width:100%;text-align:left}
 .res .poster{width:46px;flex-shrink:0;border-radius:7px}
 .res .ph span{font-size:6px;left:4px;bottom:4px}
@@ -157,6 +161,28 @@ a{color:var(--acc)}
 .swb{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--mut)}
 .swb i{width:46px;height:46px;border-radius:50%;display:block;border:1px solid rgba(128,128,128,.25)}
 .swb.on{color:var(--tx)}.swb.on i{box-shadow:0 0 0 3px var(--card),0 0 0 5px var(--acc)}
+/* seguir viendo */
+.cv{display:flex;gap:10px;overflow-x:auto;margin:0 -16px 16px;padding:0 16px 2px;scrollbar-width:none;scroll-snap-type:x mandatory;scroll-padding:0 16px;overscroll-behavior-x:contain}
+.cv::-webkit-scrollbar{display:none}
+.cvc{flex:0 0 min(236px,66vw);background:var(--card);border-radius:var(--rc);overflow:hidden;text-align:left;scroll-snap-align:start;cursor:pointer}
+.cvi{position:relative;height:96px;background:var(--ph);overflow:hidden}
+.cvi img,.cvi .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cvi .ph span{display:none}
+.cvb{padding:9px 11px 11px}
+.cvn{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cvr{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:5px}
+.cvr span{font-size:12px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.plus1{flex-shrink:0;background:var(--acc);color:var(--on);font-weight:800;font-size:12.5px;border-radius:20px;padding:7px 12px;transition:transform .1s}
+.plus1:active{transform:scale(.92)}
+.cvc .bar{height:4px;margin-top:8px}
+/* temporada nueva */
+.newtag{position:absolute;left:0;right:0;bottom:0;z-index:2;background:#f5c518;color:#2a2200;font-size:9.5px;font-weight:800;text-align:center;padding:3px 2px;letter-spacing:.2px;white-space:nowrap;overflow:hidden}
+.poster.hasnew .ph span{bottom:24px}
+.nwb{background:rgba(245,197,24,.16)}
+/* ajustes: pie con la versión */
+.updcard{text-align:center}
+.appid{display:flex;align-items:center;gap:11px;justify-content:center;margin-bottom:12px}
+.appid img{width:38px;height:38px;border-radius:10px}
 /* deslizar para actualizar */
 #ptr{position:fixed;left:50%;top:calc(6px + var(--st));transform:translate(-50%,-70px);width:40px;height:40px;border-radius:50%;background:var(--card);box-shadow:0 4px 14px rgba(0,0,0,.25);z-index:35;display:flex;align-items:center;justify-content:center;transition:transform .2s;pointer-events:none}
 #ptr svg{width:20px;height:20px;color:var(--acc);transition:transform .1s}
@@ -191,6 +217,7 @@ html.locked body>*:not(#lock):not(#toast):not(#modal){visibility:hidden}
   <div class="chips" id="pchips"></div>
   <div class="stats" id="stats"></div>
   <div id="enrichBanner"></div>
+  <div id="seguir"></div>
   <div class="tools"><select class="inp" id="sort">
     <option value="reciente">Vistas recientemente</option><option value="az">Nombre A–Z</option>
     <option value="eps">Más episodios vistos</option><option value="nota">Mejor calificadas</option><option value="agregada">Agregadas recientemente</option>
@@ -236,9 +263,9 @@ html.locked body>*:not(#lock):not(#toast):not(#modal){visibility:hidden}
   <div id="vRes"></div>
 </section>
 
-<!-- PERFIL -->
+<!-- AJUSTES (antes «Perfil»; la vista sigue llamándose «perfil» por compatibilidad) -->
 <section class="view" id="v-perfil">
-  <div class="h"><h1>Perfil</h1></div>
+  <div class="h"><h1>Ajustes</h1></div>
   <div id="perfil"></div>
 </section>
 
@@ -248,7 +275,7 @@ html.locked body>*:not(#lock):not(#toast):not(#modal){visibility:hidden}
   <button data-go="lista"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="9" rx="1.5"/><rect x="3" y="15" width="7" height="6" rx="1.5"/><rect x="14" y="15" width="7" height="6" rx="1.5"/></svg>Mi lista</button>
   <button data-go="buscar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Agregar</button>
   <button data-go="importar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Importar</button>
-  <button data-go="perfil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.5-6 8-6s7 2 8 6"/></svg>Perfil</button>
+  <button data-go="perfil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Ajustes</button>
 </nav>
 <button class="fab" id="fab" aria-label="Agregar serie">+</button>
 <div id="modal"><div class="box" id="mbox"></div></div>
@@ -261,15 +288,25 @@ html.locked body>*:not(#lock):not(#toast):not(#modal){visibility:hidden}
 "use strict";
 /* ================= Datos ================= */
 const KEY = "misseries.v1";
-const ST = { items: [], settings: { tmdb: "", theme: "sistema", palette: "menta", custom: "#7c9cd6", shape: "redonda", lastBackup: "", backupSnooze: "", seenVersion: "", lock: {} } };
-const APP_VERSION = "1.2.1";
+const ST = { items: [], settings: { tmdb: "", theme: "sistema", palette: "menta", custom: "#7c9cd6", shape: "redonda", lastBackup: "", backupSnooze: "", seenVersion: "", lastUpdCheck: "", lock: {} } };
+const APP_VERSION = "1.3.0";
 const STATUS = { viendo: "Viendo", terminada: "Terminada", pausa: "En pausa", pendiente: "Pendiente" };
 let filter = "todas", platFilter = "todas", sortBy = "reciente", findQ = "";
+let swReg = null, reloading = false, lastCheck = 0, updState = "idle";
 
+/* Migraciones: se aplican al abrir la app y al restaurar un respaldo. Nunca borran datos.
+   v1.3 agrega campos opcionales por serie: nueva {s,d}, nuevaOff, prox {d,s,e} y chk (fecha de revisión). */
+function migrate(items) {
+  (items || []).forEach(it => {
+    if (it.platform === undefined) it.platform = it.source === "netflix" ? "netflix" : "";
+    if (it.nueva && !(it.nueva.s > 0)) delete it.nueva;
+  });
+  return items || [];
+}
 function load() {
   try { const d = JSON.parse(localStorage.getItem(KEY) || "null"); if (d) { ST.items = d.items || []; Object.assign(ST.settings, d.settings || {}); } } catch (e) { console.warn(e); }
   ST.settings.lock = Object.assign({ on: false, pin: "", salt: "", bio: false, cred: "", after: 1 }, ST.settings.lock || {});
-  ST.items.forEach(it => { if (it.platform === undefined) it.platform = it.source === "netflix" ? "netflix" : ""; });
+  migrate(ST.items);
 }
 let saveT;
 function save(now) {
@@ -287,6 +324,8 @@ const byId = id => ST.items.find(x => x.id === id);
 const MES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 const fdate = d => { if (!d) return "—"; const x = new Date(d + "T12:00:00"); return `${x.getDate()} ${MES[x.getMonth()]} ${x.getFullYear()}`; };
 const daysAgo = d => d ? (Date.now() - new Date(d + "T12:00:00")) / 864e5 : 9999;
+const isoLocal = x => `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, "0")}-${String(x.getDate()).padStart(2, "0")}`;
+const todayISO = () => isoLocal(new Date());
 function hue(s) { let h = 0; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h % 360; }
 function ph(name) { const h = hue(name); return `<div class="ph" style="background:linear-gradient(160deg,hsl(${h} 55% 38%),hsl(${(h + 30) % 360} 45% 10%) 78%)"><span>${esc(name)}</span></div>`; }
 function posterHTML(it, big) {
@@ -294,13 +333,14 @@ function posterHTML(it, big) {
   return (url ? `<img loading="lazy" src="${esc(url)}" alt="" onerror="this.remove()">` : "") + (url ? "" : ph(dispName(it)));
 }
 const dispName = it => (it.api && it.api.title) || it.name;
+const newTag = it => it.nueva ? `<span class="newtag">★ NUEVA T${it.nueva.s}</span>` : "";
 
 function toast(m) { const t = $("#toast"); t.textContent = m; t.classList.add("on"); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove("on"), 2600); }
 let modalClose = null;
 function closeModal() { if (modalClose) modalClose(false); }
-function dialog(title, text, okTxt, danger) {
+function dialog(title, text, okTxt) {
   return new Promise(res => {
-    $("#mbox").innerHTML = `<h3>${esc(title)}</h3><p>${text}</p><button class="btn" id="mok" style="${danger ? "" : ""}">${esc(okTxt)}</button><button class="btn2" id="mno" style="margin-top:8px">Cancelar</button>`;
+    $("#mbox").innerHTML = `<h3>${esc(title)}</h3><p>${text}</p><button class="btn" id="mok">${esc(okTxt)}</button><button class="btn2" id="mno" style="margin-top:8px">Cancelar</button>`;
     $("#modal").classList.add("on");
     const close = v => { $("#modal").classList.remove("on"); modalClose = null; res(v); };
     modalClose = close;
@@ -421,7 +461,7 @@ async function enrichAll() {
       else { const a = await details(m.c); applyApi(it, a, m.sure ? "ok" : "review"); }
       fails = 0;
     } catch (e) {
-      if (e.auth) { toast("La clave de TMDB no es válida. Revísala en Perfil."); enrichStop = true; break; }
+      if (e.auth) { toast("La clave de TMDB no es válida. Revísala en Ajustes."); enrichStop = true; break; }
       fails++; if (fails >= 3) { toast("Sin conexión. Se reintentará luego."); break; }
     }
     enrichDone++; save();
@@ -429,13 +469,67 @@ async function enrichAll() {
     await sleep(hasTmdb() ? 120 : 650);
   }
   enriching = false; save(true); renderBanner(); if (cur === "lista") renderList();
+  if (!enrichStop) checkNewSeasons();
 }
+
+/* ============ Temporadas nuevas (TMDB) ============
+   Se revisan las series en Viendo o Terminada que tienen datos de TMDB, cada una como máximo cada 2 días.
+   Hay «temporada nueva» si la última temporada estrenó hace 120 días o menos, no es la primera,
+   y la usuaria no ha visto la serie desde ese estreno. */
+let nsRun = false, nsDone = 0, nsTotal = 0;
+const NS_DAYS = 120, NS_EVERY = 2;
+function nsCandidates(force) {
+  const now = Date.now();
+  return ST.items.filter(it => it.kind !== "pelicula" && it.api && it.api.src === "tmdb" && it.api.id &&
+    (it.status === "viendo" || it.status === "terminada") && (force || !it.chk || (now - new Date(it.chk)) / 864e5 >= NS_EVERY));
+}
+async function checkNewSeasons(force) {
+  if (nsRun || enriching || !hasTmdb() || !navigator.onLine) return;
+  const list = nsCandidates(force); if (!list.length) return;
+  nsRun = true; nsDone = 0; nsTotal = list.length; let found = 0, fails = 0;
+  renderBanner();
+  for (const it of list) {
+    if (!byId(it.id)) { nsDone++; continue; }
+    try { const d = await tmdb(`/tv/${it.api.id}`, { language: "es-MX" }); if (applySeasonInfo(it, d)) found++; fails = 0; }
+    catch (e) { if (e.auth || ++fails >= 3) break; }
+    nsDone++; save();
+    if (nsDone % 8 === 0) renderBanner();
+    await sleep(90);
+  }
+  nsRun = false; save(true); renderBanner(); if (cur === "lista") renderList();
+  if (found) toast(`★ ${found} serie${found > 1 ? "s tienen" : " tiene"} temporada nueva`);
+}
+function applySeasonInfo(it, d) {
+  it.chk = new Date().toISOString();
+  const a = it.api;
+  if (d.number_of_episodes) a.totalEp = d.number_of_episodes;
+  if (d.number_of_seasons) a.seasons = d.number_of_seasons;
+  const nx = d.next_episode_to_air;
+  if (nx && nx.air_date) it.prox = { d: nx.air_date, s: nx.season_number, e: nx.episode_number }; else delete it.prox;
+  const hoy = todayISO();
+  const seas = (d.seasons || []).filter(s => s.season_number > 0 && s.air_date && s.air_date <= hoy && s.episode_count > 0)
+    .sort((x, y) => x.season_number - y.season_number);
+  const last = seas[seas.length - 1];
+  const had = it.nueva ? it.nueva.s : 0;
+  let nueva = null;
+  if (last && last.season_number > 1 && ((it.epSeen || 0) > 0 || it.status === "terminada")) {
+    const ref = it.lastSeen || (it.added || "").slice(0, 10);
+    if (daysAgo(last.air_date) <= NS_DAYS && ref && ref < last.air_date && it.nuevaOff !== last.season_number)
+      nueva = { s: last.season_number, d: last.air_date };
+  }
+  if (nueva) it.nueva = nueva; else delete it.nueva;
+  return !!nueva && had !== nueva.s;
+}
+
 function renderBanner() {
   const b = $("#enrichBanner"); const pend = pendingItems().length; const rev = ST.items.filter(x => x.match === "review" || x.match === "none").length;
   if (enriching) {
     const p = Math.round(enrichDone / Math.max(1, enrichTotal) * 100);
     b.innerHTML = `<div class="banner" style="flex-wrap:nowrap"><div style="flex:1;min-width:0"><div class="row" style="font-size:13px"><span>🖼️ Buscando fotos y sinopsis</span><b style="white-space:nowrap">${enrichDone} / ${enrichTotal}</b></div><div class="bar live" style="height:5px;margin-top:8px"><i style="width:${Math.max(4, p)}%"></i></div></div><button class="btn2 sm" id="stopE">Pausar</button></div>`;
     $("#stopE").onclick = () => { enrichStop = true; toast("Se pausará en un momento"); };
+  } else if (nsRun && nsTotal > 5) {
+    const p = Math.round(nsDone / Math.max(1, nsTotal) * 100);
+    b.innerHTML = `<div class="banner"><div style="flex:1;min-width:0"><div class="row" style="font-size:13px"><span>★ Buscando temporadas nuevas</span><b style="white-space:nowrap">${nsDone} / ${nsTotal}</b></div><div class="bar live" style="height:5px;margin-top:8px"><i style="width:${Math.max(4, p)}%"></i></div></div></div>`;
   } else if (pend) {
     b.innerHTML = `<div class="banner"><div style="flex:1">${pend} series esperan su foto y sinopsis.</div><button class="btn sm" id="goE">Buscar</button></div>`;
     $("#goE").onclick = enrichAll;
@@ -454,8 +548,10 @@ function needBackup() {
   return since(ST.settings.lastBackup) > 30 && since(ST.settings.backupSnooze) > 7;
 }
 async function exportBackup() {
-  const name = `mis-series-respaldo-${new Date().toISOString().slice(0, 10)}.json`;
-  const json = JSON.stringify({ app: "misseries", v: 1, fecha: new Date().toISOString(), tmdb: ST.settings.tmdb, items: ST.items }, null, 1);
+  const name = `mis-series-respaldo-${todayISO()}.json`;
+  const S = ST.settings;
+  const json = JSON.stringify({ app: "misseries", v: 1, fecha: new Date().toISOString(), tmdb: S.tmdb,
+    ajustes: { palette: S.palette, custom: S.custom, theme: S.theme, shape: S.shape }, items: ST.items }, null, 1);
   const file = new File([json], name, { type: "application/json" });
   const mobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
   try {
@@ -466,6 +562,17 @@ async function exportBackup() {
     }
     ST.settings.lastBackup = new Date().toISOString(); save(true); toast("Respaldo listo: guárdalo en un lugar seguro"); renderBanner();
   } catch (e) { if (e.name !== "AbortError") toast("No se pudo crear el respaldo"); }
+}
+/* Ajustes de apariencia que vienen en un respaldo (v1.3+). Solo se aceptan valores conocidos. */
+function restoreLook(aj) {
+  if (!aj || typeof aj !== "object") return false;
+  const S = ST.settings; let n = 0;
+  if (aj.palette === "custom" || Object.prototype.hasOwnProperty.call(PAL, aj.palette)) { S.palette = aj.palette; n++; }
+  if (/^#[0-9a-f]{6}$/i.test(aj.custom || "")) { S.custom = aj.custom; n++; }
+  if (["claro", "oscuro", "sistema"].includes(aj.theme)) { S.theme = aj.theme; n++; }
+  if (Object.prototype.hasOwnProperty.call(SHAPES, aj.shape)) { S.shape = aj.shape; n++; }
+  if (n) applyTheme();
+  return n > 0;
 }
 
 /* ================= Plataformas ================= */
@@ -503,6 +610,7 @@ function go(v, push = true) {
   document.querySelectorAll(".view").forEach(s => s.classList.toggle("on", s.id === "v-" + v));
   document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.go === (v === "varias" ? "buscar" : v)));
   $("#fab").style.display = v === "lista" ? "flex" : "none";
+  $("#upd").classList.toggle("on", v !== "perfil" && !!(swReg && swReg.waiting && navigator.serviceWorker.controller));
   if (v === "lista") renderList();
   if (v === "perfil") renderPerfil();
   if (v === "buscar") { if (!reassign) { $("#addTitle").textContent = "Agregar serie"; } setTimeout(() => $("#q").focus(), 50); }
@@ -525,7 +633,7 @@ window.addEventListener("popstate", () => {
     else toast("Toca atrás otra vez para salir");
     window.scrollTo(0, 0); return;
   }
-  go(VIEWS.includes(h) ? h : "lista", false);
+  go(VIEWS.includes(h) ? h : (h === "ajustes" ? "perfil" : "lista"), false);
 });
 /* Con cada toque se repone el paso de «guarda», así nunca se sale de golpe */
 function guard() { if (location.hash === "#inicio" || !location.hash) history.pushState(null, "", "#" + (cur || "lista")); }
@@ -533,21 +641,29 @@ document.addEventListener("click", guard, true);
 
 /* ================= Mi lista ================= */
 function counts() {
-  const c = { todas: 0, viendo: 0, terminada: 0, pausa: 0, pendiente: 0, pelicula: 0, revisar: 0 };
+  const c = { todas: 0, viendo: 0, terminada: 0, pausa: 0, pendiente: 0, pelicula: 0, revisar: 0, nueva: 0 };
   for (const it of ST.items) {
     if (it.kind === "pelicula") { c.pelicula++; continue; }
     c.todas++; c[it.status] = (c[it.status] || 0) + 1;
     if (it.match === "review" || it.match === "none") c.revisar++;
+    if (it.nueva) c.nueva++;
   }
   return c;
 }
+function renderStats(c) {
+  c = c || counts();
+  const eps = ST.items.filter(x => x.kind !== "pelicula").reduce((s, x) => s + (x.epSeen || 0), 0);
+  $("#stats").innerHTML = `<div><b>${c.todas}</b><span>series</span></div><div><b>${eps.toLocaleString("es")}</b><span>episodios</span></div><div><b>${c.terminada || 0}</b><span>terminadas</span></div>`;
+}
 function renderList() {
   const c = counts();
-  if ((filter === "revisar" && !c.revisar) || (filter === "pelicula" && !c.pelicula)) filter = "todas";
-  const chips = [["todas", "Todas"], ["viendo", "Viendo"], ["terminada", "Terminadas"], ["pausa", "En pausa"], ["pendiente", "Pendientes"]];
+  if ((filter === "revisar" && !c.revisar) || (filter === "pelicula" && !c.pelicula) || (filter === "nueva" && !c.nueva)) filter = "todas";
+  const chips = [["todas", "Todas"]];
+  if (c.nueva) chips.push(["nueva", "★ Temporada nueva"]);
+  chips.push(["viendo", "Viendo"], ["terminada", "Terminadas"], ["pausa", "En pausa"], ["pendiente", "Pendientes"]);
   if (c.pelicula) chips.push(["pelicula", "Películas"]);
   if (c.revisar) chips.push(["revisar", "⚠ Por revisar"]);
-  $("#chips").innerHTML = chips.map(([k, l]) => `<button class="chip ${filter === k ? "on" : ""}" data-f="${k}">${l}<small>${c[k] || 0}</small></button>`).join("");
+  $("#chips").innerHTML = chips.map(([k, l]) => `<button class="chip ${k === "nueva" ? "new" : ""} ${filter === k ? "on" : ""}" data-f="${k}">${l}<small>${c[k] || 0}</small></button>`).join("");
   document.querySelectorAll("#chips .chip").forEach(b => b.onclick = () => { filter = b.dataset.f; renderList(); });
   const pc = {}; ST.items.forEach(x => { if (x.platform) pc[x.platform] = (pc[x.platform] || 0) + 1; });
   const pk = Object.keys(PLAT).filter(k => pc[k]);
@@ -556,17 +672,16 @@ function renderList() {
   $("#pchips").innerHTML = `<button class="chip ${platFilter === "todas" ? "on" : ""}" data-p="todas">Todas las apps</button>` +
     pk.map(k => `<button class="chip ${platFilter === k ? "on" : ""}" data-p="${k}"><i class="dot" style="background:${PLAT[k].c}"></i>${PLAT[k].n}<small>${pc[k]}</small></button>`).join("");
   document.querySelectorAll("#pchips .chip").forEach(b => b.onclick = () => { platFilter = b.dataset.p; renderList(); });
-  const series = ST.items.filter(x => x.kind !== "pelicula");
-  const eps = series.reduce((s, x) => s + (x.epSeen || 0), 0);
-  $("#stats").innerHTML = `<div><b>${c.todas}</b><span>series</span></div><div><b>${eps.toLocaleString("es")}</b><span>episodios</span></div><div><b>${c.terminada || 0}</b><span>terminadas</span></div>`;
-  renderBanner(); renderGrid();
+  renderStats(c);
+  renderBanner(); renderSeguir(); renderGrid();
 }
 function visibleItems() {
   let l = ST.items.filter(it => {
     if (filter === "pelicula") return it.kind === "pelicula";
-    if (it.kind === "pelicula") return filter === "revisar" ? false : false;
+    if (it.kind === "pelicula") return false;
     if (filter === "todas") return true;
     if (filter === "revisar") return it.match === "review" || it.match === "none";
+    if (filter === "nueva") return !!it.nueva;
     return it.status === filter;
   });
   if (platFilter !== "todas") l = l.filter(it => it.platform === platFilter);
@@ -580,13 +695,13 @@ function visibleItems() {
   }[sortBy];
   return l.sort(s);
 }
+const pctOf = it => { const tot = it.api && it.api.totalEp; return it.kind === "pelicula" ? 100 : tot ? Math.min(100, Math.round((it.epSeen || 0) / tot * 100)) : (it.status === "terminada" ? 100 : 0); };
+const tileSub = it => it.kind === "pelicula" ? "Película" : STATUS[it.status] + (it.epSeen ? ` · ${it.epSeen} ep` : "");
 function renderGrid() {
   const l = visibleItems();
   $("#grid").innerHTML = l.map(it => {
-    const tot = it.api && it.api.totalEp; const p = it.kind === "pelicula" ? 100 : tot ? Math.min(100, Math.round(it.epSeen / tot * 100)) : (it.status === "terminada" ? 100 : 0);
-    const sub = it.kind === "pelicula" ? "Película" : STATUS[it.status] + (it.epSeen ? ` · ${it.epSeen} ep` : "");
     const flag = (it.match === "review" || it.match === "none") ? `<span class="badge" style="color:var(--warn)">⚠</span>` : it.rating ? `<span class="badge">★ ${it.rating}</span>` : "";
-    return `<button class="tile" data-id="${it.id}"><div class="poster">${platBadge(it.platform)}${posterHTML(it)}${flag}</div><div class="bar"><i style="width:${p}%"></i></div><div class="tl">${esc(dispName(it))}</div><div class="ts">${sub}</div></button>`;
+    return `<button class="tile" data-id="${it.id}"><div class="poster${it.nueva ? " hasnew" : ""}">${platBadge(it.platform)}${posterHTML(it)}${flag}${newTag(it)}</div><div class="bar"><i style="width:${pctOf(it)}%"></i></div><div class="tl">${esc(dispName(it))}</div><div class="ts">${tileSub(it)}</div></button>`;
   }).join("");
   document.querySelectorAll("#grid .tile").forEach(b => b.onclick = () => openDetail(b.dataset.id));
   $("#listEmpty").innerHTML = l.length ? "" : ST.items.length
@@ -594,20 +709,75 @@ function renderGrid() {
     : `<div class="empty"><b>Tu lista está vacía</b>Agrega una serie con el botón <b>+</b> o importa tu historial de Netflix.<br><br><button class="btn sm" onclick="go('importar')">Importar de Netflix</button></div>`;
 }
 $("#sort").onchange = e => { sortBy = e.target.value; renderGrid(); };
-$("#btnFind").onclick = () => { const w = $("#findWrap"); const on = w.style.display === "none"; w.style.display = on ? "block" : "none"; if (on) $("#find").focus(); else { findQ = ""; $("#find").value = ""; renderGrid(); } };
-$("#find").oninput = e => { findQ = e.target.value; renderGrid(); };
+$("#btnFind").onclick = () => { const w = $("#findWrap"); const on = w.style.display === "none"; w.style.display = on ? "block" : "none"; if (on) $("#find").focus(); else { findQ = ""; $("#find").value = ""; renderList(); } };
+$("#find").oninput = e => { findQ = e.target.value; renderSeguir(); renderGrid(); };
+
+/* ================= Seguir viendo ================= */
+const epText = it => { const tot = it.api && it.api.totalEp; return `Ep ${it.epSeen || 0}${tot ? ` de ${tot}` : ""}`; };
+function seguirItems() {
+  if (filter !== "todas" || findQ) return [];
+  return ST.items.filter(it => it.kind !== "pelicula" && it.status === "viendo" && (platFilter === "todas" || it.platform === platFilter))
+    .sort((a, b) => (b.lastSeen || (b.added || "").slice(0, 10)).localeCompare(a.lastSeen || (a.added || "").slice(0, 10)));
+}
+function cvCard(it) {
+  const a = it.api || {}; const img = a.backdrop || a.poster;
+  return `<div class="cvc" data-id="${it.id}"><div class="cvi">${img ? `<img loading="lazy" src="${esc(img)}" alt="" onerror="this.remove()">` : ph(dispName(it))}${platBadge(it.platform)}${newTag(it)}</div>
+    <div class="cvb"><div class="cvn">${esc(dispName(it))}</div><div class="cvr"><span class="cvep">${epText(it)}</span><button class="plus1" data-plus="${it.id}" aria-label="Sumar un episodio">+1 ep</button></div>
+    <div class="bar"><i style="width:${pctOf(it)}%"></i></div></div></div>`;
+}
+function renderSeguir() {
+  const box = $("#seguir"); const l = seguirItems();
+  if (!l.length) { box.innerHTML = ""; return; }
+  box.innerHTML = `<div class="lbl sec"><span>Seguir viendo</span><button id="cvAll">${l.length} serie${l.length > 1 ? "s" : ""} ›</button></div>
+    <div class="cv" id="cv">${l.slice(0, 15).map(cvCard).join("")}</div><div class="lbl">Toda mi lista</div>`;
+  $("#cvAll").onclick = () => { filter = "viendo"; renderList(); window.scrollTo(0, 0); };
+  $("#cv").onclick = e => {
+    const p = e.target.closest("[data-plus]");
+    if (p) { addEp(p.dataset.plus, 1, p.closest(".cvc")); return; }
+    const c = e.target.closest(".cvc"); if (c) openDetail(c.dataset.id);
+  };
+}
+/* Suma o resta episodios. Al sumar, cuenta como «vista hoy» y quita el aviso de temporada nueva. */
+function addEp(id, n, cardEl) {
+  const it = byId(id); if (!it) return;
+  it.epSeen = Math.max(0, (it.epSeen || 0) + n);
+  let full = false;
+  if (n > 0) {
+    it.lastSeen = todayISO(); if (!it.firstSeen) it.firstSeen = it.lastSeen;
+    if (it.nueva) { it.nuevaOff = it.nueva.s; delete it.nueva; full = true; }
+    const tot = it.api && it.api.totalEp;
+    if (tot && it.epSeen >= tot && it.status !== "terminada") {
+      it.status = "terminada"; it.statusAuto = false; save(true);
+      toast(`🎉 ¡Terminaste ${dispName(it)}!`); if (cardEl || cur === "lista") renderList(); return true;
+    }
+  }
+  save();
+  if (cardEl) {
+    toast(`${dispName(it)} · ${epText(it)}`);
+    if (full) { renderList(); return; }
+    cardEl.querySelector(".cvep").textContent = epText(it);
+    cardEl.querySelector(".bar i").style.width = pctOf(it) + "%";
+    const t = document.querySelector(`#grid .tile[data-id="${id}"]`);
+    if (t) { t.querySelector(".bar i").style.width = pctOf(it) + "%"; t.querySelector(".ts").textContent = tileSub(it); }
+    renderStats();
+  }
+  return false;
+}
 
 /* ================= Detalle ================= */
 function openDetail(id, push = true) {
   const it = byId(id); if (!it) return;
   const a = it.api || {}; const tot = a.totalEp;
   const meta = [a.year, (a.genres || []).slice(0, 2).join(" · "), it.kind === "pelicula" ? "Película" : a.seasons ? `${a.seasons} temporada${a.seasons > 1 ? "s" : ""}` : ""].filter(Boolean).join(" · ");
+  const prox = it.prox && it.prox.d >= todayISO() ? `<div class="muted" style="font-size:12.5px;margin-top:4px">Próximo episodio: ${fdate(it.prox.d)}${it.prox.s ? ` (T${it.prox.s} E${it.prox.e})` : ""}</div>` : "";
   const prog = it.kind === "pelicula" ? "" : `<div class="card"><div class="lbl">Progreso</div>
       <div style="font-weight:600">${tot && it.epSeen >= tot ? `Viste todos los episodios (${tot})` : `${it.epSeen || 0}${tot ? ` de ${tot}` : ""} episodios vistos`}</div>
       ${tot ? `<div class="bar" style="height:5px"><i style="width:${Math.min(100, it.epSeen / tot * 100)}%"></i></div>` : ""}
       ${it.seasonsSeen && it.seasonsSeen.length ? `<div class="muted" style="font-size:12.5px;margin-top:8px">${esc(it.seasonsSeen.join(" · "))}</div>` : ""}
       ${it.lastEp ? `<div class="muted" style="font-size:12.5px;margin-top:4px">Último: ${esc(it.lastEp)}</div>` : ""}
+      ${prox}
       <div class="row" style="margin-top:10px"><span class="muted" style="font-size:13px">Ajustar episodios</span><span><button class="btn2 sm" data-ep="-1">−</button> <button class="btn2 sm" data-ep="1">+</button></span></div></div>`;
+  const nw = it.nueva ? `<div class="banner nwb"><div style="flex:1">★ <b>Salió la temporada ${it.nueva.s}</b><br><span class="muted" style="font-size:12px">Estrenó el ${fdate(it.nueva.d)}</span></div><button class="btn2 sm" id="dNwOff">Quitar aviso</button></div>` : "";
   const warn = it.match === "review" ? `<div class="banner" style="background:rgba(245,184,74,.1)">⚠ ¿Es esta la serie correcta? <button class="btn2 sm" id="dOk" style="margin-left:auto">Sí</button><button class="btn sm" id="dRe2">Cambiar</button></div>`
     : it.match === "none" ? `<div class="banner" style="background:rgba(245,184,74,.1)">⚠ No encontramos esta serie automáticamente.<button class="btn sm" id="dRe2" style="margin-left:auto">Buscarla</button></div>`
     : it.match === "pending" ? `<div class="banner"><div style="flex:1"><div style="font-size:13px">🖼️ Buscando foto y sinopsis…</div><div class="bar live" style="height:4px;margin-top:8px"><i style="width:40%"></i></div></div></div>` : "";
@@ -616,7 +786,7 @@ function openDetail(id, push = true) {
     <div class="dbody">
       <h2>${esc(dispName(it))}</h2>
       <div class="meta">${esc(meta) || "&nbsp;"}</div>
-      ${warn}
+      ${nw}${warn}
       <div class="row" style="margin-bottom:14px"><div class="stars" id="dStars">${[1, 2, 3, 4, 5].map(n => `<button data-n="${n}" class="${(it.rating || 0) >= n ? "on" : ""}">★</button>`).join("")}</div>
       <button class="pill" id="dPlat" style="${PLAT[it.platform] ? `background:${PLAT[it.platform].c};color:#fff` : ""}">${PLAT[it.platform] ? PLAT[it.platform].n : "¿Dónde la viste?"} ▾</button></div>
       ${it.kind === "pelicula" ? "" : `<div class="seg" id="dSeg" style="margin-bottom:14px">${Object.entries(STATUS).map(([k, l]) => `<button data-s="${k}" class="${it.status === k ? "on" : ""}">${l}</button>`).join("")}</div>`}
@@ -630,12 +800,14 @@ function openDetail(id, push = true) {
       <button class="btn2" id="dRe">Cambiar foto / sinopsis (otra coincidencia)</button>
       <button class="btn2" id="dDel" style="margin-top:8px;color:var(--danger)">Eliminar de mi lista</button>
     </div>`;
-  $("#detail").classList.add("on"); $("#detail").scrollTop = 0; document.body.style.overflow = "hidden";
+  const keep = $("#detail").classList.contains("on") ? $("#detail").scrollTop : 0;
+  $("#detail").classList.add("on"); $("#detail").scrollTop = push ? 0 : keep; document.body.style.overflow = "hidden";
   if (push) history.pushState(null, "", "#serie-" + id);
   $("#dBack").onclick = () => location.hash.startsWith("#serie-") ? history.back() : closeDetail();
   $("#dStars").onclick = e => { const n = +e.target.dataset.n; if (!n) return; it.rating = it.rating === n ? 0 : n; save(); openDetail(id, false); };
   const seg = $("#dSeg"); if (seg) seg.onclick = e => { const s = e.target.dataset.s; if (!s) return; it.status = s; it.statusAuto = false; save(); openDetail(id, false); };
   $("#dNotes").oninput = e => { it.notes = e.target.value; save(); };
+  if ($("#dNwOff")) $("#dNwOff").onclick = () => { it.nuevaOff = it.nueva.s; delete it.nueva; save(true); toast("Aviso quitado"); openDetail(id, false); };
   $("#dPlat").onclick = async () => {
     let sel = it.platform; const sug = await suggestPlat(it.api || {});
     $("#mbox").innerHTML = `<h3>¿Dónde la viste?</h3><p style="margin-bottom:12px">${sug ? `Según TMDB está disponible en <b>${PLAT[sug].n}</b>.` : "Elige la app donde la viste."}</p><div id="mPl">${platPicker(sel, sug)}</div><button class="btn" id="mok" style="margin-top:16px">Guardar</button><button class="btn2" id="mno" style="margin-top:8px">Cancelar</button>`;
@@ -643,7 +815,7 @@ function openDetail(id, push = true) {
     $("#mPl").onclick = e => { const b = e.target.closest("[data-p]"); if (!b) return; sel = b.dataset.p; $("#mPl").querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.p === sel)); };
     $("#mno").onclick = () => modalClose(); $("#mok").onclick = () => { it.platform = sel; save(true); modalClose(); openDetail(id, false); };
   };
-  document.querySelectorAll("[data-ep]").forEach(b => b.onclick = () => { it.epSeen = Math.max(0, (it.epSeen || 0) + +b.dataset.ep); save(); openDetail(id, false); });
+  document.querySelectorAll("[data-ep]").forEach(b => b.onclick = () => { addEp(id, +b.dataset.ep); openDetail(id, false); });
   const re = () => { reassign = id; $("#addTitle").textContent = "Elegir coincidencia"; $("#q").value = it.name; closeDetail(false); go("buscar"); doSearch(); };
   $("#dRe").onclick = re; if ($("#dRe2")) $("#dRe2").onclick = re;
   if ($("#dOk")) $("#dOk").onclick = () => { it.match = "ok"; save(); openDetail(id, false); };
@@ -662,7 +834,7 @@ $("#q").oninput = () => { clearTimeout(searchT); searchT = setTimeout(doSearch, 
 async function doSearch() {
   const q = $("#q").value.trim(); const box = $("#results");
   if (q.length < 2) { box.innerHTML = ""; return; }
-  box.innerHTML = `<div class="row" style="justify-content:flex-start;gap:10px" class="muted"><div class="spin"></div><span class="muted">Buscando…</span></div>`;
+  box.innerHTML = `<div class="muted" style="font-size:13px">Buscando…</div><div class="bar live" style="height:4px;margin-top:8px"><i style="width:60%"></i></div>`;
   try {
     const res = await searchShows(q, reassign ? (byId(reassign) || {}).kind : null);
     if ($("#q").value.trim() !== q) return;
@@ -671,19 +843,19 @@ async function doSearch() {
         <div><div style="font-weight:700">${esc(c.title)}</div><div class="muted" style="font-size:12px">${esc([c.year, c.kind === "pelicula" ? "Película" : "Serie"].filter(Boolean).join(" · "))}</div></div></button>`).join("")
       : `<div class="empty" style="padding:24px">No encontramos «${esc(q)}».</div>`)
       + (reassign ? "" : `<button class="btn2" id="manual" style="margin-top:14px">Guardar «${esc(q)}» solo con el nombre</button>`)
-      + (hasTmdb() ? "" : `<p class="muted" style="font-size:12px;margin-top:14px;line-height:1.5">Buscando en TVmaze (sinopsis en inglés). Para sinopsis en español agrega tu clave de TMDB en <a href="#perfil">Perfil</a>.</p>`);
+      + (hasTmdb() ? "" : `<p class="muted" style="font-size:12px;margin-top:14px;line-height:1.5">Buscando en TVmaze (sinopsis en inglés). Para sinopsis en español agrega tu clave de TMDB en <a href="#perfil">Ajustes</a>.</p>`);
     box.querySelectorAll(".res").forEach(b => b.onclick = () => pick(res[+b.dataset.i]));
     if ($("#manual")) $("#manual").onclick = () => saveNew({ src: "", title: q, kind: "serie" }, "pendiente", true);
   } catch (e) {
-    box.innerHTML = `<div class="empty" style="padding:24px"><b>No se pudo buscar</b>${e.auth ? "La clave de TMDB no es válida. Revísala en Perfil." : "Revisa tu conexión a internet."}</div>`;
+    box.innerHTML = `<div class="empty" style="padding:24px"><b>No se pudo buscar</b>${e.auth ? "La clave de TMDB no es válida. Revísala en Ajustes." : "Revisa tu conexión a internet."}</div>`;
   }
 }
 async function pick(c) {
   const box = $("#results"); let a = c;
-  box.innerHTML = `<div class="row" style="justify-content:flex-start;gap:10px"><div class="spin"></div><span class="muted">Cargando…</span></div>`;
+  box.innerHTML = `<div class="muted" style="font-size:13px">Cargando…</div><div class="bar live" style="height:4px;margin-top:8px"><i style="width:60%"></i></div>`;
   try { a = await details(c); } catch (e) {}
   if (reassign) {
-    const it = byId(reassign); applyApi(it, a, "ok"); save(true); const id = reassign; reassign = null;
+    const it = byId(reassign); applyApi(it, a, "ok"); delete it.chk; save(true); const id = reassign; reassign = null;
     toast("Actualizada"); go("lista"); openDetail(id); return;
   }
   const exist = ST.items.find(x => x.api && x.api.src === a.src && x.api.id === a.id);
@@ -779,7 +951,7 @@ function renderReview() {
     <div class="card" style="font-size:14px;line-height:1.55">✅ Archivo leído: <b>${IMP.total.toLocaleString("es")}</b> registros.<br>
       Encontramos <b>${IMP.series.length}</b> series y <b>${IMP.movies.length}</b> películas u otros títulos.
       ${IMP.untitled ? `<br><span class="muted" style="font-size:12.5px">${IMP.untitled} episodios vienen sin nombre (Netflix ya no muestra el título) y se omiten.</span>` : ""}</div>
-    ${hasTmdb() ? "" : `<div class="banner" style="background:rgba(245,184,74,.1);line-height:1.45">💡 Para traer sinopsis <b>en español</b> y encontrar mejor los nombres en español, agrega tu clave gratuita de TMDB en <a href="#perfil">Perfil</a> antes de importar.</div>`}
+    ${hasTmdb() ? "" : `<div class="banner" style="background:rgba(245,184,74,.1);line-height:1.45">💡 Para traer sinopsis <b>en español</b> y encontrar mejor los nombres en español, agrega tu clave gratuita de TMDB en <a href="#perfil">Ajustes</a> antes de importar.</div>`}
     <div class="row" style="margin:6px 0 2px"><span class="lbl" style="margin:0">Series (${IMP.series.length})</span>
       <span><button class="chip" id="selAll">Todas</button> <button class="chip" id="selNone">Ninguna</button></span></div>
     <div id="sList">${IMP.series.map(o => row(o, "s:")).join("")}</div>
@@ -808,7 +980,7 @@ function doImport() {
       ex.firstSeen = !ex.firstSeen || o.first < ex.firstSeen ? o.first : ex.firstSeen;
       if (!ex.lastSeen || o.last >= ex.lastSeen) { ex.lastSeen = o.last; ex.lastEp = o.lastEp; }
       ex.seasonsSeen = [...new Set([...(ex.seasonsSeen || []), ...o.seasons])];
-      ex.source = "netflix"; if (!ex.platform) ex.platform = "netflix"; autoStatus(ex); updated++;
+      ex.source = "netflix"; if (!ex.platform) ex.platform = "netflix"; autoStatus(ex); delete ex.chk; updated++;
     } else {
       const it = { id: uid(), name: o.name, kind, platform: "netflix", status: "pendiente", statusAuto: true, rating: 0, notes: "", epSeen: kind === "serie" ? o.eps : 0,
         seasonsSeen: o.seasons, firstSeen: o.first, lastSeen: o.last, lastEp: o.lastEp, source: "netflix", added: new Date().toISOString(), match: "pending" };
@@ -841,7 +1013,7 @@ $("#goVarias").onclick = () => openVarias();
 let vRes = [];
 async function loadVarias() {
   const q = $("#vq").value.trim(), box = $("#vRes");
-  box.innerHTML = `<div class="row" style="justify-content:flex-start;gap:10px"><div class="spin"></div><span class="muted">Buscando…</span></div>`;
+  box.innerHTML = `<div class="muted" style="font-size:13px">Buscando…</div><div class="bar live" style="height:4px;margin-top:8px"><i style="width:60%"></i></div>`;
   try {
     if (q.length >= 2) { $("#vLbl").textContent = "Resultados"; vRes = await searchShows(q, "serie"); }
     else if (hasTmdb() && PLAT[VV.plat].tm) {
@@ -886,7 +1058,7 @@ document.querySelectorAll("#impOther .src").forEach(b => b.onclick = async () =>
   if (await dialog(GUIDE[g][0], GUIDE[g][1], `Agregar varias con ${GUIDE[g][0]}`)) openVarias(g);
 });
 
-/* ================= Perfil ================= */
+/* ================= Ajustes ================= */
 function platStatsHTML() {
   const pc = {}; ST.items.forEach(x => { const k = x.platform || "otra"; pc[k] = (pc[k] || 0) + 1; });
   const ks = Object.keys(PLAT).filter(k => pc[k]); if (!ks.length) return "";
@@ -896,6 +1068,7 @@ function platStatsHTML() {
 function renderPerfil() {
   const c = counts(); const pend = pendingItems().length;
   const rated = ST.items.filter(x => x.rating).length;
+  if (updState !== "busy") updState = swReg && swReg.waiting ? "new" : (updState === "new" ? "idle" : updState);
   $("#perfil").innerHTML = `
     <div class="stats"><div><b>${c.todas}</b><span>series</span></div><div><b>${c.terminada || 0}</b><span>terminadas</span></div><div><b>${rated}</b><span>calificadas</span></div></div>
     <div class="card"><div class="lbl">Color del tema</div>
@@ -909,7 +1082,7 @@ function renderPerfil() {
     ${platStatsHTML()}
     <div class="card" id="secCard"><div class="lbl">Seguridad</div><div id="secBody"></div></div>
     <div class="card"><div class="lbl">Sinopsis en español (TMDB)</div>
-      <p class="muted" style="font-size:13px;line-height:1.5;margin-bottom:10px">Con una clave gratuita de The Movie Database la app trae sinopsis y fotos en español. Sin ella usa TVmaze, con sinopsis en inglés.</p>
+      <p class="muted" style="font-size:13px;line-height:1.5;margin-bottom:10px">Con una clave gratuita de The Movie Database la app trae sinopsis y fotos en español, y avisa cuando sale una temporada nueva. Sin ella usa TVmaze, con sinopsis en inglés.</p>
       <input class="inp" id="tmdbKey" placeholder="Pega aquí tu clave (API Key)" value="${esc(ST.settings.tmdb)}" autocomplete="off" autocapitalize="off" spellcheck="false">
       <div style="display:flex;gap:8px;margin-top:10px"><button class="btn sm" id="saveKey">Guardar y probar</button>
       <a class="btn2 sm" href="https://www.themoviedb.org/settings/api" target="_blank" rel="noopener" style="text-decoration:none">Obtener clave ↗</a></div>
@@ -921,16 +1094,19 @@ function renderPerfil() {
     </div>
     <div class="card"><div class="lbl">Fotos y sinopsis</div>
       <button class="btn2" id="reEnrich">${pend ? `Buscar pendientes (${pend})` : "Volver a buscar las que no tienen foto"}</button>
-      ${hasTmdb() ? `<button class="btn2" id="upgradeEs" style="margin-top:8px">Pasar sinopsis en inglés a español (TMDB)</button>` : ""}
+      ${hasTmdb() ? `<button class="btn2" id="upgradeEs" style="margin-top:8px">Pasar sinopsis en inglés a español (TMDB)</button>
+      <button class="btn2" id="nsNow" style="margin-top:8px">★ Buscar temporadas nuevas ahora</button>` : ""}
     </div>
     <div class="card"><div class="lbl">Respaldo</div>
-      <p class="muted" style="font-size:13px;line-height:1.5;margin-bottom:10px">Tu lista se guarda en este teléfono. Descarga un respaldo de vez en cuando para no perderla si cambias de celular o borras los datos del navegador. El respaldo incluye tu lista y la clave de TMDB, pero no el PIN.</p>
-      ${ST.settings.lastBackup ? `<p class="muted" style="font-size:12px;margin-bottom:8px">Último respaldo: ${fdate(ST.settings.lastBackup.slice(0, 10))}</p>` : ""}
+      <p class="muted" style="font-size:13px;line-height:1.5;margin-bottom:10px">Tu lista se guarda en este teléfono. Descarga un respaldo de vez en cuando para no perderla si cambias de celular o borras los datos del navegador. El respaldo incluye tu lista, la clave de TMDB y <b style="color:var(--tx)">tus colores y la forma de las esquinas</b>, pero no el PIN.</p>
+      ${ST.settings.lastBackup ? `<p class="muted" style="font-size:12px;margin-bottom:8px">Último respaldo: ${fdate(isoLocal(new Date(ST.settings.lastBackup)))}</p>` : ""}
       <button class="btn2" id="exp">Descargar respaldo</button>
       <label class="btn2" style="margin-top:8px;cursor:pointer">Restaurar respaldo<input type="file" id="imp" accept=".json,application/json" hidden></label>
     </div>
     <button class="btn2" id="wipe" style="color:var(--danger)">Borrar todo</button>
-    <p class="muted" style="font-size:11px;text-align:center;margin-top:16px;line-height:1.5">Mis Series v${APP_VERSION} · Datos e imágenes de TMDB y TVmaze.<br>Esta app no está afiliada a Netflix.</p>`;
+    <div class="card updcard" id="updCard" style="margin-top:12px">${updInner()}</div>
+    <p class="muted" style="font-size:11px;text-align:center;margin-top:10px;line-height:1.5">Datos e imágenes de TMDB y TVmaze.<br>Esta app no está afiliada a Netflix.</p>`;
+  bindUpd();
   $("#saveKey").onclick = async () => {
     ST.settings.tmdb = $("#tmdbKey").value.trim(); save(true);
     if (!ST.settings.tmdb) { toast("Clave borrada: se usará TVmaze"); return; }
@@ -938,6 +1114,12 @@ function renderPerfil() {
   };
   $("#reEnrich").onclick = () => { ST.items.forEach(x => { if (x.match === "none" || (!x.api && x.source === "netflix")) x.match = "pending"; }); save(true); go("lista"); enrichAll(); };
   if ($("#upgradeEs")) $("#upgradeEs").onclick = () => { let n = 0; ST.items.forEach(x => { if (x.api && x.api.src === "tvmaze") { x.match = "pending"; n++; } }); save(true); toast(n ? `${n} series se buscarán en TMDB` : "No hay sinopsis de TVmaze"); go("lista"); enrichAll(); };
+  if ($("#nsNow")) $("#nsNow").onclick = () => {
+    if (nsRun || enriching) { toast("Ya hay una búsqueda en curso"); return; }
+    if (!navigator.onLine) { toast("Sin internet. Intenta más tarde"); return; }
+    if (!nsCandidates(true).length) { toast("No hay series en Viendo o Terminada con datos de TMDB"); return; }
+    go("lista"); checkNewSeasons(true);
+  };
   $("#exp").onclick = exportBackup;
   $("#themeSeg").onclick = e => { const t = e.target.dataset.t; if (!t) return; ST.settings.theme = t; save(true); applyTheme(); renderPerfil(); };
   $("#shapeSeg").onclick = e => { const t = e.target.dataset.sh; if (!t) return; ST.settings.shape = t; save(true); applyTheme(); renderPerfil(); };
@@ -948,13 +1130,56 @@ function renderPerfil() {
   $("#imp").onchange = async e => {
     const f = e.target.files[0]; if (!f) return;
     try { const d = JSON.parse(await f.text()); if (!Array.isArray(d.items)) throw 0;
-      if (await dialog("¿Restaurar respaldo?", `Se reemplazará tu lista actual por las <b>${d.items.length}</b> series del respaldo.`, "Restaurar")) {
-        ST.items = d.items; if (d.tmdb && !ST.settings.tmdb) ST.settings.tmdb = d.tmdb;
+      if (await dialog("¿Restaurar respaldo?", `Se reemplazará tu lista actual por las <b>${d.items.length}</b> series del respaldo.${d.ajustes ? " También se pondrán los colores guardados." : ""}`, "Restaurar")) {
+        ST.items = migrate(d.items); if (d.tmdb && !ST.settings.tmdb) ST.settings.tmdb = d.tmdb;
+        restoreLook(d.ajustes);
         ST.settings.lastBackup = new Date().toISOString(); save(true); toast("Respaldo restaurado"); go("lista"); }
     } catch (err) { toast("Ese archivo no es un respaldo válido"); }
     e.target.value = "";
   };
   $("#wipe").onclick = async () => { if (await dialog("¿Borrar todo?", "Se eliminarán todas tus series, notas y calificaciones de este teléfono. Esto no se puede deshacer.", "Borrar todo")) { enrichStop = true; ST.items = []; save(true); toast("Lista borrada"); go("lista"); } };
+}
+/* Pie de Ajustes: versión y «Buscar actualizaciones» */
+function fwhen(iso) {
+  const d = new Date(iso); if (isNaN(d)) return "";
+  const h = d.toLocaleTimeString("es-CR", { hour: "numeric", minute: "2-digit" });
+  return isoLocal(d) === todayISO() ? `hoy, ${h}` : `${fdate(isoLocal(d))}, ${h}`;
+}
+function updInner() {
+  const head = `<div class="appid"><img src="icon-192.png" alt="" onerror="this.style.display='none'"><div style="text-align:left"><b style="font-size:15px">Mis Series</b><div class="muted" style="font-size:12px">Versión ${APP_VERSION}</div></div></div>`;
+  const last = ST.settings.lastUpdCheck ? fwhen(ST.settings.lastUpdCheck) : "";
+  if (updState === "busy") return head + `<button class="btn2" disabled style="opacity:.75">Buscando actualizaciones…</button><div class="bar live" style="height:4px;margin-top:10px"><i style="width:65%"></i></div>`;
+  if (updState === "ok") return head + `<button class="btn2" id="updChk">✓ Estás al día</button><div class="muted" style="font-size:12px;margin-top:8px">Tienes la versión más reciente</div>`;
+  if (updState === "new") return head + `<div style="background:var(--acc);color:var(--on);border-radius:var(--rb);padding:12px"><b>✨ Hay una versión nueva</b><div style="opacity:.85;font-size:12.5px;margin:3px 0 10px">La app se recarga en un segundo. Tus series no se borran.</div><button id="updNow" style="display:block;width:100%;background:var(--card);color:var(--tx);font-weight:800;padding:11px;border-radius:11px">Actualizar ahora</button></div>`;
+  return head + `<button class="btn2" id="updChk">🔄 Buscar actualizaciones</button>${last ? `<div class="muted" style="font-size:12px;margin-top:8px">Última revisión: ${last}</div>` : ""}`;
+}
+function drawUpd() { const el = $("#updCard"); if (el) { el.innerHTML = updInner(); bindUpd(); } }
+function bindUpd() {
+  if ($("#updChk")) $("#updChk").onclick = manualCheck;
+  if ($("#updNow")) $("#updNow").onclick = applyUpdate;
+}
+function waitInstalling(ms) {
+  return new Promise(res => {
+    const w = swReg && swReg.installing; if (!w) return res();
+    const t = setTimeout(res, ms);
+    w.addEventListener("statechange", () => { if (w.state === "installed" || w.state === "redundant") { clearTimeout(t); res(); } });
+  });
+}
+let okT;
+async function manualCheck() {
+  if (updState === "busy") return;
+  if (!navigator.onLine) { toast("Sin internet. Intenta más tarde"); return; }
+  if (!swReg) { toast("Abre la app instalada para buscar actualizaciones"); return; }
+  updState = "busy"; drawUpd();
+  const t0 = Date.now();
+  const ok = await checkUpdate();
+  await waitInstalling(20000);
+  await sleep(Math.max(0, 1000 - (Date.now() - t0)));
+  if (!ok) { updState = "idle"; drawUpd(); toast("No se pudo revisar. ¿Tienes internet?"); return; }
+  ST.settings.lastUpdCheck = new Date().toISOString(); save(true);
+  updState = swReg.waiting ? "new" : "ok"; drawUpd();
+  clearTimeout(okT);
+  if (updState === "ok") okT = setTimeout(() => { if (updState === "ok") { updState = "idle"; drawUpd(); } }, 6000);
 }
 
 /* ================= Tema ================= */
@@ -1067,9 +1292,9 @@ function showLock() {
   if ($("#bioBtn")) { $("#bioBtn").onclick = tryBio; setTimeout(tryBio, 300); }
   $("#forgot").onclick = async () => {
     unlockForDialog(true);
-    const ok = await dialog("¿Olvidaste tu PIN?", "Por seguridad, la única forma de entrar sin el PIN es <b>borrar los datos de la app en este teléfono</b>. Después puedes cargar tu último respaldo desde Perfil → Restaurar respaldo.", "Borrar datos y entrar");
+    const ok = await dialog("¿Olvidaste tu PIN?", "Por seguridad, la única forma de entrar sin el PIN es <b>borrar los datos de la app en este teléfono</b>. Después puedes cargar tu último respaldo desde Ajustes → Restaurar respaldo.", "Borrar datos y entrar");
     unlockForDialog(false);
-    if (ok) { ST.items = []; ST.settings.lock = { on: false, pin: "", salt: "", bio: false, cred: "", after: 1 }; save(true); unlock(); go("lista"); toast("Datos borrados. Restaura tu respaldo en Perfil."); }
+    if (ok) { ST.items = []; ST.settings.lock = { on: false, pin: "", salt: "", bio: false, cred: "", after: 1 }; save(true); unlock(); go("lista"); toast("Datos borrados. Restaura tu respaldo en Ajustes."); }
   };
 }
 function unlockForDialog(on) { $("#modal").style.zIndex = on ? 110 : ""; }
@@ -1128,32 +1353,40 @@ async function bindSecurity() {
 load(); applyTheme();
 const h0 = location.hash.slice(1);
 history.replaceState(null, "", "#inicio");
-go(VIEWS.includes(h0) ? h0 : "lista", false);
+go(VIEWS.includes(h0) ? h0 : (h0 === "ajustes" ? "perfil" : "lista"), false);
 if (h0.startsWith("serie-")) openDetail(h0.slice(6), false);
 document.addEventListener("gesturestart", e => e.preventDefault());
 showLock();
 if (pendingItems().length && navigator.onLine) setTimeout(enrichAll, 1500);
+else setTimeout(() => checkNewSeasons(), 2500);
 /* ================= Actualizaciones ================= */
-let swReg = null, reloading = false, lastCheck = 0;
-function showUpd() { $("#upd").classList.add("on"); }
-$("#updBtn").onclick = () => {
+/* En Ajustes el aviso ya está en el pie, así que no se muestra la franja flotante */
+function showUpd() { if (cur === "perfil") { if (updState !== "busy") { updState = "new"; drawUpd(); } } else $("#upd").classList.add("on"); }
+let wantReload = false;
+function applyUpdate() {
   $("#upd").classList.remove("on");
-  if (swReg && swReg.waiting) swReg.waiting.postMessage("skip"); else location.reload();
-};
-function checkUpdate() { lastCheck = Date.now(); return swReg ? swReg.update().catch(() => {}) : Promise.resolve(); }
+  if (swReg && swReg.waiting) { wantReload = true; swReg.waiting.postMessage("skip"); setTimeout(() => { if (!reloading) { reloading = true; location.reload(); } }, 4000); }
+  else location.reload();
+}
+$("#updBtn").onclick = applyUpdate;
+/* Devuelve true si se pudo consultar el servidor */
+function checkUpdate() { lastCheck = Date.now(); return swReg ? swReg.update().then(() => true).catch(() => false) : Promise.resolve(false); }
 if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
   navigator.serviceWorker.register("sw.js").then(r => {
     swReg = r;
     if (r.waiting && navigator.serviceWorker.controller) showUpd();
     r.addEventListener("updatefound", () => { const w = r.installing; if (w) w.addEventListener("statechange", () => { if (w.state === "installed" && navigator.serviceWorker.controller) showUpd(); }); });
   }).catch(() => {});
-  navigator.serviceWorker.addEventListener("controllerchange", () => { if (reloading) return; reloading = true; location.reload(); });
+  /* Solo se recarga al pasar de una versión a otra, no la primera vez que se instala */
+  const hadCtrl = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener("controllerchange", () => { if (reloading || !(hadCtrl || wantReload)) return; reloading = true; location.reload(); });
 }
 document.addEventListener("visibilitychange", () => { if (!document.hidden && Date.now() - lastCheck > 30 * 60000) checkUpdate(); });
 /* Novedades después de actualizar */
-const NOVEDADES = ["🖼️ Nueva barra de progreso al buscar fotos y sinopsis (adiós al círculo estirado)",
-  "🎨 Temas pastel, «Mi color» y forma de las esquinas (Perfil → Apariencia)",
-  "📺 Disney+, Prime Video, Max y más, con «Agregar varias» a la vez"];
+const NOVEDADES = ["▶️ «Seguir viendo» arriba de Mi lista, con botón +1 episodio",
+  "★ Aviso cuando sale una temporada nueva de tus series (con la clave de TMDB)",
+  "⚙️ «Perfil» ahora se llama «Ajustes» y tiene el botón «Buscar actualizaciones»",
+  "💾 El respaldo ahora guarda también tus colores y la forma de las esquinas"];
 function showNews() {
   const prev = ST.settings.seenVersion; ST.settings.seenVersion = APP_VERSION; save(true);
   if (!prev && !ST.items.length) return;               // primera vez que se abre: no molestar
@@ -1165,7 +1398,7 @@ function showNews() {
 (function () {
   let y0 = null, dy = 0, busyR = false; const P = $("#ptr"), svg = P.querySelector("svg");
   const can = () => !locked && !busyR && !$("#detail").classList.contains("on") && !$("#modal").classList.contains("on") && window.scrollY <= 0 && ["lista", "perfil"].includes(cur);
-  window.addEventListener("touchstart", e => { y0 = can() && e.touches.length === 1 ? e.touches[0].clientY : null; dy = 0; }, { passive: true });
+  window.addEventListener("touchstart", e => { y0 = can() && e.touches.length === 1 && !e.target.closest(".cv") ? e.touches[0].clientY : null; dy = 0; }, { passive: true });
   window.addEventListener("touchmove", e => {
     if (y0 === null) return; dy = Math.min(110, Math.max(0, (e.touches[0].clientY - y0) * .5));
     if (window.scrollY > 0) { y0 = null; dy = 0; }
@@ -1177,7 +1410,7 @@ function showNews() {
     busyR = true; P.style.transform = "translate(-50%,20px)"; P.classList.add("go");
     await Promise.all([checkUpdate(), sleep(700)]);
     if (cur === "lista") renderList(); else renderPerfil();
-    if (pendingItems().length && navigator.onLine) enrichAll();
+    if (pendingItems().length && navigator.onLine) enrichAll(); else checkNewSeasons();
     P.classList.remove("go"); P.style.transform = ""; busyR = false;
     if (swReg && swReg.waiting) showUpd(); else toast("Todo al día ✓");
   });

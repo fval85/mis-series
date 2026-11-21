@@ -1,7 +1,7 @@
 {
   "name": "Mis Series",
   "short_name": "Mis Series",
-  "description": "Registro de las series que has visto en Netflix",
+  "description": "Registro de las series que has visto en Netflix, Disney+, Prime Video, Max y más",
   "lang": "es",
   "start_url": "./#lista",
   "scope": "./",
