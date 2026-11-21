@@ -1,5 +1,5 @@
 /* Cambia este número en cada versión: así la app avisa que hay una actualización */
-const V = "misseries-v1.3.0";
+const V = "misseries-v1.4.0";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(V).then(c => c.addAll(SHELL))); });
 self.addEventListener("message", e => { if (e.data === "skip") self.skipWaiting(); });

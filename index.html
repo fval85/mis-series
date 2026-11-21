@@ -179,6 +179,39 @@ a{color:var(--acc)}
 .newtag{position:absolute;left:0;right:0;bottom:0;z-index:2;background:#f5c518;color:#2a2200;font-size:9.5px;font-weight:800;text-align:center;padding:3px 2px;letter-spacing:.2px;white-space:nowrap;overflow:hidden}
 .poster.hasnew .ph span{bottom:24px}
 .nwb{background:rgba(245,197,24,.16)}
+/* descubrir (v1.4) */
+.dsort{display:flex;gap:16px;align-items:center;margin:0 0 12px}
+.dsort button{font-size:13px;font-weight:700;color:var(--mut);padding:3px 0 4px;border-bottom:2.5px solid transparent;white-space:nowrap}
+.dsort button.on{color:var(--tx);border-color:var(--acc)}
+.dsort small{margin-left:auto;font-size:11.5px;color:var(--mut);white-space:nowrap}
+@media (max-width:350px){.dsort{gap:14px}.dsort small{display:none}}
+.dc{display:flex;gap:11px;background:var(--card);border-radius:var(--rc);padding:10px;margin-bottom:10px;cursor:pointer}
+.dc .poster{width:78px;flex-shrink:0;align-self:flex-start}
+.dc .ph span{font-size:9px;left:6px;right:6px;bottom:6px}
+.dcb{flex:1;min-width:0;display:flex;flex-direction:column}
+.dcn{font-weight:800;font-size:14.5px;line-height:1.2}
+.dcm{font-size:11.5px;color:var(--mut);margin:3px 0 5px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.dcm b,.fxm b{color:#a77e00}
+html[data-theme=dark] .dcm b,html[data-theme=dark] .fxm b{color:#f5c518}
+.ptag{font-size:9.5px;font-weight:800;color:#fff;padding:2px 6px;border-radius:5px}
+.entag{font-size:9.5px;font-weight:700;color:var(--mut);border:1px solid var(--off);border-radius:5px;padding:1px 5px;white-space:nowrap}
+.dcs{font-size:12.5px;line-height:1.4;color:var(--tx2);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.dcf{margin-top:auto;padding-top:7px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.dmore{font-size:12px;color:var(--mut);font-weight:600;padding:6px 0}
+.want{background:var(--acc);color:var(--on);font-size:12.5px;font-weight:800;padding:7px 12px;border-radius:20px;white-space:nowrap;transition:transform .1s}
+.want:active{transform:scale(.94)}
+.want.have{background:var(--card2);color:var(--acc)}
+#mbox.fx{padding:0;overflow-x:hidden}
+.fxh{position:relative;height:clamp(150px,26vh,210px);background:var(--ph);overflow:hidden}
+.fxh img,.fxh .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.fxh .ph span{display:none}
+.fxh:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 35%,var(--card))}
+.fxx{position:absolute;top:10px;right:12px;z-index:2;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;font-size:16px;font-weight:700}
+.fxb{padding:0 calc(18px + var(--sr)) calc(20px + var(--sb)) calc(18px + var(--sl));margin-top:-40px;position:relative;z-index:1}
+#modal .fxb h3{font-size:clamp(21px,6.4vw,25px);font-weight:800;line-height:1.15;margin-bottom:6px}
+.fxm{font-size:12.5px;color:var(--mut);line-height:1.5}
+.prov{display:flex;align-items:center;gap:10px;background:var(--card2);border-radius:var(--rb);padding:9px 11px;font-size:13px;margin:12px 0}
+.prov .logo{width:34px;height:34px;border-radius:9px;font-size:11px}
 /* ajustes: pie con la versión */
 .updcard{text-align:center}
 .appid{display:flex;align-items:center;gap:11px;justify-content:center;margin-bottom:12px}
@@ -226,15 +259,29 @@ html.locked body>*:not(#lock):not(#toast):not(#modal){visibility:hidden}
   <div id="listEmpty"></div>
 </section>
 
+<!-- DESCUBRIR (v1.4) -->
+<section class="view" id="v-descubrir">
+  <div class="h"><h1>Descubrir</h1></div>
+  <div class="seg" id="dsKo" style="background:var(--card2);margin-bottom:10px"></div>
+  <div class="chips" id="dsPlat" style="margin-bottom:10px"></div>
+  <div class="dsort" id="dsSort"></div>
+  <div id="dsRes"></div>
+</section>
+
 <!-- AGREGAR -->
 <section class="view" id="v-buscar">
   <div class="h"><h1 id="addTitle">Agregar serie</h1></div>
   <input class="inp" id="q" placeholder="Escribe el nombre de la serie…" autocomplete="off" style="margin-bottom:10px">
-  <button class="btn2" id="goVarias" style="margin-bottom:14px">⚡ Agregar varias a la vez</button>
+  <div id="addExtras">
+    <button class="btn2" id="goVarias" style="margin-bottom:8px">⚡ Agregar varias a la vez</button>
+    <button class="btn2" id="goImp" style="margin-bottom:14px">📥 Importar historial (Netflix y otras)</button>
+    <div id="addIdeas"><div class="lbl">Ideas para tu lista</div>
+      <button class="src" id="goDesc"><div class="logo" style="background:var(--acc);color:var(--on)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg></div><div style="flex:1;min-width:0"><b>Descubrir K-dramas y estrenos</b><div class="muted" style="font-size:12px;margin-top:2px">Lo nuevo y lo mejor valorado en tus apps</div></div><span class="muted">›</span></button></div>
+  </div>
   <div id="results"></div>
 </section>
 
-<!-- IMPORTAR -->
+<!-- IMPORTAR (desde la v1.4 se abre desde Agregar) -->
 <section class="view" id="v-importar">
   <div class="h"><h1>Importar historial</h1></div>
   <div id="impIntro">
@@ -273,8 +320,8 @@ html.locked body>*:not(#lock):not(#toast):not(#modal){visibility:hidden}
 
 <nav>
   <button data-go="lista"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="9" rx="1.5"/><rect x="3" y="15" width="7" height="6" rx="1.5"/><rect x="14" y="15" width="7" height="6" rx="1.5"/></svg>Mi lista</button>
+  <button data-go="descubrir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg>Descubrir</button>
   <button data-go="buscar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Agregar</button>
-  <button data-go="importar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Importar</button>
   <button data-go="perfil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Ajustes</button>
 </nav>
 <button class="fab" id="fab" aria-label="Agregar serie">+</button>
@@ -288,14 +335,15 @@ html.locked body>*:not(#lock):not(#toast):not(#modal){visibility:hidden}
 "use strict";
 /* ================= Datos ================= */
 const KEY = "misseries.v1";
-const ST = { items: [], settings: { tmdb: "", theme: "sistema", palette: "menta", custom: "#7c9cd6", shape: "redonda", lastBackup: "", backupSnooze: "", seenVersion: "", lastUpdCheck: "", lock: {} } };
-const APP_VERSION = "1.3.0";
+const ST = { items: [], settings: { tmdb: "", theme: "sistema", palette: "menta", custom: "#7c9cd6", shape: "redonda", lastBackup: "", backupSnooze: "", seenVersion: "", lastUpdCheck: "", lock: {}, disc: {} } };
+const APP_VERSION = "1.4.0";
 const STATUS = { viendo: "Viendo", terminada: "Terminada", pausa: "En pausa", pendiente: "Pendiente" };
 let filter = "todas", platFilter = "todas", sortBy = "reciente", findQ = "";
 let swReg = null, reloading = false, lastCheck = 0, updState = "idle";
 
 /* Migraciones: se aplican al abrir la app y al restaurar un respaldo. Nunca borran datos.
-   v1.3 agrega campos opcionales por serie: nueva {s,d}, nuevaOff, prox {d,s,e} y chk (fecha de revisión). */
+   v1.3 agrega campos opcionales por serie: nueva {s,d}, nuevaOff, prox {d,s,e} y chk (fecha de revisión).
+   v1.4 no cambia las series; solo agrega settings.disc (filtros de Descubrir). */
 function migrate(items) {
   (items || []).forEach(it => {
     if (it.platform === undefined) it.platform = it.source === "netflix" ? "netflix" : "";
@@ -306,6 +354,10 @@ function migrate(items) {
 function load() {
   try { const d = JSON.parse(localStorage.getItem(KEY) || "null"); if (d) { ST.items = d.items || []; Object.assign(ST.settings, d.settings || {}); } } catch (e) { console.warn(e); }
   ST.settings.lock = Object.assign({ on: false, pin: "", salt: "", bio: false, cred: "", after: 1 }, ST.settings.lock || {});
+  const dc = Object.assign({ ko: true, plat: "todas", sort: "new" }, ST.settings.disc || {});
+  if (dc.plat !== "todas" && !(PLAT[dc.plat] && PLAT[dc.plat].tm)) dc.plat = "todas";
+  if (dc.sort !== "top") dc.sort = "new"; dc.ko = dc.ko !== false;
+  ST.settings.disc = dc;
   migrate(ST.items);
 }
 let saveT;
@@ -340,6 +392,7 @@ let modalClose = null;
 function closeModal() { if (modalClose) modalClose(false); }
 function dialog(title, text, okTxt) {
   return new Promise(res => {
+    $("#mbox").className = "box";
     $("#mbox").innerHTML = `<h3>${esc(title)}</h3><p>${text}</p><button class="btn" id="mok">${esc(okTxt)}</button><button class="btn2" id="mno" style="margin-top:8px">Cancelar</button>`;
     $("#modal").classList.add("on");
     const close = v => { $("#modal").classList.remove("on"); modalClose = null; res(v); };
@@ -605,15 +658,22 @@ function platPicker(sel, sug) {
 
 /* ================= Navegación ================= */
 let cur = "lista";
+const NAVOF = { varias: "buscar", importar: "buscar" };
 function go(v, push = true) {
   cur = v;
   document.querySelectorAll(".view").forEach(s => s.classList.toggle("on", s.id === "v-" + v));
-  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.go === (v === "varias" ? "buscar" : v)));
+  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.go === (NAVOF[v] || v)));
   $("#fab").style.display = v === "lista" ? "flex" : "none";
   $("#upd").classList.toggle("on", v !== "perfil" && !!(swReg && swReg.waiting && navigator.serviceWorker.controller));
   if (v === "lista") renderList();
   if (v === "perfil") renderPerfil();
-  if (v === "buscar") { if (!reassign) { $("#addTitle").textContent = "Agregar serie"; } setTimeout(() => $("#q").focus(), 50); }
+  if (v === "descubrir") loadDisc();
+  if (v === "buscar") {
+    if (!reassign) { $("#addTitle").textContent = "Agregar serie"; }
+    $("#addExtras").style.display = reassign ? "none" : "";
+    $("#addIdeas").style.display = $("#q").value.trim() ? "none" : "";
+    setTimeout(() => $("#q").focus(), 50);
+  }
   if (push && location.hash !== "#" + v) history.pushState(null, "", "#" + v);
   window.scrollTo(0, 0);
 }
@@ -621,9 +681,11 @@ document.querySelectorAll("nav button").forEach(b => b.onclick = () => { reassig
 $("#fab").onclick = () => { reassign = null; $("#q").value = ""; $("#results").innerHTML = ""; go("buscar"); };
 /* Botón «atrás» del teléfono: cierra ventanas, luego la serie, luego vuelve a Mi lista.
    En Mi lista pide tocar atrás dos veces para salir. */
-const VIEWS = ["lista", "buscar", "importar", "perfil", "varias"];
+const VIEWS = ["lista", "descubrir", "buscar", "importar", "perfil", "varias"];
+let skipPop = false, popping = false;
 window.addEventListener("popstate", () => {
-  if (modalClose) closeModal();
+  if (skipPop) { skipPop = false; return; }
+  if (modalClose) { const fx = $("#mbox").classList.contains("fx"); popping = true; closeModal(); popping = false; if (fx) return; }
   const h = location.hash.slice(1);
   if (h.startsWith("serie-")) { openDetail(h.slice(6), false); return; }
   const wasDetail = $("#detail").classList.contains("on");
@@ -633,6 +695,7 @@ window.addEventListener("popstate", () => {
     else toast("Toca atrás otra vez para salir");
     window.scrollTo(0, 0); return;
   }
+  if (wasDetail && h === cur) return;
   go(VIEWS.includes(h) ? h : (h === "ajustes" ? "perfil" : "lista"), false);
 });
 /* Con cada toque se repone el paso de «guarda», así nunca se sale de golpe */
@@ -706,7 +769,7 @@ function renderGrid() {
   document.querySelectorAll("#grid .tile").forEach(b => b.onclick = () => openDetail(b.dataset.id));
   $("#listEmpty").innerHTML = l.length ? "" : ST.items.length
     ? `<div class="empty">No hay series en esta sección.</div>`
-    : `<div class="empty"><b>Tu lista está vacía</b>Agrega una serie con el botón <b>+</b> o importa tu historial de Netflix.<br><br><button class="btn sm" onclick="go('importar')">Importar de Netflix</button></div>`;
+    : `<div class="empty"><b>Tu lista está vacía</b>Agrega una serie con el botón <b>+</b>, importa tu historial de Netflix o busca ideas en <b>Descubrir</b>.<br><br><button class="btn sm" onclick="go('importar')">Importar de Netflix</button> <button class="btn2 sm" onclick="go('descubrir')">Descubrir</button></div>`;
 }
 $("#sort").onchange = e => { sortBy = e.target.value; renderGrid(); };
 $("#btnFind").onclick = () => { const w = $("#findWrap"); const on = w.style.display === "none"; w.style.display = on ? "block" : "none"; if (on) $("#find").focus(); else { findQ = ""; $("#find").value = ""; renderList(); } };
@@ -810,8 +873,10 @@ function openDetail(id, push = true) {
   if ($("#dNwOff")) $("#dNwOff").onclick = () => { it.nuevaOff = it.nueva.s; delete it.nueva; save(true); toast("Aviso quitado"); openDetail(id, false); };
   $("#dPlat").onclick = async () => {
     let sel = it.platform; const sug = await suggestPlat(it.api || {});
+    $("#mbox").className = "box";
     $("#mbox").innerHTML = `<h3>¿Dónde la viste?</h3><p style="margin-bottom:12px">${sug ? `Según TMDB está disponible en <b>${PLAT[sug].n}</b>.` : "Elige la app donde la viste."}</p><div id="mPl">${platPicker(sel, sug)}</div><button class="btn" id="mok" style="margin-top:16px">Guardar</button><button class="btn2" id="mno" style="margin-top:8px">Cancelar</button>`;
     $("#modal").classList.add("on"); modalClose = () => { $("#modal").classList.remove("on"); modalClose = null; };
+    $("#modal").onclick = e => { if (e.target.id === "modal" && modalClose) modalClose(); };
     $("#mPl").onclick = e => { const b = e.target.closest("[data-p]"); if (!b) return; sel = b.dataset.p; $("#mPl").querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.p === sel)); };
     $("#mno").onclick = () => modalClose(); $("#mok").onclick = () => { it.platform = sel; save(true); modalClose(); openDetail(id, false); };
   };
@@ -826,11 +891,14 @@ function closeDetail(back) {
   $("#detail").classList.remove("on"); document.body.style.overflow = "";
   if (back !== false && location.hash.startsWith("#serie-")) history.replaceState(null, "", "#" + cur);
   if (cur === "lista") renderList();
+  else if (cur === "descubrir") drawDisc();
 }
 
 /* ================= Agregar / buscar ================= */
 let reassign = null, searchT, lastRes = [];
-$("#q").oninput = () => { clearTimeout(searchT); searchT = setTimeout(doSearch, 450); };
+$("#q").oninput = () => { clearTimeout(searchT); searchT = setTimeout(doSearch, 450); $("#addIdeas").style.display = $("#q").value.trim() ? "none" : ""; };
+$("#goImp").onclick = () => go("importar");
+$("#goDesc").onclick = () => go("descubrir");
 async function doSearch() {
   const q = $("#q").value.trim(); const box = $("#results");
   if (q.length < 2) { box.innerHTML = ""; return; }
@@ -887,6 +955,183 @@ function saveNew(a, st, manual, plat) {
   ST.items.push(it); save(true); toast("Guardada en tu lista");
   $("#q").value = ""; $("#results").innerHTML = ""; go("lista"); openDetail(it.id);
 }
+
+/* ================= Descubrir (v1.4) =================
+   Usa discover/tv de TMDB con la región de Costa Rica. «Recién estrenadas» = series que estrenaron en el último año
+   (TMDB no dice cuándo llegó una serie a cada app). «Mejor valoradas» = nota de TMDB con un mínimo de votos. */
+const DPROV = Object.keys(PLAT).filter(k => PLAT[k].tm);
+const DV = { cache: new Map(), info: new Map(), busy: false, err: "" };
+const dset = () => ST.settings.disc;
+const dKey = () => { const d = dset(); return `${d.ko ? "ko" : "all"}|${d.plat}|${d.sort}`; };
+function dParams(page) {
+  const d = dset();
+  const p = { language: "es-MX", watch_region: "CR", with_watch_monetization_types: "flatrate|free|ads",
+    with_watch_providers: d.plat === "todas" ? DPROV.map(k => PLAT[k].tm).join("|") : String(PLAT[d.plat].tm),
+    without_genres: "10763,10764,10767", include_adult: "false", page: String(page) };
+  if (d.ko) p.with_original_language = "ko";
+  if (d.sort === "new") { const x = new Date(); x.setFullYear(x.getFullYear() - 1); Object.assign(p, { sort_by: "first_air_date.desc", "first_air_date.lte": todayISO(), "first_air_date.gte": isoLocal(x) }); }
+  else Object.assign(p, { sort_by: "vote_average.desc", "vote_count.gte": d.ko ? "40" : "250" });
+  return p;
+}
+const dMap = r => ({ src: "tmdb", id: r.id, kind: "serie", title: r.name || r.original_name || "", orig: r.original_name || "",
+  year: (r.first_air_date || "").slice(0, 4), overview: r.overview || "", vote: +r.vote_average || 0, votes: +r.vote_count || 0,
+  poster: r.poster_path ? TMDB_IMG + "w342" + r.poster_path : "", backdrop: r.backdrop_path ? TMDB_IMG + "w780" + r.backdrop_path : "" });
+function dFind(id) { for (const s of DV.cache.values()) { const r = s.list.find(x => x.id === id); if (r) return r; } return null; }
+const inList = r => ST.items.find(x => x.api && x.api.src === "tmdb" && x.api.id === r.id) || ST.items.find(x => x.kind !== "pelicula" && norm(x.name) === norm(r.title));
+const dPlatOf = r => { const d = dset(); return d.plat !== "todas" ? d.plat : ((DV.info.get(r.id) || {}).plat || ""); };
+const voteNum = v => v.toFixed(1).replace(".", ",");
+const voteTxt = r => r.votes ? `<span><b>★ ${voteNum(r.vote)}</b> TMDB</span>` : `<span>Sin votos aún</span>`;
+
+function dCard(r) {
+  const mine = inList(r), pk = dPlatOf(r), inf = DV.info.get(r.id) || {}, ov = r.overview || inf.overview || "";
+  return `<div class="dc" data-id="${r.id}"><div class="poster">${r.poster ? `<img loading="lazy" src="${esc(r.poster)}" alt="" onerror="this.remove()">` : ph(r.title)}${platBadge(pk)}</div>
+    <div class="dcb"><div class="dcn">${esc(r.title)}</div>
+    <div class="dcm">${voteTxt(r)}${r.year ? `<span>· ${r.year}</span>` : ""}${pk ? `<span class="ptag" style="background:${PLAT[pk].c}">${PLAT[pk].n}</span>` : ""}${!r.overview && inf.en ? `<span class="entag">EN INGLÉS</span>` : ""}</div>
+    <div class="dcs">${ov ? esc(ov) : `<span class="muted">${inf.ready || inf.fail ? "Todavía no hay sinopsis." : "Buscando sinopsis…"}</span>`}</div>
+    <div class="dcf"><span class="dmore">Ver más ›</span>${mine ? `<button class="want have" data-open="${mine.id}">✓ En tu lista</button>` : `<button class="want" data-want="${r.id}">＋ Quiero verla</button>`}</div></div></div>`;
+}
+function redrawCard(id) { const r = dFind(id), el = document.querySelector(`#dsRes .dc[data-id="${id}"]`); if (r && el) el.outerHTML = dCard(r); }
+
+function drawDisc() {
+  const d = dset();
+  $("#dsKo").innerHTML = [["1", "🇰🇷 K-dramas"], ["0", "🌎 Todas las series"]].map(([v, l]) => `<button data-ko="${v}" class="${(d.ko ? "1" : "0") === v ? "on" : ""}">${l}</button>`).join("");
+  $("#dsPlat").innerHTML = `<button class="chip ${d.plat === "todas" ? "on" : ""}" data-p="todas">Todas las apps</button>` +
+    DPROV.map(k => `<button class="chip ${d.plat === k ? "on" : ""}" data-p="${k}"><i class="dot" style="background:${PLAT[k].c}"></i>${PLAT[k].n}</button>`).join("");
+  $("#dsSort").innerHTML = `<button data-s="new" class="${d.sort === "new" ? "on" : ""}">Recién estrenadas</button><button data-s="top" class="${d.sort === "top" ? "on" : ""}">Mejor valoradas</button><small>Costa Rica</small>`;
+  const box = $("#dsRes");
+  if (!hasTmdb()) {
+    box.innerHTML = `<div class="card" style="text-align:center;padding:20px 16px"><div style="font-size:28px">🔑</div><div style="font-weight:800;font-size:16px;margin:6px 0">Falta la clave de TMDB</div>
+      <div class="muted" style="font-size:13px;line-height:1.5;margin-bottom:14px">Descubrir usa TMDB para traer los estrenos, la valoración y en qué app está cada serie. Pega tu clave gratuita en Ajustes.</div>
+      <button class="btn sm" id="dsKey">Ir a Ajustes</button></div>`;
+    return;
+  }
+  const s = DV.cache.get(dKey()) || { list: [], page: 0, total: 1 };
+  const what = d.ko ? "K-dramas" : "series", where = d.plat === "todas" ? "tus apps" : PLAT[d.plat].n;
+  const loading = `<div class="banner"><div style="flex:1;min-width:0"><div style="font-size:13px">Buscando ${what} en ${where}…</div><div class="bar live" style="height:4px;margin-top:8px"><i style="width:60%"></i></div></div></div>`;
+  let h = DV.busy && !s.list.length ? loading : "";
+  h += s.list.map(dCard).join("");
+  if (DV.busy) { if (s.list.length) h += loading; }
+  else if (DV.err) h += `<div class="empty" style="padding:24px 16px"><b>No se pudo cargar</b>${esc(DV.err)}<br><br><button class="btn sm" id="dsRetry">Reintentar</button></div>`;
+  else if (s.page && !s.list.length) h += `<div class="empty" style="padding:30px 16px"><b>No encontramos ${what}</b>${d.plat === "todas" ? "Prueba con «Mejor valoradas»." : "Prueba con otra app o con «Todas las apps»."}</div>`;
+  else if (s.page && s.page < s.total) h += `<button class="btn2" id="dsMore" style="margin:4px 0 10px">Ver más ${what}</button>`;
+  if (s.list.length) h += `<p class="muted" style="font-size:11px;text-align:center;margin:10px 0 0;line-height:1.5">Valoración de TMDB (de 1 a 10). «Recién estrenadas» son las que estrenaron en el último año: TMDB no dice cuándo llegó cada serie a la app.</p>`;
+  box.innerHTML = h;
+}
+async function loadDisc(more) {
+  if (!hasTmdb()) { drawDisc(); return; }
+  const k = dKey(); let s = DV.cache.get(k);
+  if (!s) { s = { list: [], page: 0, total: 1 }; DV.cache.set(k, s); }
+  if (DV.busy) { drawDisc(); return; }
+  if ((s.page && !more) || (more && s.page >= s.total)) { drawDisc(); dFill(); return; }
+  DV.busy = true; DV.err = ""; drawDisc();
+  try {
+    const d = await tmdb("/discover/tv", dParams(s.page + 1));
+    s.page = d.page || s.page + 1; s.total = Math.min(d.total_pages || 1, 20);
+    const seen = new Set(s.list.map(x => x.id));
+    (d.results || []).forEach(r => { if (!seen.has(r.id)) { seen.add(r.id); s.list.push(dMap(r)); } });
+  } catch (e) { DV.err = e.auth ? "La clave de TMDB no es válida. Revísala en Ajustes." : "Revisa tu conexión a internet."; }
+  DV.busy = false;
+  if (cur !== "descubrir") return;
+  if (dKey() !== k) { loadDisc(); return; }
+  drawDisc(); dFill();
+}
+/* Datos extra por serie (dónde verla en Costa Rica, episodios, géneros y sinopsis de respaldo). Se piden de 3 en 3. */
+let dfRun = false;
+async function dFill() {
+  if (dfRun) return; dfRun = true;
+  try {
+    for (;;) {
+      if (cur !== "descubrir" || !navigator.onLine) break;
+      const s = DV.cache.get(dKey()); if (!s) break;
+      const all = dset().plat === "todas";
+      const need = s.list.filter(r => !DV.info.has(r.id) && (all || !r.overview)).slice(0, 3);
+      if (!need.length) break;
+      await Promise.all(need.map(dInfo));
+    }
+  } finally { dfRun = false; }
+}
+async function dInfo(r) {
+  let inf = DV.info.get(r.id);
+  if (inf && (inf.ready || inf.wait)) return inf.wait || inf;
+  inf = {}; DV.info.set(r.id, inf);
+  inf.wait = (async () => {
+    try {
+      const d = await tmdb(`/tv/${r.id}`, { language: "es-MX", append_to_response: "watch/providers" });
+      inf.eps = d.number_of_episodes || 0; inf.seasons = d.number_of_seasons || 0; inf.genres = (d.genres || []).map(g => g.name);
+      inf.overview = d.overview || "";
+      const pr = (((d["watch/providers"] || {}).results) || {}).CR; inf.provs = [];
+      if (pr) for (const p of [...(pr.flatrate || []), ...(pr.ads || []), ...(pr.free || [])]) { const k = provToPlat(p.provider_name); if (k && !inf.provs.includes(k)) inf.provs.push(k); }
+      inf.plat = inf.provs[0] || "";
+      if (!inf.overview && !r.overview) { try { inf.overview = (await tmdb(`/tv/${r.id}`, { language: "es-ES" })).overview || ""; } catch (e) {} }
+      if (!inf.overview && !r.overview) { try { inf.overview = (await tmdb(`/tv/${r.id}`, { language: "en-US" })).overview || ""; inf.en = !!inf.overview; } catch (e) {} }
+      inf.ready = true;
+    } catch (e) { inf.fail = true; }
+    delete inf.wait;
+    redrawCard(r.id);
+    return inf;
+  })();
+  return inf.wait;
+}
+function wantIt(id) {
+  const r = dFind(id); if (!r) return;
+  const had = inList(r); if (had) { openDetail(had.id); return; }
+  const inf = DV.info.get(r.id) || {};
+  const it = { id: uid(), name: r.title, kind: "serie", status: "pendiente", statusAuto: false, rating: 0, notes: "", epSeen: 0, seasonsSeen: [], source: "manual", platform: dPlatOf(r), added: new Date().toISOString(), match: "ok" };
+  applyApi(it, { ...r, overview: r.overview || inf.overview || "", genres: inf.genres || [], totalEp: inf.eps || 0, seasons: inf.seasons || 0 }, "ok");
+  ST.items.push(it); save(true);
+  toast(`✓ «${r.title}» guardada en Pendientes`);
+  if (!inf.ready) details(r).then(a => { const x = byId(it.id); if (x) { applyApi(x, a, "ok"); save(); } }).catch(() => {});
+  redrawCard(id);
+}
+function fichaHTML(r) {
+  const inf = DV.info.get(r.id) || {}, mine = inList(r), ov = r.overview || inf.overview || "";
+  const img = r.backdrop || r.poster;
+  const m1 = [r.votes ? `<b>★ ${voteNum(r.vote)}</b> de 10 en TMDB` : "Sin votos aún", r.year, inf.eps ? `${inf.eps} episodios` : ""].filter(Boolean).join(" · ");
+  const m2 = [(inf.genres || []).slice(0, 3).join(" · "), inf.seasons ? `${inf.seasons} temporada${inf.seasons > 1 ? "s" : ""}` : ""].filter(Boolean).join(" · ");
+  const provs = inf.provs && inf.provs.length ? inf.provs : (dset().plat !== "todas" ? [dset().plat] : []);
+  const prov = !inf.ready && !inf.fail ? `<div class="bar live" style="height:4px;margin:14px 0"><i style="width:60%"></i></div>`
+    : provs.length ? `<div class="prov"><div class="logo" style="background:${PLAT[provs[0]].c}">${PLAT[provs[0]].s}</div><div style="min-width:0"><b>Disponible en ${provs.map(k => PLAT[k].n).join(", ")}</b><div class="muted" style="font-size:11.5px;margin-top:1px">En Costa Rica, según TMDB</div></div></div>`
+    : `<div class="prov"><div class="muted">No encontramos en qué app está en Costa Rica.</div></div>`;
+  return `<div class="fxh">${img ? `<img src="${esc(img)}" alt="" onerror="this.remove()">` : ph(r.title)}<button class="fxx" id="fxX" aria-label="Cerrar">✕</button></div>
+    <div class="fxb"><h3>${esc(r.title)}</h3><div class="fxm">${m1}</div>${m2 ? `<div class="fxm">${esc(m2)}</div>` : ""}${prov}
+    <div class="syn" style="font-size:14px">${ov ? esc(ov) : `<span class="muted">Todavía no hay sinopsis.</span>`}${!r.overview && inf.en ? ` <span class="entag">EN INGLÉS</span>` : ""}</div>
+    ${mine ? `<button class="btn2" id="fxOpen" style="margin-top:16px">✓ Ya está en tu lista · Abrir</button>`
+      : `<button class="btn" id="fxWant" style="margin-top:16px">＋ Quiero verla</button><div class="muted" style="font-size:12px;text-align:center;margin-top:8px">Se guarda en tu lista como <b style="color:var(--tx)">Pendiente</b></div>`}</div>`;
+}
+function openFicha(id) {
+  const r = dFind(id); if (!r) return;
+  const box = $("#mbox"); box.className = "box fx"; box.scrollTop = 0;
+  const close = () => {
+    if (modalClose !== close) return;
+    $("#modal").classList.remove("on"); box.className = "box"; modalClose = null;
+    if (!popping) { skipPop = true; history.back(); }
+  };
+  const draw = () => {
+    if (modalClose !== close) return;
+    box.innerHTML = fichaHTML(r);
+    $("#fxX").onclick = close;
+    if ($("#fxWant")) $("#fxWant").onclick = () => { wantIt(id); draw(); };
+    /* La ficha se cambia por la serie de Mi lista en el mismo paso del historial */
+    if ($("#fxOpen")) $("#fxOpen").onclick = () => { const m = inList(r); if (!m) return; popping = true; close(); popping = false; openDetail(m.id, false); history.replaceState(null, "", "#serie-" + m.id); };
+  };
+  modalClose = close;
+  history.pushState(null, "", "#" + cur);
+  $("#modal").onclick = e => { if (e.target.id === "modal") close(); };
+  $("#modal").classList.add("on"); draw();
+  const inf = DV.info.get(r.id);
+  if (!inf || !inf.ready) dInfo(r).then(draw);
+}
+$("#dsKo").onclick = e => { const b = e.target.closest("[data-ko]"); if (!b) return; dset().ko = b.dataset.ko === "1"; DV.err = ""; save(); loadDisc(); };
+$("#dsPlat").onclick = e => { const b = e.target.closest("[data-p]"); if (!b) return; dset().plat = b.dataset.p; DV.err = ""; save(); loadDisc(); };
+$("#dsSort").onclick = e => { const b = e.target.closest("[data-s]"); if (!b) return; dset().sort = b.dataset.s; DV.err = ""; save(); loadDisc(); };
+$("#dsRes").onclick = e => {
+  const w = e.target.closest("[data-want]"); if (w) { wantIt(+w.dataset.want); return; }
+  const o = e.target.closest("[data-open]"); if (o) { openDetail(o.dataset.open); return; }
+  const c = e.target.closest(".dc"); if (c) { openFicha(+c.dataset.id); return; }
+  if (e.target.id === "dsMore") loadDisc(true);
+  else if (e.target.id === "dsRetry") { const s = DV.cache.get(dKey()); loadDisc(!!(s && s.page)); }
+  else if (e.target.id === "dsKey") go("perfil");
+};
 
 /* ================= Importar CSV de Netflix ================= */
 function parseCSV(text) {
@@ -1082,7 +1327,7 @@ function renderPerfil() {
     ${platStatsHTML()}
     <div class="card" id="secCard"><div class="lbl">Seguridad</div><div id="secBody"></div></div>
     <div class="card"><div class="lbl">Sinopsis en español (TMDB)</div>
-      <p class="muted" style="font-size:13px;line-height:1.5;margin-bottom:10px">Con una clave gratuita de The Movie Database la app trae sinopsis y fotos en español, y avisa cuando sale una temporada nueva. Sin ella usa TVmaze, con sinopsis en inglés.</p>
+      <p class="muted" style="font-size:13px;line-height:1.5;margin-bottom:10px">Con una clave gratuita de The Movie Database la app trae sinopsis y fotos en español, avisa cuando sale una temporada nueva y llena la pestaña Descubrir. Sin ella usa TVmaze, con sinopsis en inglés.</p>
       <input class="inp" id="tmdbKey" placeholder="Pega aquí tu clave (API Key)" value="${esc(ST.settings.tmdb)}" autocomplete="off" autocapitalize="off" spellcheck="false">
       <div style="display:flex;gap:8px;margin-top:10px"><button class="btn sm" id="saveKey">Guardar y probar</button>
       <a class="btn2 sm" href="https://www.themoviedb.org/settings/api" target="_blank" rel="noopener" style="text-decoration:none">Obtener clave ↗</a></div>
@@ -1108,7 +1353,7 @@ function renderPerfil() {
     <p class="muted" style="font-size:11px;text-align:center;margin-top:10px;line-height:1.5">Datos e imágenes de TMDB y TVmaze.<br>Esta app no está afiliada a Netflix.</p>`;
   bindUpd();
   $("#saveKey").onclick = async () => {
-    ST.settings.tmdb = $("#tmdbKey").value.trim(); save(true);
+    ST.settings.tmdb = $("#tmdbKey").value.trim(); save(true); DV.cache.clear(); DV.info.clear(); DV.err = "";
     if (!ST.settings.tmdb) { toast("Clave borrada: se usará TVmaze"); return; }
     try { await tmdb("/configuration"); toast("✅ Clave correcta"); } catch (e) { toast(e.auth ? "❌ La clave no es válida" : "No se pudo probar (¿sin internet?)"); }
   };
@@ -1268,7 +1513,7 @@ function pinPad(el, title, sub, onDone, extra = "") {
 }
 function askPin(title, sub) {
   return new Promise(res => {
-    const box = $("#mbox"); $("#modal").classList.add("on");
+    const box = $("#mbox"); box.className = "box"; $("#modal").classList.add("on");
     const close = v => { $("#modal").classList.remove("on"); modalClose = null; res(v); };
     modalClose = () => close(null);
     pinPad(box, title, sub, p => close(p), `<button class="btn2" id="pCancel" style="margin-top:18px">Cancelar</button>`);
@@ -1383,21 +1628,21 @@ if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
 }
 document.addEventListener("visibilitychange", () => { if (!document.hidden && Date.now() - lastCheck > 30 * 60000) checkUpdate(); });
 /* Novedades después de actualizar */
-const NOVEDADES = ["▶️ «Seguir viendo» arriba de Mi lista, con botón +1 episodio",
-  "★ Aviso cuando sale una temporada nueva de tus series (con la clave de TMDB)",
-  "⚙️ «Perfil» ahora se llama «Ajustes» y tiene el botón «Buscar actualizaciones»",
-  "💾 El respaldo ahora guarda también tus colores y la forma de las esquinas"];
+const NOVEDADES = ["🧭 Nueva pestaña «Descubrir»: K-dramas y estrenos de tus apps, con valoración y sinopsis",
+  "＋ «Quiero verla» guarda la serie en Pendientes con un solo toque",
+  "📥 «Importar» ahora está dentro de Agregar: la barra de abajo tiene 4 botones"];
 function showNews() {
   const prev = ST.settings.seenVersion; ST.settings.seenVersion = APP_VERSION; save(true);
   if (!prev && !ST.items.length) return;               // primera vez que se abre: no molestar
   if (prev === APP_VERSION) return;
+  $("#mbox").className = "box";
   $("#mbox").innerHTML = `<h3>✨ Novedades de la versión ${APP_VERSION}</h3><ul style="margin:6px 0 18px 18px;line-height:1.6;color:var(--tx2);font-size:14px">${NOVEDADES.map(n => `<li>${n}</li>`).join("")}</ul><button class="btn" id="mok">¡Genial!</button>`;
   $("#modal").classList.add("on"); modalClose = () => { $("#modal").classList.remove("on"); modalClose = null; }; $("#mok").onclick = () => modalClose();
 }
 /* Deslizar hacia abajo para actualizar */
 (function () {
   let y0 = null, dy = 0, busyR = false; const P = $("#ptr"), svg = P.querySelector("svg");
-  const can = () => !locked && !busyR && !$("#detail").classList.contains("on") && !$("#modal").classList.contains("on") && window.scrollY <= 0 && ["lista", "perfil"].includes(cur);
+  const can = () => !locked && !busyR && !$("#detail").classList.contains("on") && !$("#modal").classList.contains("on") && window.scrollY <= 0 && ["lista", "perfil", "descubrir"].includes(cur);
   window.addEventListener("touchstart", e => { y0 = can() && e.touches.length === 1 && !e.target.closest(".cv") ? e.touches[0].clientY : null; dy = 0; }, { passive: true });
   window.addEventListener("touchmove", e => {
     if (y0 === null) return; dy = Math.min(110, Math.max(0, (e.touches[0].clientY - y0) * .5));
@@ -1409,10 +1654,13 @@ function showNews() {
     if (dy < 65) { P.style.transform = ""; return; }
     busyR = true; P.style.transform = "translate(-50%,20px)"; P.classList.add("go");
     await Promise.all([checkUpdate(), sleep(700)]);
-    if (cur === "lista") renderList(); else renderPerfil();
-    if (pendingItems().length && navigator.onLine) enrichAll(); else checkNewSeasons();
+    if (cur === "descubrir") { DV.cache.delete(dKey()); DV.err = ""; for (const [k, v] of DV.info) if (v.fail) DV.info.delete(k); loadDisc(); }
+    else {
+      if (cur === "lista") renderList(); else renderPerfil();
+      if (pendingItems().length && navigator.onLine) enrichAll(); else checkNewSeasons();
+    }
     P.classList.remove("go"); P.style.transform = ""; busyR = false;
-    if (swReg && swReg.waiting) showUpd(); else toast("Todo al día ✓");
+    if (swReg && swReg.waiting) showUpd(); else if (cur !== "descubrir") toast("Todo al día ✓");
   });
 })();
 showNews();
